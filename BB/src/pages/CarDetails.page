@@ -1,0 +1,35 @@
+<apex:page controller="CarsController" sidebar="false" showHeader="false" >
+	<apex:form >
+		<apex:pageBlock id="carWithWheels">
+			<apex:pageBlockSection >
+				<apex:pageBlockTable value="{! wheels }" var="wheel">
+					<apex:column value="{!  wheel.Name }" >
+						<apex:facet name="header">Name</apex:facet>
+					</apex:column>
+					<apex:column value="{!  wheel.Back__c }" >
+						<apex:facet name="header">Back</apex:facet>
+					</apex:column>
+					<apex:column value="{!  wheel.Front__c }" >
+						<apex:facet name="header">Front</apex:facet>
+					</apex:column>
+					<apex:column value="{!  wheel.left__c }" >
+						<apex:facet name="header">Left</apex:facet>
+					</apex:column>
+					<apex:column value="{!  wheel.Right__c }" >
+						<apex:facet name="header">Right</apex:facet>
+					</apex:column>
+					<apex:column >
+						<apex:commandLink action="{! deleteWheel }" value="Delete">
+							<apex:param name="wheelId" value="{! wheel.Id }" assignTo="{! w.Id }" />
+						</apex:commandLink>
+					</apex:column>
+				</apex:pageBlockTable>
+				<br/>
+				<apex:commandButton action="{! gotoAddNewWheel }" value="Add new wheel"/>
+				<br/>
+				<apex:commandButton action="{! cancelDetails }" value="Cancel" />
+				
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

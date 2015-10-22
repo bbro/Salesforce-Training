@@ -1,0 +1,8 @@
+<apex:page controller="CarsController" showHeader="false" sidebar="false">
+	<apex:form >
+		<apex:pageBlock >
+			<apex:inputText label="Name" id="newCarName" value="{! c.Name }"/>
+			<apex:commandButton action="{! updateCar }" value="Update" />
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

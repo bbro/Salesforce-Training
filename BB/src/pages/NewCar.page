@@ -1,0 +1,21 @@
+<apex:page controller="CarsController" showHeader="false" sidebar="false">
+	<apex:form >
+		<apex:pageBlock >
+			<apex:outputLabel value="Name " for="newCarName"/>
+			<apex:inputText id="newCarName" value="{! c.Name }"/>
+			
+			<apex:outputLabel value="Serial " for="newCarSerial"/>
+			<apex:inputText id="newCarSerial" value="{! c.Serial__c }"/>
+
+			<apex:outputLabel value="Weight " for="newCarWeight"/>
+			<apex:inputText id="newCarWeight" value="{! c.Weight__c }"/>
+			<br/>
+			<apex:commandButton action="{! saveNewCar }" value="Save" />
+			<apex:commandButton action="{! cancelAdd }" value="Cancel" />
+			<apex:outputText value="{! addErrorString }"/>
+			
+		</apex:pageBlock>
+	
+	</apex:form>
+
+</apex:page>

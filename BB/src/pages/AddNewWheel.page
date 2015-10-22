@@ -1,0 +1,50 @@
+<apex:page controller="CarsController" showHeader="false" sidebar="false">
+<apex:includeScript value="{! $Resource.jQuery }"/>
+	<apex:form id="f1">
+		<apex:pageBlock >
+			<apex:pageBlockSection >
+				<apex:outputText value="{! c.Name }" />
+				<br/>
+				<apex:inputText value="{! w.Name }" />
+				<br/>
+				<apex:selectRadio value="{! fbWheel }" id="fbRadioBtns" >
+						<apex:selectOption itemValue="Front" itemLabel="Front" id="frontOption"/>
+						<apex:selectOption itemValue="Back" itemLabel="Back" id="backOption"/>
+				</apex:selectRadio>
+				<br/>
+				<apex:selectRadio value="{! lrWheel }" id="lrRadioBtns" >
+						<apex:selectOption itemValue="Left" itemLabel="Left" id="leftOption"/>
+						<apex:selectOption itemValue="Right" itemLabel="Right" id="rightOption"/>
+				</apex:selectRadio>
+
+			</apex:pageBlockSection>
+			<br/>
+			<apex:commandButton value="Save" action="{! saveNewWheel }" />
+			<apex:commandButton action="{! cancelAdd }" value="Cancel" />
+			<apex:outputText value="{! addErrorString }" style="color"/>
+		</apex:pageBlock>
+	</apex:form>
+	<script type="text/javascript">
+		function validate() {
+			var a = jQuery('input:radio[name=frontOption]').prop('checked')
+			a |= jQuery('input:radio[name=backOption]').prop('checked')
+			var b = jQuery('input:radio[name=leftOption]').prop('checked')
+			b |= jQuery('input:radio[name=rightOption]').prop('checked')
+			
+			
+			if(!a && !b) {
+				// error 
+			}else if(!a) {
+				// nie zaznaczyl z pierwszej grupy
+			} else if(!b) {
+				// nie zaznaczyl z drugiej grupy
+			}			
+			
+			
+			
+			
+		
+		}
+	
+	</script>
+</apex:page>

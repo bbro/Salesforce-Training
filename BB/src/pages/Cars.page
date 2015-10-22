@@ -1,0 +1,26 @@
+<apex:page controller="CarsController" showHeader="false" sidebar="false">
+	<apex:form >
+		<apex:pageBlock id="cars_list" >
+			<apex:pageBlockSection >
+				<apex:pageBlockTable value="{! cars }" var="car" >
+						<apex:column >
+							<apex:commandLink action="{! gotoCarDetail }" value="{! car.Name }">
+								<apex:param name="carName" value="{! car.Id }" assignTo="{! c.Id }" />
+							</apex:commandLink>
+						</apex:column>
+						<apex:column value="{! car.Serial__c }" />
+						<apex:column value="{! car.Weight__c }" />
+						<apex:column >
+							<apex:commandLink action="{! gotoEditCar }" value="Edit" reRender="" >
+								<apex:param name="carId" value="{! car.Id }" assignTo="{! c.Id }" />
+							</apex:commandLink>
+						</apex:column>
+				</apex:pageBlockTable>
+				
+				<apex:commandButton action="{! gotoAddNewCar }" value="Add new car" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		
+		
+	</apex:form>
+</apex:page>
