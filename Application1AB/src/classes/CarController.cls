@@ -5,7 +5,7 @@ public class CarController {
 	public String nName { get; set; }
 	public Integer nWeight { get; set; }
 	public String nSerial { get; set; }
-	public Id nONameId { get; set{ nONameId = value; } }
+	public Id nONameId { get; set{ nONameId = value; }   }
 	public Id wheelToDelId { get; set{ wheelToDelId = value; } }
 	private String nOName;
 	public String nNName { get; set; }
