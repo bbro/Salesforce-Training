@@ -1,0 +1,23 @@
+<apex:page controller="carController" extensions="EditCarExtension" sidebar="false" showHeader="false">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+	<br/>
+	<apex:form >
+		<div align="center">
+		<apex:commandButton value="New car" action="{! addingNewCar }"/>
+		<br/>
+		<h1>List of cars</h1>
+			<apex:dataTable value="{! cars }" var="c" rowClasses="odd,even">
+				<apex:column headerValue="Car Name">
+					<apex:commandLink value="{! c.Name }" action="{! showCarDetails }">
+						<apex:param name="detailedCarId" value="{! c.Id }" assignTo="{! detailedCarId }"/>
+					</apex:commandLink>
+				</apex:column>
+				<apex:column headerValue="Action">
+					<apex:commandLink value="Change name" action="{! editCarName }">
+						<apex:param name="carToUpdate" value="{! c.Id }" assignTo="{! carToUpdate }"/>
+					</apex:commandLink>
+				</apex:column>
+			</apex:dataTable>
+		</div>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,38 @@
+<apex:page controller="carController" sidebar="false" showHeader="false">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+<br/>
+	<apex:form >
+		<div align="center">
+			Showing details of car: {! detailedCarName } <br/>
+			<br/>
+			<apex:commandButton value="New wheel" action="{! showNewWheelPage }"/>
+			<br/>
+			<apex:dataTable value="{! wheels }" var="w" rowClasses="odd,even">
+				<apex:column headerValue="Wheel Name">
+					<apex:outputText value="{! w.Name }"/>
+				</apex:column>
+				<apex:column headerValue="Front">
+					<apex:outputText value="{! w.Front__c }"/>
+				</apex:column>
+				<apex:column headerValue="Back">
+					<apex:outputText value="{! w.Back__c }"/>
+				</apex:column>
+				<apex:column headerValue="Left">
+					<apex:outputText value="{! w.Left__c }"/>
+				</apex:column>
+				<apex:column headerValue="Right">
+					<apex:outputText value="{! w.Right__c }"/>
+				</apex:column>
+				<apex:column headerValue="Actions">
+					<apex:commandLink value="Delete" action="{! deleteWheel }">
+						<apex:param name="wheelToDelete" value="{! w.Id }" assignTo="{! wheelToDeleteId }"/>
+					</apex:commandLink>
+				</apex:column>
+			</apex:dataTable>
+			<br/>
+			<apex:commandButton value="New wheel" action="{! showNewWheelPage }"/>
+			<apex:commandButton value="Back to the list" action="{! cancelNewCar }"/>
+		</div>
+	</apex:form>
+
+</apex:page>

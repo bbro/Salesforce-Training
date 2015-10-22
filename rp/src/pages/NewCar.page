@@ -1,0 +1,14 @@
+<apex:page controller="carController" sidebar="false" showHeader="false">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+	<apex:form id="msgs">
+	<apex:pageMessages />
+		<div align="center"> 
+		<h1>Adding new car</h1>
+			Name: <apex:inputText value="{! newCarName }"/><br/>
+			Weight: <apex:inputText value="{! newCarWeight }"/><br/>
+			Serial: <apex:inputText value="{! newCarSerial }"/><br/>
+			<apex:commandButton value="Save" action="{! saveNewCar }"/>
+			<apex:commandButton value="Cancel" action="{! cancelNewCar }"/>
+		</div>
+	</apex:form>
+</apex:page>

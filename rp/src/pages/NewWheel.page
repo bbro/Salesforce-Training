@@ -1,0 +1,28 @@
+<apex:page controller="carController" sidebar="false" showHeader="false">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+<apex:includeScript value="{! $Resource.jQuery }"/>
+	<apex:form >
+	<apex:pageMessages />
+		<div align="center"> 
+		<h1>Adding new wheel for car: {! detailedCarName }</h1>
+			Name: <apex:inputText value="{! newWheelName }"/><br/>
+			<div>
+				<span>Front/Back:</span>
+				<apex:inputCheckbox id="Front" value="{! newWheelFront }"/>
+	    		<apex:inputCheckbox id="Back" value="{! newWheelBack }"/><br/>
+    		</div>
+    		<div>
+	    		<span>Left/Right:</span>
+	    		<apex:inputCheckbox id="Left" value="{! newWheelLeft }"/>
+	    		<apex:inputCheckbox id="Right" value="{! newWheelRight }"/><br/>
+			</div>
+			<apex:commandButton value="Save" action="{! saveNewWheel }"/>
+			<apex:commandButton value="Cancel" action="{! showCarDetails }"/>
+		</div>
+	</apex:form>
+	<script type="text/javascript">
+		$('input[type="checkbox"]').on('change', function() {
+   			$(this).siblings('input[type="checkbox"]').not(this).prop('checked', false);
+		});
+	</script>
+</apex:page>

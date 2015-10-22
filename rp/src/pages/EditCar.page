@@ -1,0 +1,12 @@
+<apex:page controller="carController" extensions="EditCarExtension" sidebar="false" showHeader="false">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+	<apex:form >
+	<apex:pageMessages />	
+		<div align="center"> 
+		<h1>Editing car name</h1>
+			New Name: <apex:inputText value="{! updatedName }"/><br/>
+			<apex:commandButton value="Update" action="{! updateAndReturn }"/>
+			<apex:commandButton value="Cancel" action="{! cancelNewCar }"/>
+		</div>
+	</apex:form>
+</apex:page>
