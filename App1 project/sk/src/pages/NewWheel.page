@@ -1,0 +1,21 @@
+<apex:page controller="CarsController">
+	<apex:pageBlock title="{! recordName}">
+		<apex:form >
+			<apex:PageMessages />
+			<apex:outputText value="Name " />
+			<apex:inputText value="{! wheelName }" />
+			<apex:selectRadio value="{! newWheelsFrontbackSelect }">
+				<apex:selectOptions value="{! frontBack }" />
+			</apex:selectRadio>
+			<apex:selectRadio value="{! newWheelsSideRecord }">
+				<apex:selectOptions value="{! leftRight }" />
+			</apex:selectRadio>
+			<apex:commandButton value="add" action="{! addWheel }">
+				<apex:param name="recordId" value="{! recordId }"
+					assignTo="{! recordId }" />
+			</apex:commandButton>
+			<apex:commandButton value="cancel" action="{! moveToDetailsPage }"/>
+
+		</apex:form>
+	</apex:pageBlock>
+</apex:page>

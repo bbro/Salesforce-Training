@@ -1,0 +1,33 @@
+<apex:page controller="AddNewCarRecord">
+	<apex:pageBlock >
+		<apex:pageBlockSection >
+			<apex:form >
+				<b><apex:outputText value="Create new Car record:" /></b>
+
+				<apex:pageBlockSection columns="1" id="car_name_validation">
+					<apex:pageBlockSectionItem >
+						<apex:outputText value="Car Name" />
+						<apex:inputText value="{! carName }">
+							<apex:PageMessages />
+						</apex:inputText>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputText value="serial" />
+						<apex:inputText value="{! serial }">
+							<apex:PageMessages />
+						</apex:inputText>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputText value="Weight" />
+						<apex:inputText value="{! weight }" />
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:commandButton action="{! addCarRecord }" value="add" />
+						<apex:commandButton action="{! moveToList }" value="cancel"/>
+					</apex:pageBlockSectionItem>
+
+				</apex:pageBlockSection>
+			</apex:form>
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+</apex:page>

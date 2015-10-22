@@ -1,0 +1,28 @@
+<apex:page controller="CarsController" sidebar="false">
+	<apex:pageBlock title="Cars" id="block">
+
+		<apex:form >
+			<apex:commandButton action="{! moveToAddNewCarRecord }"
+				value="Create Car" />
+			<apex:pageBlockTable value="{! cars }" var="car">
+				<apex:column >
+					<apex:commandLink action="{! moveToDetailsPage }"
+						value="{!car.name}">
+						<apex:param name="recordName" value="{! car.name }"
+							assignTo="{! recordName }" />
+							<apex:param name="recordId" value="{! car.id }"
+							assignTo="{! recordId }" />
+					</apex:commandLink>
+				</apex:column>
+				<apex:column value="{!car.id}" />
+				<apex:column >
+					<apex:commandLink action="{! moveToEditPage }" value="edit">
+						<apex:param name="recordId" value="{! car.id }"
+							assignTo="{! recordId }"/>
+					</apex:commandLink>
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:form>
+
+	</apex:pageBlock>
+</apex:page>

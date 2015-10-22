@@ -1,0 +1,15 @@
+<apex:page controller="CarsController">
+	<apex:pageBlock >
+		<apex:form >
+			<b><apex:outputText value="Edit car name:" /></b>
+			<apex:pageBlockSection columns="1">
+				<apex:outputText value="{! 'Car Name ' }" />
+				<apex:inputText value="{! singleCar }">
+					<apex:PageMessages />
+				</apex:inputText>
+				<apex:commandButton action="{! saveEditedField }" value="save" />
+				<apex:commandButton action="{! moveToList }" value="cancel" />
+			</apex:pageBlockSection>
+		</apex:form>
+	</apex:pageBlock>
+</apex:page>

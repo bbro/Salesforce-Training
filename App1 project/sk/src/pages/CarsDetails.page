@@ -1,0 +1,35 @@
+<apex:page controller="CarsController">
+	<apex:pageBlock title="{! recordName}">
+		<apex:pageBlockSection >
+			<apex:form >
+				<apex:commandButton action="{! moveToAddNewWheelRecord }"
+					value="add Wheel" />
+			</apex:form>
+		</apex:pageBlockSection>
+
+		<apex:pageBlockTable value="{! wheels }" var="wh">
+			<apex:column value="{! wh.name }" />
+			<apex:column value="{! wh.front__c }" />
+			<apex:column value="{! wh.back__c }" />
+			<apex:column value="{! wh.left__c }" />
+			<apex:column value="{! wh.right__c}" />
+			<apex:column value="{! wh.id}" />
+			<apex:column >
+				<apex:form >
+					<apex:commandLink action="{! deleteWheel }" value="delete">
+						<apex:param name="wheelRecordId" value="{! wh.id}"
+							assignTo="{! wheelRecordId }" />
+					</apex:commandLink>
+				</apex:form>
+			</apex:column>
+		</apex:pageBlockTable>
+
+		<apex:pageBlockSection >
+			<apex:form >
+				<apex:commandButton action="{! moveToAddNewWheelRecord }"
+					value="add Wheel" />
+				<apex:commandButton action="{! moveToList }" value="cancel" />
+			</apex:form>
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+</apex:page>
