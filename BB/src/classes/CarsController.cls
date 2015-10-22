@@ -11,7 +11,7 @@ public class CarsController {
 			w = value;		
 		}
 	}
-	public List<Car__c> cars {get;set;}
+	public List<Car__c> cars {get;set  ;}
 	public String addErrorString {get;set;}
 	public String fbWheel {get;set;}
 	public String lrWheel {get;set;}
