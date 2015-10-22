@@ -1,0 +1,42 @@
+<apex:page controller="CarController">
+<apex:includeScript value="{! $Resource.jQuery }"/>
+<apex:form >
+	<table border="1" id="tablewithcars">
+		<tr>
+			<th>Car Name</th>
+			<th>Serial</th>
+			<th>Weight</th>
+			<th>Action Button</th>
+		</tr>
+			<apex:repeat var="c" value="{!cars}">
+				<tr>
+					<td id="cd">
+						<apex:commandLink action="{!dCar}" value="{!c.Name}" id="theButtonDetail">
+							<apex:param name="nONameId" value="{!c.Id}" assignTo="{!nONameId}"/>
+						</apex:commandLink> 
+					</td>
+					<td> {!c.Serial__c} </td>
+					<td> {!c.Weight__c} </td>
+					<td>
+						<apex:commandLink action="{!eCar}" value="Edit Car" id="theButtonEdit">
+							<apex:param name="nONameId" value="{!c.Id}" assignTo="{!nONameId}"/>
+						</apex:commandLink>
+					</td>
+				</tr>
+			</apex:repeat> 
+    </table>
+		<apex:pageBlock title="New Car">
+			<apex:pageBlockSection title="Add New Car" columns="1">
+				<p>Name: </p><apex:inputText value="{!nName}"/>
+				<p>Serial: </p><apex:inputText value="{!nSerial}"/>
+				<p>Weight: </p><apex:inputText value="{!nWeight}"/><br/>
+				<apex:commandButton action="{!nCar}" value="Save" id="theButtonSave"/>
+				<apex:commandButton action="{!refresh}" value="Cancel" id="theButtonCancel"/>
+            </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+	
+	<script type="text/javascript">
+	</script>
+	
+</apex:page>

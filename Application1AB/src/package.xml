@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>CarController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>CarDetails</members>
+        <members>Cars</members>
+        <members>EditCar</members>
+        <members>NewWheel</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>Car__c</members>
+        <members>Wheel__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Car__c</members>
+        <members>Cars</members>
+        <members>Wheel__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Profile</name>
+    </types>
+    <version>33.0</version>
+</Package>

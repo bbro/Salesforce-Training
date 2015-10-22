@@ -1,0 +1,27 @@
+<apex:page controller="CarController">
+<apex:includeScript value="{! $Resource.jQuery }"/>
+	<table border="1" id="tablewithcars">
+		<tr>
+			<th>Car Name</th>
+			<th>Serial</th>
+			<th>Weight</th>
+		</tr>
+			<apex:repeat var="c" value="{!cars}">
+				<tr>
+					<td id="cd"> {!c.Name} </td>
+					<td> {!c.Serial__c} </td>
+					<td> {!c.Weight__c} </td>
+				</tr>
+			</apex:repeat> 
+    </table>
+    <apex:form >
+		<apex:pageBlock title="New Name Car">
+			<apex:pageBlockSection title="Edit Name Car" columns="1">
+				<p>Old Name: </p><apex:outputText value="{!nOName}"/>
+				<p>New Name: </p><apex:inputText value="{!nNName}"/>
+				<apex:commandButton action="{!nNCar}" value="Save" id="theButtonSave"/>
+				<apex:commandButton action="{!refresh}" value="Back to List" id="theButtonBack"/>
+            </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

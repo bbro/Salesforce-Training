@@ -1,0 +1,21 @@
+<apex:page controller="CarController">
+<apex:includeScript value="{! $Resource.jQuery }"/>
+    <apex:form >
+    <apex:messages />
+		<apex:pageBlock title="New Wheel">
+			<apex:pageBlockSection title="Add New Wheel" columns="1">
+			<p>Name of Wheel: </p><apex:inputText value="{!nWName}"/> <br/>
+				<apex:selectRadio value="{! fbWheel }" >
+					<apex:selectOption itemValue="Front" itemLabel="Front" id="frontOption"/>
+					<apex:selectOption itemValue="Back" itemLabel="Back" id="backOption"/>
+				</apex:selectRadio><br/>
+				<apex:selectRadio value="{! lrWheel }" >
+					<apex:selectOption itemValue="Left" itemLabel="Left" id="leftOption"/>
+					<apex:selectOption itemValue="Right" itemLabel="Right" id="rightOption"/>
+				</apex:selectRadio>
+					<apex:commandButton action="{!newWheel}" value="Add New" id="theButtonNewWheel"/>
+					<apex:commandButton action="{!wCar}" value="Cancel" id="theButtonCancel"/>
+            </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form> 
+</apex:page>

@@ -1,0 +1,36 @@
+<apex:page controller="CarController">
+<apex:includeScript value="{! $Resource.jQuery }"/>
+<apex:form >
+<table border="1" id="tablewithwheels">
+		<tr>
+			<th>Wheel Name</th>
+			<th>Front</th>
+			<th>Back</th>
+			<th>Left</th>
+			<th>Right</th>
+			<th>Action Button</th>
+		</tr>
+			<apex:repeat var="w" value="{!wheels}">
+				<tr>
+					<td> {!w.Name} </td>
+					<td> {!w.Front__c} </td>
+					<td> {!w.Back__c} </td>
+					<td> {!w.Left__c} </td>
+					<td> {!w.Right__c} </td>
+					<td>
+						<apex:commandLink action="{!deleteWheel}" value="Delete Wheel" id="theButtonDeleteWheel">
+							<apex:param name="wheelToDelId" value="{!w.Id}" assignTo="{!wheelToDelId}"/>
+						</apex:commandLink>
+					</td>
+				</tr>
+			</apex:repeat> 
+</table>
+
+<apex:pageBlock title="Action Button">
+			<apex:pageBlockSection title="Add New Wheel" columns="1">
+		 		<apex:commandButton action="{!gotoNewWheel}" value="Add New Wheel" id="theButtonNewWheel"/>  
+		 		<apex:commandButton action="{!refresh}" value="Back to Cars" id="theButtonCars"/>  
+            </apex:pageBlockSection>
+		</apex:pageBlock>
+</apex:form>
+</apex:page>
