@@ -53,20 +53,6 @@
     <enableReports>false</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ControlledByParent</externalSharingModel>
-    <fields>
-        <fullName>City__c</fullName>
-        <externalId>false</externalId>
-        <label>City</label>
-        <referenceTo>City__c</referenceTo>
-        <relationshipLabel>Stations</relationshipLabel>
-        <relationshipName>Stations</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
     <fields>
         <fullName>Is_Main_Station__c</fullName>
         <defaultValue>false</defaultValue>
@@ -105,5 +91,5 @@
     </nameField>
     <pluralLabel>Stations</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
