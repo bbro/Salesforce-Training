@@ -56,84 +56,60 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>Addressee__c</fullName>
+        <fullName>Passenger__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Addressee</label>
-        <length>80</length>
+        <label>Passenger</label>
+        <referenceTo>Passenger__c</referenceTo>
+        <relationshipLabel>Seats Reservation on Route</relationshipLabel>
+        <relationshipName>PassengerName</relationshipName>
         <required>true</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>From__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>City</label>
-        <referenceTo>City__c</referenceTo>
-        <relationshipLabel>Packages</relationshipLabel>
-        <relationshipName>Packages</relationshipName>
-        <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Route__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Route</label>
         <referenceTo>Route__c</referenceTo>
-        <relationshipLabel>Packages</relationshipLabel>
-        <relationshipName>Packages</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Sender__c</fullName>
-        <externalId>false</externalId>
-        <label>Sender</label>
-        <length>80</length>
+        <relationshipLabel>Seats Reservation on Route</relationshipLabel>
+        <relationshipName>RouteOfPassenger</relationshipName>
         <required>true</required>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>To__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <fullName>Seat__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>City</label>
-        <referenceTo>City__c</referenceTo>
-        <relationshipLabel>Packages (City)</relationshipLabel>
-        <relationshipName>Packages1</relationshipName>
-        <required>false</required>
+        <label>Seat</label>
+        <referenceTo>Seat__c</referenceTo>
+        <relationshipLabel>Seats Reservation on Route</relationshipLabel>
+        <relationshipName>SeatNumber</relationshipName>
+        <required>true</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Weight__c</fullName>
+        <fullName>Ticket__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Weight</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
+        <label>Ticket</label>
+        <referenceTo>Ticket__c</referenceTo>
+        <relationshipLabel>Seats Reservation on Route</relationshipLabel>
+        <relationshipName>TicketName</relationshipName>
+        <required>true</required>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
-    <label>Package</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
+    <label>Seat Reservation on Route</label>
     <nameField>
-        <displayFormat>{0000}</displayFormat>
-        <label>Name</label>
+        <displayFormat>{00000000}</displayFormat>
+        <label>Number</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Packages</pluralLabel>
+    <pluralLabel>Seats Reservation on Route</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
