@@ -1,0 +1,20 @@
+<apex:page controller="carController">
+	<apex:form >
+		<apex:pageBlock >
+		<apex:commandButton action="{!addNewWheelPage}" value="Add new wheel"/>
+			<apex:pageBlockTable value="{!wheels}" var="w">
+				<apex:column value="{!w.Name}" />
+				<apex:column value="{!w.Back__c}" />
+				<apex:column value="{!w.Front__c}" />
+				<apex:column value="{!w.Left__c}" />
+				<apex:column value="{!w.Right__c}" />
+				<apex:column > 
+					<apex:commandLink value="Delete" action="{!deleteWheel}" >
+						<apex:param name="id" value="{!w.id}" assignto="{!wheelId}"/>
+					</apex:commandLink>
+				</apex:column>
+			</apex:pageBlockTable>
+			<apex:commandButton action="{!addNewWheelPage}" value="Add new wheel"/>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

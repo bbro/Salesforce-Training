@@ -1,0 +1,9 @@
+<apex:page controller="carController">
+	<apex:pageBlock >
+		Edit Car <br/>
+		<apex:form >
+			New name:  <apex:inputText value="{!newCarName}" required="true" /> <p/>
+			<apex:commandButton action="{!editNamePage}" value="Save"/>
+		</apex:form>
+	</apex:pageBlock>
+</apex:page>

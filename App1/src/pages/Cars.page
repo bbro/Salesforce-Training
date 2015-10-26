@@ -1,0 +1,22 @@
+<apex:page controller="carController">
+	<apex:pageBlock >
+		<p> Cars List </p><br/>
+		<apex:pageBlockTable value="{!CarsList}" var="item">
+			<apex:column >
+				<apex:form >
+					<apex:commandLink value="  Show  " action="{!carDetails}">				
+						<apex:param name="id" value="{!item.id}" assignTo="{!selectedId}"/>
+					</apex:commandLink>
+					<apex:commandLink value="  Edit   " action="{!editName}">
+						<apex:param name="id" value="{!item.id}" assignTo="{!selectedId}"/>
+					</apex:commandLink>
+					<apex:outputText value="{!item.name}" />
+				</apex:form>
+			</apex:column>
+		</apex:pageBlockTable>	
+		<apex:form >
+	 		<br/><apex:commandButton value="New Car" action="/apex/NewCar"/>
+	 	</apex:form>
+	 	
+	 	</apex:pageBlock>
+</apex:page>

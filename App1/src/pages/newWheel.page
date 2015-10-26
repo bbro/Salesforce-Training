@@ -1,0 +1,19 @@
+<apex:page controller="carController">
+	<apex:pageBlock >
+		Add wheelfty:  <br/>
+		<apex:form >
+			<apex:messages />
+			<apex:inputText value="{!newWheelName}" required="true" /> <p/>
+			<apex:selectRadio value="{!fbWheel}" id="fbRadio">
+				<apex:selectOption itemValue="Front" itemLabel="Front" id="frontOption"/>
+				<apex:selectOption itemValue="Back" itemLabel="Back" id="backOption"/>
+			</apex:selectRadio>
+			<apex:selectRadio value="{!lrWheel}" id="lrRadio">
+				<apex:selectOption itemValue="Left" itemLabel="Left" id="leftOption"/>
+				<apex:selectOption itemValue="Right" itemLabel="Right" id="rightOption"/>
+			</apex:selectRadio>
+			<apex:commandButton action="{!addNewWheel}" value="Save"/>
+		</apex:form>	
+		
+	</apex:pageBlock>
+</apex:page>

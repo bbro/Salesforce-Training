@@ -1,0 +1,10 @@
+<apex:page controller="carController">
+	<apex:pageBlock >
+		<apex:form >
+			Name:  <apex:inputText value="{!inputName}" required="true"/ > <p/>
+			Serial:  <apex:inputText value="{!inputSerial}" required="true"/> <p/>
+			Weight:  <apex:inputText value="{!inputWeight}" required="true"/> <p/>
+			<apex:commandButton action="{!addCar}" value="Save"/>
+		</apex:form>
+	</apex:pageBlock>
+</apex:page>
