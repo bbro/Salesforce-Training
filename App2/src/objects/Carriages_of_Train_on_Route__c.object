@@ -56,29 +56,48 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>Discount__c</fullName>
+        <fullName>Carriage__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Discount</label>
-        <picklist>
-            <picklistValues>
-                <fullName>Normal</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Student</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
+        <label>Carriage</label>
+        <referenceTo>Carriage__c</referenceTo>
+        <relationshipLabel>Carriages of Train on Route</relationshipLabel>
+        <relationshipName>CarriageName</relationshipName>
+        <required>true</required>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
+        <type>Lookup</type>
     </fields>
-    <label>Ticket</label>
+    <fields>
+        <fullName>Route__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Route</label>
+        <referenceTo>Route__c</referenceTo>
+        <relationshipLabel>Carriages of Train on Route</relationshipLabel>
+        <relationshipName>RouteName</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Train__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Train</label>
+        <referenceTo>Train__c</referenceTo>
+        <relationshipLabel>Carriages of Train on Route</relationshipLabel>
+        <relationshipName>TrainName</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Carriage of Train on Route</label>
     <nameField>
-        <label>Name</label>
-        <type>Text</type>
+        <displayFormat>{00000}</displayFormat>
+        <label>Number</label>
+        <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>TIckets</pluralLabel>
+    <pluralLabel>Carriages of Train on Route</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

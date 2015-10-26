@@ -56,29 +56,35 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>Discount__c</fullName>
+        <fullName>Platform__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Discount</label>
-        <picklist>
-            <picklistValues>
-                <fullName>Normal</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Student</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
+        <label>Platform</label>
+        <referenceTo>Platform__c</referenceTo>
+        <relationshipLabel>Platforms Of Route</relationshipLabel>
+        <relationshipName>PlatformsOfRoute</relationshipName>
+        <required>true</required>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
+        <type>Lookup</type>
     </fields>
-    <label>Ticket</label>
+    <fields>
+        <fullName>Route__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Route</label>
+        <referenceTo>Route__c</referenceTo>
+        <relationshipLabel>Platforms Of Route</relationshipLabel>
+        <relationshipName>PlatformsOfRoute</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Platform Of Route</label>
     <nameField>
         <label>Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>TIckets</pluralLabel>
+    <pluralLabel>Platforms Of Route</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
