@@ -1,0 +1,20 @@
+<apex:page controller="CarriageCtrl" sidebar="false" showHeader="false">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+<br/>
+<br/>
+	<apex:form id="carriagesLists">
+		<div align="center">
+			<apex:pageBlock title="List of Carriages">
+				<apex:pageBlockTable value="{! carriages }" var="c">
+					<apex:column headerValue="Carriage Id" value="{! c.Id }"/>
+					<apex:column headerValue="Bicycles allowed" value="{! c.Bicycles_Transport__c }"/>
+					<apex:column headerValue="Support for disabled people" value="{! c.Disabled_People_Support__c }"/>
+					<apex:column headerValue="Carriage with tables" value="{! c.Carriage_With_Tables__c }"/>
+					<apex:column headerValue="Class" value="{! c.Class__c }"/>
+				</apex:pageBlockTable>
+			</apex:pageBlock>
+			<br/>
+			<apex:commandButton value="New carriage" action="{! newCarriagePage }"/>
+		</div>
+	</apex:form>
+</apex:page>
