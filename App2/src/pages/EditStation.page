@@ -1,0 +1,24 @@
+<apex:page showHeader="false" sidebar="false" controller="CityStationPlatformCtrl">
+<apex:stylesheet value="{!URLFOR($Resource.styles, 'styles.css')}"/>
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockTable value="{! station }" var="st" >
+				<apex:column >
+					<apex:inputText value="{! st.Name }" >Station name</apex:inputText>
+				</apex:column>
+				<apex:column >
+					<apex:inputField value="{! st.City__c }" />
+				</apex:column>
+				<apex:column >
+					<apex:inputCheckbox value="{! st.Is_Main_Station__c }" >Main station</apex:inputCheckbox>
+				</apex:column>
+				<apex:column >
+					<apex:commandButton value="Save" action="{! updateStation }" />
+				</apex:column>
+				<apex:column >
+					<apex:commandButton value="Cancel" action="/apex/Stations" />
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
