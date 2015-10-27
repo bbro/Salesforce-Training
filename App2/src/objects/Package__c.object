@@ -110,6 +110,14 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Warehouse__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Warehouse</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Weight__c</fullName>
         <externalId>false</externalId>
         <label>Weight</label>
