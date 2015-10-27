@@ -62,6 +62,14 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Carriage_With_Tables__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Carriage With Tables</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Class__c</fullName>
         <externalId>false</externalId>
         <label>Class</label>
@@ -74,18 +82,56 @@
                 <fullName>Second</fullName>
                 <default>false</default>
             </picklistValues>
+            <picklistValues>
+                <fullName>Buffet Car</fullName>
+                <default>false</default>
+            </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Disabled_people_support__c</fullName>
+        <fullName>Disabled_People_Support__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Disabled People Support</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Number_Of_Seats__c</fullName>
+        <externalId>false</externalId>
+        <label>Number Of Seats</label>
+        <picklist>
+            <picklistValues>
+                <fullName>24</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>32</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>40</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>48</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>56</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>64</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
     </fields>
     <label>Carriage</label>
     <listViews>
