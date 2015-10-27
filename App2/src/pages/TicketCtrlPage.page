@@ -1,0 +1,15 @@
+<apex:page controller="TicketCtrl" sidebar="false" showHeader="false"
+	docType="html-5.0">
+	<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+	<apex:form >
+		<apex:pageBlock title="BUY TICKET">
+			<c:TicketCtrl_PersonalDataCmp />
+			<c:TicketCtrl_TicketCmp />
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{! moveToSearchStationPage }"
+					value="CANCEL" />
+				<apex:commandButton action="{! buyTicket }" value="Buy" />
+			</apex:pageBlockButtons>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
