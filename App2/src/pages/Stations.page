@@ -1,0 +1,23 @@
+<apex:page showHeader="false" sidebar="false" controller="CityStationPlatformCtrl">
+<apex:stylesheet value="{!URLFOR($Resource.styles, 'styles.css')}"/>
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockTable value="{! allStations }" var="st">
+				<apex:column value="{! st.Name }" />
+				<apex:column value="{! st.City__c }" />
+				<apex:column value="{! st.Is_Main_Station__c }" />
+				<apex:column >
+					<apex:commandLink action="{! gotoEditStation }" value="Edit">
+						<apex:param name="stationId" value="{! st.Id }" assignTo="{! station.Id }" />
+					</apex:commandLink>
+				</apex:column>
+				<apex:column >
+					<apex:commandLink action="{! deleteStation }" value="Delete">
+						<apex:param name="stationId" value="{! st.Id }" assignTo="{! station.Id }" />
+					</apex:commandLink>
+				</apex:column>
+			</apex:pageBlockTable>
+			<apex:commandButton value="Add Station" action="/apex/Add_Station" />
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
