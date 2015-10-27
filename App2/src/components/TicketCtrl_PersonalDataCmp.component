@@ -1,0 +1,47 @@
+<apex:component controller="TicketCtrl">
+		<div id="InnternalDiv" style="width: 500px;"></div>
+		<apex:pageBlockSection title="PERSONAL DATA">
+			<apex:pageBlockSectionItem >
+				<apex:outputText value="FIRST NAME" />
+				<apex:inputText value="{! firstName }" />
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputText value="LAST NAME" />
+				<apex:inputText value="{! lastName }" />
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputText value="PIN" />
+				<apex:inputText value="{! pin }" />
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputText value="EMAIL" />
+				<apex:inputText value="{! email }" />
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:inputCheckbox value="{! isInvoiceNeed }" />
+				<apex:outputText value="I WOULD LIKE TO REVCEIVE INVOICE" />
+			</apex:pageBlockSectionItem>
+			<div id="invoiceForm">
+				<apex:pageBlockSectionItem >
+					<apex:outputText value="BUSINESS NAME" />
+					<apex:inputText value="{! businessName }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputText value="NIP" />
+					<apex:inputText value="{! nip }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputText value="POSTAL CODE" />
+					<apex:inputText value="{! postalCode }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputText value="CITY" />
+					<apex:inputText value="{! city }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputText value="STREET" />
+					<apex:inputText value="{! street }" />
+				</apex:pageBlockSectionItem>
+			</div>
+		</apex:pageBlockSection>
+</apex:component>

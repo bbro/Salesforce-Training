@@ -1,0 +1,35 @@
+<apex:component controller="TicketCtrl">
+	<apex:pageBlockSection title="BILET" columns="2">
+		<apex:pageBlockSection title="BASIC" columns="1">
+			<apex:pageBlockSectionItem>
+				<apex:outputText value="TICKETS COUNT " />
+				<apex:input value="{! ticketsNumber }" type="number" />
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem>
+				<apex:outputText value="DISCOUNT " />
+				<apex:inputField value="{! ticket.Discount__c }" />
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem>
+				<apex:outputText value="CLASS " />
+				<apex:inputField value="{! carriage.Class__c }" />
+			</apex:pageBlockSectionItem>
+		</apex:pageBlockSection>
+		<apex:pageBlockSection title="SPOT">
+			<apex:pageBlockSectionItem>
+				<apex:selectRadio value="{! defaultSitOption }">
+					<apex:selectOptions value="{! Spots }" />
+				</apex:selectRadio>
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem>
+				<apex:inputCheckbox value="{! isTable }" />
+				<apex:outputText value="NEAR TABLE" />
+			</apex:pageBlockSectionItem>
+		</apex:pageBlockSection>
+		<apex:commandButton action="{! addTicket }" value="Add" rerender="ticketsContainer" />
+	</apex:pageBlockSection>
+	<apex:pageBlockSection title="BILET" columns="2" id="ticketsContainer">
+		<apex:pageBlockSectionItem>
+			<apex:outputText value="" />
+		</apex:pageBlockSectionItem>
+	</apex:pageBlockSection>
+</apex:component>
