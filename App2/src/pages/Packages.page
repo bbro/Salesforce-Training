@@ -1,0 +1,30 @@
+<apex:page controller="PackageCtrl" showHeader="false" sidebar="false" title="Make a Package">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+<apex:form >
+	<div align="center">
+		<apex:pageBlock title="Train Detail">
+			<apex:pageBlockTable value="{! pack }" var="pc">
+				<apex:column value="{! pc.Sender__c }"/> <br/>
+				<apex:column value="{! pc.Addressee__c }"/> 
+			</apex:pageBlockTable> 
+		</apex:pageBlock> 
+		<apex:pageBlock title="Sender and Addressee:">
+				<p>Sender: </p><apex:inputText value="{! sender }"/> <br/>
+				<p>Addressee: </p><apex:inputText value="{! addressee }"/>
+		</apex:pageBlock>
+		<apex:pageBlock title="Station:">
+			<p>From: </p><apex:inputField value="{! pack.From__c }"/> <br/>
+			<p>To: </p><apex:inputField value="{! pack.To__c }"/>
+		</apex:pageBlock>
+		<apex:pageBlock title="Additional Information:">
+			<p>Mass in Grams: </p><apex:inputText value="{! weight }"/> <br/>
+			<p>Pick up in Warehouse: </p><apex:inputCheckbox value="{! pack.Warehouse__c }"/>
+		</apex:pageBlock>
+		<apex:pageBlock title="Summary:">
+			<apex:commandButton action="{! PrintToPDF }" value="Print"/>
+		</apex:pageBlock>
+	</div>
+</apex:form>
+</apex:page>
+
+<!-- renderAs="pdf" 	<apex:commandButton action="{!getAllParams}" value="Back to main Page"/> -->
