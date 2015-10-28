@@ -20,10 +20,7 @@
 					<apex:facet name="header" >  Average Velocity </apex:facet>
 						{!t.Average_Velocity__c}
 				</apex:column>
-				<apex:column >
-					<apex:facet name="header" >  Allow Packages </apex:facet>
-						{!t.Allow_Packages__c}
-				</apex:column>
+				<apex:column value="{!t.Allow_Packages__c}" />
 				<apex:column > 
 					<apex:commandLink value="  Edit   " action="{!editTrain}" >
 						<apex:param name="id" value="{!t.id}" assignto="{!trainId}"/>

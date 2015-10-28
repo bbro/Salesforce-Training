@@ -11,9 +11,9 @@
             Type: 
             <apex:inputField id="typeTrain" value="{!train.Type__c}"/> <br/>
             Average Velocity: 
-            <apex:inputText value="{!newTrainAverageVelocity}" /><br/> 
+            <apex:inputText value="{!newTrainAverageVelocity}" required="true"/><br/> 
             Allow Packages: 
-            <apex:inputCheckbox value="{!pack}"/><br/>
+            <apex:inputCheckbox value="{!pack}" /><br/>
             </p>
             <br/><p align="right"><apex:commandButton value="Back" action="{!showListOfTrains}" immediate="true" />            
             <apex:commandButton value="Save" action="{!addTrain}" /></p>
