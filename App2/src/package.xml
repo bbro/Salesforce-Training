@@ -24,7 +24,8 @@
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
+        <members>TicketCtrl_PersonalDataCmp</members>
+        <members>TicketCtrl_TicketCmp</members>
         <name>ApexComponent</name>
     </types>
     <types>
