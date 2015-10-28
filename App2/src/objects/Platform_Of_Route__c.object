@@ -44,6 +44,7 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
+    
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
@@ -54,6 +55,22 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Arrival_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Arrival Time</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Departure_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Departure Time</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
     <fields>
         <fullName>Platform__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
@@ -79,9 +96,15 @@
         <type>Lookup</type>
     </fields>
     <label>Platform Of Route</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
-        <label>Name</label>
-        <type>Text</type>
+        <displayFormat>{00000000}</displayFormat>
+        <label>Number</label>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Platforms Of Route</pluralLabel>
     <searchLayouts/>
