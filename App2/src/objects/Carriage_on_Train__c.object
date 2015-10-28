@@ -54,39 +54,38 @@
     <enableReports>false</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>City__c</fullName>
+        <fullName>Carriage__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>City</label>
-        <referenceTo>City__c</referenceTo>
-        <relationshipLabel>Stations</relationshipLabel>
-        <relationshipName>Stations</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <label>Carriage</label>
+        <referenceTo>Carriage__c</referenceTo>
+        <relationshipLabel>Carriages on Trains</relationshipLabel>
+        <relationshipName>Carriages_on_Trains</relationshipName>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Is_Main_Station__c</fullName>
-        <defaultValue>false</defaultValue>
+        <fullName>Train__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Is Main Station</label>
+        <label>Train</label>
+        <referenceTo>Train__c</referenceTo>
+        <relationshipLabel>Carriages on Trains</relationshipLabel>
+        <relationshipName>Carriages_on_Trains</relationshipName>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
+        <type>Lookup</type>
     </fields>
-    <label>Station</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
+    <label>Carriage on Train</label>
     <nameField>
-        <label>Name</label>
-        <type>Text</type>
+        <displayFormat>{00000000}</displayFormat>
+        <label>Number</label>
+        <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Stations</pluralLabel>
+    <pluralLabel>Carriages on Trains</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
