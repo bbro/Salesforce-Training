@@ -44,7 +44,6 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
@@ -54,7 +53,8 @@
     <enableReports>false</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ReadWrite</externalSharingModel>
+    <externalSharingModel>ReadWrite</externalSharingModel>	
+
     <fields>
         <fullName>City__c</fullName>
         <externalId>false</externalId>

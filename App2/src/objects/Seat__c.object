@@ -75,6 +75,29 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Location__c</fullName>
+        <externalId>false</externalId>
+        <label>Location</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Window</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Corridor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Table</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Near_Window__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
