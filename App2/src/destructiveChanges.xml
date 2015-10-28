@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding"UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
-		<members>Train__c</members>
-		<name>CustomObject</name>
+		<members>Seat__c.Location__c</members>
+		<members>Station__c.Name__c</members>
+		<members>Station__c.Package_Possible__c</members>
+		<name>CustomField</name>
 	</types>
-   <version>33.0</version>
 </Package>
