@@ -4,42 +4,42 @@
         <members>CarriageCtrl</members>
         <members>CityStationPlatformCtrl</members>
         <members>ListOfTrainsCtrl</members>
+        <members>OptionsForAdministrator</members>
         <members>PackageCtrl</members>
+        <members>RouteCtrl</members>
         <members>TicketCtrl</members>
+        <members>TrainCarriagesCtrl</members>
         <name>ApexClass</name>
     </types>
     <types>
         <members>Add_City</members>
         <members>Add_Station</members>
+        <members>Assign_Train_and_Carriages</members>
         <members>Carriages</members>
         <members>Cities</members>
+        <members>EditStation</members>
         <members>Edit_Station</members>
         <members>ListOfTrains</members>
-        <members>newCarriage</members>
         <members>NewTrain</members>
+        <members>OptionForAdministrator</members>
         <members>Packages</members>
         <members>PackagesPDF</members>
         <members>Stations</members>
         <members>TicketCtrlPage</members>
+        <members>newCarriage</members>
         <name>ApexPage</name>
-    </types>
-    <types>
-        <members>TicketCtrl_PersonalDataCmp</members>
-        <members>TicketCtrl_TicketCmp</members>
-        <name>ApexComponent</name>
     </types>
     <types>
         <members>Carriage__c</members>
         <members>Carriage_on_Train__c</members>
-        <members>Carriages_of_Train_on_Route__c</members>
         <members>City__c</members>
         <members>Package__c</members>
         <members>Passenger__c</members>
-        <members>Platform__c</members>
         <members>Platform_Of_Route__c</members>
+        <members>Platform__c</members>
         <members>Route__c</members>
-        <members>Seat__c</members>
         <members>Seat_Reservation_on_Route__c</members>
+        <members>Seat__c</members>
         <members>Station__c</members>
         <members>Ticket__c</members>
         <members>Train__c</members>
@@ -47,8 +47,8 @@
         <name>CustomObject</name>
     </types>
     <types>
-        <members>jQuery</members>
         <members>Styles</members>
+        <members>jQuery</members>
         <name>StaticResource</name>
     </types>
     <version>33.0</version>
