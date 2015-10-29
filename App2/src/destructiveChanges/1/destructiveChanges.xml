@@ -4,7 +4,7 @@
 		<members>Station__c.Package_Possible__c</members>
 		<members>Seat__c.Location__c</members>
 		<members>Station__c.Name__c</members>
-		<name>CustomObject</name>
+		<name>CustomField</name>
 	</types>
    <version>33.0</version>
 </Package>
