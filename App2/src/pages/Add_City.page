@@ -1,5 +1,5 @@
 <apex:page sidebar="false" showHeader="false" controller="CityStationPlatformCtrl">
-<apex:stylesheet value="{!URLFOR($Resource.styles, 'styles.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
 		<apex:pageBlock >
 			<apex:inputText value="{! CityName }" > City Name </apex:inputText>

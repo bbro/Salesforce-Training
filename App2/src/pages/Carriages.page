@@ -15,6 +15,7 @@
 			</apex:pageBlock>
 			<br/>
 			<apex:commandButton value="New carriage" action="{! newCarriagePage }"/>
+			<apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
 		</div>
 	</apex:form>
 </apex:page>

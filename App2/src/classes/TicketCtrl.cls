@@ -69,5 +69,4 @@ public class TicketCtrl {
     public PageReference buyTicket() {
     	return null;
     }
-    
 }

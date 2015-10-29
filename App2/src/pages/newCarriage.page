@@ -2,7 +2,7 @@
 <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 <br/>
 <br/>
-	<apex:form>
+	<apex:form >
 		<div align="center">
 			<apex:actionFunction name="hideAdditionalInfo" action="{! hideAdditionalSection }" rerender="pb"/>
 			<apex:pageBlock title="New carriage" id="pb">
