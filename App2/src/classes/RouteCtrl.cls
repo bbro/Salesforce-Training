@@ -66,7 +66,8 @@ public with sharing class RouteCtrl {
     		Platform_Of_Route__c platformToAdd = new Platform_Of_Route__c(Arrival_Time__c = arrivalTimes[i],
     															      Departure_Time__c = departureTimes[i],
     															      Platform__c = platformsOfRoute[i].Id,
-    															      Route__c = route.Id);
+    															      Route__c = route.Id,
+    															      Station_Number__c = i+1);
 	      	platformsAddedToRoute.add(platformToAdd);
     	}
     	insert platformsAddedToRoute;
