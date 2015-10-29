@@ -13,60 +13,82 @@ public class TicketCtrl {
 	public Ticket__c ticket { get; public set; }
 	public Carriage__c carriage { get; public set; }
 	public Boolean isTable { get; public set; }
-	String defaultSitOption = 'okno';
+	public Boolean isWindow { get; public set; }
+	List<Seat_Reservation_on_Route__c> seatReservationOnRouteList;
+	List<String> ticketsList { get; set; }
 		
 	public TicketCtrl() {
 		ticket = new Ticket__c();
 		carriage = new Carriage__c();
-		
-	}
-	
-	public String getDefaultSitOption() {
-        return defaultSitOption;
-    }
-                    
-    public void setDefaultSitOption(String defaultSitOption) { this.defaultSitOption = defaultSitOption; }
-	
-	public List<SelectOption> getSpots() {
-		List<SelectOption> options = new List<SelectOption>();
-		options.add(new Selectoption('okno', 'WINDOW SIDE'));
-		options.add(new Selectoption( 'korytarz', 'PASSAGE SIDE'));
-		options.add(new Selectoption('stojace', 'STANDING'));
-	return options;
+		ticketsList = new List<String>();
 	}
 	
     public void addTicket() {
-    	ticket = new Ticket__c();
-    	ticket.name= 'ticket';
-    	ticket.Discount__c = getDefaultSitOption();
-		
-    	Passenger__c passenger = new Passenger__c();
-    	passenger.City__c = 'HardCoded';
-    	passenger.Company_Name__c = businessName;
-    	passenger.Email__c = email;
-    	passenger.Name = firstName;
-    	passenger.Last_Name__c = lastName;
-    	passenger.NIP__c =  nip;
-    	passenger.PIN__c = pin;
-    	passenger.Postal_Code__c = postalCode;
-    	passenger.Street__c = street;
+    	Ticket__c newTicket = new Ticket__c();
+    	newTicket.name = 'ticket2';
+    	newTicket.From__c = 'a0T24000000jCImEAM';
+    	newTicket.To__c = 'a0T24000000jCL1EAM';
+    	newTicket.Discount__c = ticket.Discount__c;
     	
-    	Seat__c seat = new Seat__C();
-    	//seat.Location__c = getDefaultSitOptions();
+    	Passenger__c pass = new Passenger__c();
+    	pass.Name = firstName;
+    	pass.Last_Name__c = lastName;
+    	pass.Email__c = email;
+    	pass.PIN__c = pin;
+    	
+    	if(isInvoiceNeed) {
+    		pass.Company_Name__c = businessName;
+    		pass.NIP__c = nip;
+    		pass.Street__c = street;
+    		pass.City__c = city;
+    		pass.Postal_Code__c = postalCode;
+    	}
+    	
+    	Carriage__c newCarriage = new Carriage__c();
+    	newCarriage.Class__c = carriage.Class__c;
+    	newCarriage.Name = 'carriage';
+    	
+    	Seat__c seat = new Seat__c();
+    	seat.Carriage__c = 'a0C24000004jNMkEAM';
+    	seat.Near_Window__c = isWindow;
+    	seat.Has_Table__c =  isTable;
     	
     	try {
-    		insert passenger;
-    		insert ticket;
+    		insert pass;
+    		insert newTicket;
+    		insert newCarriage;
+    		insert seat;
+    		
     	} catch(DmlException e) {
     		system.debug(e.getMessage());
     	}
     }
     
+      public PageReference addElementToTicket() {
+      	String seatPlace;
+      	if( isWindow == true ) {
+      		seatPlace = 'NEAR WINDOW';
+      	} else {
+      		seatPlace = 'CORRIDOR';
+      	}
+      	ticketsList.add('DISCOUNT: ' + ticket.Discount__c + ', SEAT: ' + seatPlace);
+      	return null;
+      }
+      
+      public List<String> getTicketsList() {
+		return ticketsList;
+	}
+	
     public PageReference moveToSearchStationPage() {
     	return null;
     }
     
     public PageReference buyTicket() {
+    	addTicket();
     	return null;
     }
+	
+	public PageReference deleteTicket() {
+	return null;
+	}
 }
