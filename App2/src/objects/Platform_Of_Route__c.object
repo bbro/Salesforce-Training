@@ -53,6 +53,7 @@
     <enableReports>false</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
         <fullName>Arrival_Time__c</fullName>
         <externalId>false</externalId>
@@ -93,9 +94,25 @@
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
+    <fields>
+        <fullName>Station_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Station Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>Platform Of Route</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Arrival_Time__c</columns>
+        <columns>Departure_Time__c</columns>
+        <columns>Platform__c</columns>
+        <columns>Route__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
