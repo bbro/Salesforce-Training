@@ -70,10 +70,9 @@ public with sharing class RouteCtrl {
 	      	platformsAddedToRoute.add(platformToAdd);
     	}
     	insert platformsAddedToRoute;
-	  	/*PageReference ref = Page.;
-		ref.getParameters().put('routeId', route.Id);
-	  	ref.setRedirect(true);
-	  	return ref;*/
-	  	return null;
+			PageReference ref = Page.Assign_Train_and_Carriages;
+			ref.getParameters().put('routeId', route.Id);
+			ref.setRedirect(true);
+			return ref;
     }
 }

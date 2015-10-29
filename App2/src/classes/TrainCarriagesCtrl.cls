@@ -2,9 +2,11 @@ public class TrainCarriagesCtrl {
 	public Id trainId {get;set;}
 	public Id carriageId {get;set;}
 	public List<Carriage__c> addedCarriages {get;set;}
+	public Id routeId {get;set;}
 	
 	public TrainCarriagesCtrl() {
 		addedCarriages = new List<Carriage__c> ();
+		routeId = ApexPages.currentPage().getParameters().get('routeId');
 	}
 	
 	public List<Train__c> getTrains() {
@@ -60,6 +62,15 @@ public class TrainCarriagesCtrl {
 			carriagesOnTrainJunction.add(carriageOnTrain);
 		}
 		insert carriagesOnTrainJunction; 		
-		return null;
+		
+		Train_on_Route__c trainOnRouteJunction = new Train_on_Route__c();
+		trainOnRouteJunction.Route__c = routeId;
+		trainOnRouteJunction.Train__c = trainId;
+
+		Platform_Of_Route__c lastPlatformOfRoute = [SELECT Departure_Time__c FROM Platform_Of_Route__c WHERE Route__c = :routeId order by Departure_Time__c desc limit 1 ];
+		trainOnRouteJunction.Occupied_Until__c = lastPlatformOfRoute.Departure_Time__c;		
+		insert trainOnRouteJunction;
+		
+		return Page.newRoute;
 	}
 }
