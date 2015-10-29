@@ -1,0 +1,47 @@
+<apex:page controller="RouteCtrl" showHeader="false" sidebar="false" docType="html-5.0">
+<!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
+<br/>
+<br/>
+	<apex:form >
+		<div align="center">
+			<apex:pageBlock title="New route" id="pb">
+				<apex:pageBlockSection title="Choose station:">
+					<apex:selectList value="{! stationId }" multiselect="false" size="1">
+						<apex:selectOptions value="{! stationsOptions }"/>
+						<apex:actionSupport event="onchange" reRender="pb"/>
+					</apex:selectList>	
+				</apex:pageBlockSection>
+				<apex:pageBlockSection title="Choose platform of selected station:">
+					<apex:selectList value="{! platformId }" multiselect="false" size="1">
+						<apex:selectOptions value="{! platformsOptions }"/>
+					</apex:selectList>
+				</apex:pageBlockSection>
+				<apex:pageBlockSection title="Choose arrival and departure time:">
+					Arrival time: <apex:input type="time" value="{! arrivalTime }"/><br/>
+					Departure Time: <apex:input type="time" value="{! departureTime }"/><br/>
+				</apex:pageBlockSection>
+			</apex:pageBlock>
+			<apex:commandButton value="Add station" action="{! addDataToLists }"/>
+			<br/>
+			<br/>
+			<apex:pageBlock title="Added stations" id="addedStations">
+			<apex:pageBlockSection columns="4">
+				<apex:pageBlockTable value="{! stationsAddedToRoute }" var="s">
+					<apex:column headerValue="Station" value="{! s.Name }"/>
+				</apex:pageBlockTable>
+				<apex:pageBlockTable value="{! platformsOfRoute }" var="p">
+					<apex:column headerValue="Platform" value="{! p.Name }"/>
+				</apex:pageBlockTable>
+				<apex:pageBlockTable value="{! arrivalTimes }" var="at">
+					<apex:column headerValue="Arrival Time" value="{! at }"/>
+				</apex:pageBlockTable>
+				<apex:pageBlockTable value="{! departureTimes }" var="dt">
+					<apex:column headerValue="Departure Time" value="{! dt }"/>
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+			</apex:pageBlock>
+			<br/>
+			<apex:commandButton value="Save route" action="{! addPlatformToRoute }"/>
+		</div>
+	</apex:form>
+</apex:page>
