@@ -1,0 +1,40 @@
+<apex:page showHeader="false" sidebar="false" controller="ListOfTrainsCtrl">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+	<apex:form >
+		<apex:pageBlock >
+			LIST OF TRAINS <br/> 
+			<apex:pageBlockTable value="{!trainsList}" var="t">
+				<apex:column >
+					<apex:facet name="header"> ID </apex:facet>
+						{!t.id}
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header" >  Name </apex:facet>
+						{!t.Name}
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header" >  Type </apex:facet>
+						{!t.Type__c}
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header" >  Average Velocity </apex:facet>
+						{!t.Average_Velocity__c}
+				</apex:column>
+				<apex:column >
+					<apex:facet name="header" >  Allow Packages </apex:facet>
+						{!t.Allow_Packages__c}
+				</apex:column>
+				<apex:column > 
+					<apex:commandLink value="  Edit   " action="{!editTrain}" >
+						<apex:param name="id" value="{!t.id}" assignto="{!trainId}"/>
+					</apex:commandLink>
+					<apex:commandLink value="  Delete " action="{!deleteTrain}" >
+						<apex:param name="id" value="{!t.id}" assignto="{!trainId}"/>
+					</apex:commandLink>
+				</apex:column>
+			</apex:pageBlockTable>
+			<br/><p align="right"><apex:commandButton value="Back" action="/apex"/>
+			<apex:commandButton value="Add train" action="{!showAddTrainPage}"/></p>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

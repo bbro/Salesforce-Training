@@ -1,0 +1,22 @@
+<apex:page showHeader="false" sidebar="false" controller="ListOfTrainsCtrl">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+    <apex:form >
+       <apex:pageBlock >
+           <apex:pageMessages />
+            ADD/EDIT TRAIN <br/><br/>
+            Train id: {!trainId}
+            <p>
+            Name:                     
+            <apex:inputText value="{!newTrainName}" required="true" /> <br/>
+            Type: 
+            <apex:inputField id="typeTrain" value="{!train.Type__c}"/> <br/>
+            Average Velocity: 
+            <apex:inputText value="{!newTrainAverageVelocity}" /><br/> 
+            Allow Packages: 
+            <apex:inputCheckbox value="{!pack}"/><br/>
+            </p>
+            <br/><p align="right"><apex:commandButton value="Back" action="{!showListOfTrains}" immediate="true" />            
+            <apex:commandButton value="Save" action="{!addTrain}" /></p>
+       </apex:pageBlock>
+    </apex:form>
+</apex:page>

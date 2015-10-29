@@ -53,6 +53,8 @@
     <enableReports>false</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>	
+
     <fields>
         <fullName>Bicycles_Transport__c</fullName>
         <defaultValue>false</defaultValue>
@@ -92,7 +94,7 @@
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Disabled_People_Support__c</fullName>
+        <fullName>Disabled_people_support__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Disabled People Support</label>

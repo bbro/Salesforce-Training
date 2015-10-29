@@ -53,39 +53,47 @@
     <enableReports>false</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-<externalSharingModel>ControlledByParent</externalSharingModel>
+    <externalSharingModel>ReadWrite</externalSharingModel>	
+
     <fields>
-        <fullName>City__c</fullName>
+        <fullName>Occupied_Until__c</fullName>
         <externalId>false</externalId>
-        <label>City</label>
-        <referenceTo>City__c</referenceTo>
-        <relationshipLabel>Stations</relationshipLabel>
-        <relationshipName>Stations</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <label>Occupied Until</label>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>DateTime</type>
     </fields>
     <fields>
-        <fullName>Is_Main_Station__c</fullName>
-        <defaultValue>false</defaultValue>
+        <fullName>Route__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Is Main Station</label>
+        <label>Route</label>
+        <referenceTo>Route__c</referenceTo>
+        <relationshipLabel>Trains on Routes</relationshipLabel>
+        <relationshipName>Trains_on_Routes</relationshipName>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
+        <type>Lookup</type>
     </fields>
-    <label>Station</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
+    <fields>
+        <fullName>Train__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Train</label>
+        <referenceTo>Train__c</referenceTo>
+        <relationshipLabel>Trains on Routes</relationshipLabel>
+        <relationshipName>Trains_on_Routes</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Train on Route</label>
     <nameField>
-        <label>Name</label>
-        <type>Text</type>
+        <displayFormat>{000000}</displayFormat>
+        <label>Number</label>
+        <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Stations</pluralLabel>
+    <pluralLabel>Trains on Routes</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
