@@ -1,0 +1,6 @@
+<apex:page controller ="TicketCtrl" sidebar="false" showHeader="false" renderAs="pdf">
+	<h1>Tickets</h1>
+	<apex:repeat value="{! TicketsList }" var="string" id="theRepeat">
+		<apex:outputText value="{! string }" id="theValue" />
+	</apex:repeat>
+</apex:page>

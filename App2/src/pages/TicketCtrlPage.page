@@ -52,10 +52,6 @@
 			<apex:pageBlockSection title="BILET" columns="2">
 				<apex:pageBlockSection title="BASIC" columns="1">
 					<apex:pageBlockSectionItem >
-						<apex:outputText value="TICKETS COUNT " />
-						<apex:input value="{! ticketsNumber }" type="number" />
-					</apex:pageBlockSectionItem>
-					<apex:pageBlockSectionItem >
 						<apex:outputText value="DISCOUNT " />
 						<apex:inputField value="{! ticket.Discount__c }" />
 					</apex:pageBlockSectionItem>
@@ -84,7 +80,7 @@
 			<apex:pageBlockButtons >
 				<apex:commandButton action="{! moveToSearchStationPage }"
 					value="CANCEL" />
-				<apex:commandButton action="{! buyTicket }" value="Buy" />
+				<apex:commandButton action="{! buyTickets }" value="Buy" />
 			</apex:pageBlockButtons>
 		</apex:pageBlock>
 	</apex:form>
