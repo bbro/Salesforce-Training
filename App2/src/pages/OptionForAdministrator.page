@@ -1,0 +1,18 @@
+<apex:page showHeader="false" sidebar="false" controller="OptionsForAdministrator">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
+	<apex:form >
+		<apex:pageBlock >
+			OPTIONS FOR ADMINISTRATOR <br/><br /><br />
+			<apex:pageBlockSection title="Available options">
+				<apex:commandLink value="  List of trains    " action="{!showListOfTrains}" /> <br/>
+				<apex:commandLink value=" --->  Add new trains    " action="{!showAddNewTrains}" /> <br/>
+				<apex:commandLink value="  List of carriage    " action="{!showListOfCarriage}" /> <br/>
+				<apex:commandLink value=" --->  Add new carriage    " action="{!showAddNewCarriageView}" /> <br/>
+				<apex:commandLink value="  List of cities    " action="{!showListOfCities}" /> <br/>
+				<apex:commandLink value=" --->  Add new city    " action="{!showAddNewCityView}" /> <br/>
+				<apex:commandLink value="  List of stations    " action="{!showListOfStations}" /> <br/>
+				<apex:commandLink value=" --->  Add new stations    " action="{!showAddNewStationView}" /> <br/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

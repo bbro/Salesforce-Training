@@ -64,6 +64,11 @@ public with sharing class CarriageCtrl {
 		return carriagesPage;
 	}
 	
+	public PageReference backToAdministratorOptions() {
+		PageReference outPage = Page.OptionForAdministrator;
+		return outPage;
+	}
+	
 	public void hideAdditionalSection() {
 		if (carriage.Class__c=='Buffet Car') {
 			rerender = false;

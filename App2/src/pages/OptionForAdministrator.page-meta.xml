@@ -3,5 +3,5 @@
     <apiVersion>33.0</apiVersion>
     <availableInTouch>false</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-    <label>Carriages</label>
+    <label>OptionForAdministration</label>
 </ApexPage>

@@ -1,8 +1,8 @@
 <apex:page showHeader="false" sidebar="false" controller="ListOfTrainsCtrl">
 <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
-		<apex:pageBlock >
-			LIST OF TRAINS <br/> 
+		<apex:pageBlock title="LIST OF TRAINS">
+			 <br/> 
 			<apex:pageBlockTable value="{!trainsList}" var="t">
 				<apex:column >
 					<apex:facet name="header"> ID </apex:facet>
@@ -30,7 +30,7 @@
 					</apex:commandLink>
 				</apex:column>
 			</apex:pageBlockTable>
-			<br/><p align="right"><apex:commandButton value="Back" action="/apex"/>
+			<br/><p align="right"><apex:commandButton value="Back" action="/apex/OptionForAdministrator"/>
 			<apex:commandButton value="Add train" action="{!showAddTrainPage}"/></p>
 		</apex:pageBlock>
 	</apex:form>

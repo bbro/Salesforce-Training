@@ -9,11 +9,8 @@ public with sharing class PackageCtrl {
 	}
 	
 	public PageReference printToPDF() {
-//		Pagereference pgref = new Pagereference('/apex/PackagesPDF');
-	//	Blob pdfPageBlob;
-	//	pdfPageBlob = pgref.getContentAsPDF();
-	//	pgref.setRedirect(True);
 		return null;
-	//	Apexpages.currentPage().getContentAsPDF();
+		//Apexpages.currentPage().getContentAsPDF();
 	}
+	
 }
