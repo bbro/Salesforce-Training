@@ -1,0 +1,27 @@
+<apex:page controller="FindRouteCtrl" sidebar="false" showHeader="false" docType="html-5.0">
+<!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
+<br/>
+<br/>
+	<apex:form >
+		<apex:pageBlock title="Search for connection">
+				From: <apex:selectList value="{! startStationId }" multiselect="false" size="1">
+					<apex:selectOptions value="{! stationsOptions }"/>
+				</apex:selectList>
+				To: <apex:selectList value="{! endStationId }" multiselect="false" size="1">
+					<apex:selectOptions value="{! stationsOptions }"/>
+				</apex:selectList>
+				Time: <apex:input type="time" value="{! departureTime }"/>
+				Arrival Time<apex:inputCheckbox id="arrival" value="{! isArrivalTime }"/>
+				Date: <apex:input type="date" value="{! departureDate }"/>
+				Type of train: <apex:selectList value="{! typeOfTrain }" multiselect="false" size="1">
+					<apex:selectOption itemValue="Regio" itemLabel="Regio"/>
+					<apex:selectOption itemValue="InterCity" itemLabel="InterCity"/>
+				</apex:selectList>
+				<!-- Inbetween stations: <apex:inputCheckbox id="ibStations" value="{! inBetweenStations }"/> -->
+				Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/>
+				Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/>
+				Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! canTransportBicycles }"/>
+				<apex:commandButton value="Search"/>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
