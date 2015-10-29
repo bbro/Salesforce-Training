@@ -9,6 +9,7 @@
         <members>RouteCtrl</members>
         <members>TicketCtrl</members>
         <members>TrainCarriagesCtrl</members>
+        <members>FindRouteCtrl</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -18,15 +19,18 @@
         <members>Carriages</members>
         <members>Cities</members>
         <members>EditStation</members>
-        <members>Edit_Station</members>
+        <members>FindRoute</members>
         <members>ListOfTrains</members>
+        <members>newCarriage</members>
+        <members>newRoute</members>
         <members>NewTrain</members>
         <members>OptionForAdministrator</members>
         <members>Packages</members>
         <members>PackagesPDF</members>
         <members>Stations</members>
         <members>TicketCtrlPage</members>
-        <members>newCarriage</members>
+        <members>TicketPdfInvoice</members>
+        <members>TicketPdfPage</members>
         <name>ApexPage</name>
     </types>
     <types>
