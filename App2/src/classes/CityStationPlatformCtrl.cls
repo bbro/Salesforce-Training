@@ -66,4 +66,9 @@ public class CityStationPlatformCtrl {
 		station = new Station__c();
 		return Page.Stations;
 	}
+	
+	public PageReference backToAdministratorOptions() {
+		PageReference outPage = Page.OptionForAdministrator;
+		return outPage;
+	}
 }
