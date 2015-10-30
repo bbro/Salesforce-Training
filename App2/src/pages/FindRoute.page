@@ -17,10 +17,10 @@
 				<apex:selectOption itemValue="Regio" itemLabel="Regio"/>
 				<apex:selectOption itemValue="InterCity" itemLabel="InterCity"/>
 			</apex:selectList>
-			<!-- Inbetween stations: <apex:inputCheckbox id="ibStations" value="{! inBetweenStations }"/> -->
-			Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/>
-			Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/>
-			Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! canTransportBicycles }"/>
+			<!-- Inbetween stations: <apex:inputCheckbox id="ibStations" value="{! inBetweenStations }"/> --><br/>
+			Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/><br/>
+			Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/><br/>
+			Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! packagesAvailable }"/><br/>
 			<apex:commandButton value="Search" action="{! searchRoutes }"/>
 		</apex:pageBlock>
 		<apex:pageBlock title="Search results">
