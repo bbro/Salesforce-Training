@@ -4,24 +4,39 @@
 <br/>
 	<apex:form >
 		<apex:pageBlock title="Search for connection">
-				From: <apex:selectList value="{! startStationId }" multiselect="false" size="1">
-					<apex:selectOptions value="{! stationsOptions }"/>
-				</apex:selectList>
-				To: <apex:selectList value="{! endStationId }" multiselect="false" size="1">
-					<apex:selectOptions value="{! stationsOptions }"/>
-				</apex:selectList>
-				Time: <apex:input type="time" value="{! departureTime }"/>
-				Arrival Time<apex:inputCheckbox id="arrival" value="{! isArrivalTime }"/>
-				Date: <apex:input type="date" value="{! departureDate }"/>
-				Type of train: <apex:selectList value="{! typeOfTrain }" multiselect="false" size="1">
-					<apex:selectOption itemValue="Regio" itemLabel="Regio"/>
-					<apex:selectOption itemValue="InterCity" itemLabel="InterCity"/>
-				</apex:selectList>
-				<!-- Inbetween stations: <apex:inputCheckbox id="ibStations" value="{! inBetweenStations }"/> -->
-				Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/>
-				Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/>
-				Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! canTransportBicycles }"/>
-				<apex:commandButton value="Search"/>
+			From: <apex:selectList value="{! startStationId }" multiselect="false" size="1">
+				<apex:selectOptions value="{! stationsOptions }"/>
+			</apex:selectList>
+			To: <apex:selectList value="{! endStationId }" multiselect="false" size="1">
+				<apex:selectOptions value="{! stationsOptions }"/>
+			</apex:selectList>
+			Time: <apex:input type="time" value="{! travelTime }"/>
+			Arrival Time<apex:inputCheckbox id="arrival" value="{! isArrivalTime }"/>
+			Date: <apex:input type="date" value="{! departureDate }"/>
+			Type of train: <apex:selectList value="{! typeOfTrain }" multiselect="false" size="1">
+				<apex:selectOption itemValue="Regio" itemLabel="Regio"/>
+				<apex:selectOption itemValue="InterCity" itemLabel="InterCity"/>
+			</apex:selectList>
+			<!-- Inbetween stations: <apex:inputCheckbox id="ibStations" value="{! inBetweenStations }"/> -->
+			Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/>
+			Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/>
+			Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! canTransportBicycles }"/>
+			<apex:commandButton value="Search" action="{! searchRoutes }"/>
+		</apex:pageBlock>
+		<apex:pageBlock title="Search results">
+			<apex:pageBlockTable value="{! foundRoutesNames }" var="routeFound">
+				<apex:column headerValue="Route Name" value="{! routeFound }"/>
+				<apex:column headerValue="Ticket">
+					<apex:commandLink value="Buy">
+						<!-- <apex:param name="ticketToBuy" value="{!  }" assignTo="{!  }"/> -->
+					</apex:commandLink>
+				</apex:column>
+				<apex:column headerValue="Packages">
+					<apex:commandLink value="Send">
+						<!-- <apex:param name="packageToSend" value="{!  }" assignTo="{!  }"/> --> 
+					</apex:commandLink>
+				</apex:column>
+			</apex:pageBlockTable>
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>
