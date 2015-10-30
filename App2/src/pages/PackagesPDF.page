@@ -9,16 +9,16 @@
 			</apex:pageBlockTable> 
 		</apex:pageBlock>  -->
 		<apex:pageBlock title="Sender and Addressee:">
-				<p>Sender: </p><apex:inputText value="{! sender }"/> <br/>
-				<p>Addressee: </p><apex:inputText value="{! addressee }"/> <br/>
+				<p>Sender: </p><apex:outputText value="{! sender }"/> <br/> <br/>
+				<p>Addressee: </p><apex:outputText value="{! addressee }"/> <br/> <br/>
 		</apex:pageBlock>
 		<apex:pageBlock title="Station:">
-			<p>From: </p><apex:inputField value="{! pack.From__c }"/> <br/>
-			<p>To: </p><apex:inputField value="{! pack.To__c }"/> <br/>
+			<p>From: </p><apex:outputField value="{! pack.From__c }"/> <br/> <br/>
+			<p>To: </p><apex:outputField value="{! pack.To__c }"/> <br/> <br/>
 		</apex:pageBlock>
 		<apex:pageBlock title="Additional Information:">
-			<p>Mass in Grams: </p><apex:inputText value="{! weight }"/> <br/>
-			<p>Pick up in Warehouse: </p><apex:inputCheckbox value="{! pack.Warehouse__c }"/> <br/>
+			<p>Mass in Grams: </p><apex:outputText value="{! weight }"/> <br/> <br/>
+			<p>Pick up in Warehouse: </p><apex:outputText value="{! wahehouse }"/> <br/> <br/>
 		</apex:pageBlock>
 	</div>
 </apex:form>
