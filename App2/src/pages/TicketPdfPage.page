@@ -1,0 +1,40 @@
+<apex:page controller="TicketCtrl" sidebar="false" showHeader="false"
+	renderAs="pdf" docType="html-5.0">
+	<h1 style="font-family: Arial Unicode MS;">
+		<b>Ticket</b><span style="float: right; color: blue;"><b>Polish
+				Express Railways</b></span>
+	</h1>
+
+	<p style="font-family: Arial Unicode MS;">Your Ticket to Nowhere!</p>
+
+	<table
+		style="width: 100%; font-family: Arial Unicode MS; line-height: 5px;">
+		<tr style="line-height: 60px;">
+			<th>PIN</th>
+			<th>FROM</th>
+			<th><b>TO</b></th>
+			<th><b>CLASS</b></th>
+			<th><b>DATE</b></th>
+			<th><b>Seat Place</b></th>
+			<th><b>With Table</b></th>
+			<th><b>DISCOUNT</b></th>
+			<th><b>PRICE</b></th>
+		</tr>
+
+		<apex:repeat value="{! ticketDataList }" var="v">
+			<tr style="line-height: 20px;">
+				<td>{! v.pin }</td>
+				<td>{! v.fromStation }</td>
+				<td>{! v.toStation }</td>
+				<td>{! v.carriageClass }</td>
+				<td>{! v.departueDate }</td>
+				<td>{! v.seatPlace }</td>
+				<td>{! v.withTable }</td>
+				<td>{! v.discount }</td>
+				<td>{! v.price }</td>
+			</tr>
+		</apex:repeat>
+	</table>
+	
+	<p style="width: 100%; font-family: Arial Unicode MS;font-size: 20px;line-height: 40px;">Price: {! ticketsPrice }</p>
+</apex:page>
