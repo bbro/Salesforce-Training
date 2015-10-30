@@ -81,6 +81,7 @@
 				<apex:commandButton action="{! moveToSearchStationPage }"
 					value="CANCEL" />
 				<apex:commandButton action="{! buyTickets }" value="Buy" />
+				<apex:commandLink action="{! invoiceShow }" value="Invoice" target="_blank"/>
 			</apex:pageBlockButtons>
 		</apex:pageBlock>
 	</apex:form>

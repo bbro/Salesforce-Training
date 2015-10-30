@@ -13,50 +13,44 @@ public class TicketCtrl {
 	public Carriage__c carriage { get; public set; }
 	public Boolean isTable { get; public set; }
 	public Boolean isWindow { get; public set; }
-	List<Seat_Reservation_on_Route__c> seatReservationOnRouteList;
-	List<String> ticketsList { get; set; }
-	
-	List<String> firstNameTicket = new List<String>();
-	List<String> lastNameTicket = new List<String>();
-	List<Integer> pinTicket = new List<Integer>();
-	List<String> emailTicket = new List<String>();
-	List<String> discountTicket = new List<String>();
-	List<String> classTicket = new List<String>();
-	List<Boolean> windowTicket = new List<Boolean>();
-	List<Boolean> nearTableTicket = new List<Boolean>();
+	public List<Seat_Reservation_on_Route__c> seatReservationOnRouteList;
+	public List<String> ticketsList { get; set; }
+	public List<String> firstNameTicket = new List<String>();
+	public List<String> lastNameTicket = new List<String>();
+	public List<Integer> pinTicket = new List<Integer>();
+	public List<String> emailTicket = new List<String>();
+	public List<String> discountTicket = new List<String>();
+	public List<String> classTicket = new List<String>();
+	public List<Boolean> windowTicket = new List<Boolean>();
+	public List<Boolean> nearTableTicket = new List<Boolean>();
+	public List<String> invoiceTicket = new List<String>();
+    public Double ticketsPrice = 0.0d;
 		
 	public TicketCtrl() {
 		ticket = new Ticket__c();
 		carriage = new Carriage__c();
 		ticketsList = new List<String>();
+		ticketDataList = new List<TicketData>();
 	}
 	
     public PageReference buyTickets() {
-    	
     	for(Integer i = 0; i < windowTicket.size(); i++) {
-    		
-    		City__c cityFromId  = [SELECT id FROM City__c Limit 1];
-    		City__c cityToId  = [SELECT id FROM City__c Limit 1];
+    		Ticket__c ticketSObject  = [SELECT id, From__c, To__c FROM Ticket__c Limit 1];
     		Carriage__c carriageId  = [SELECT id FROM Carriage__c Limit 1];
+    		City__c ticketFrom = [SELECT name from City__c WHERE id=:ticketSObject.From__c];
+    		City__c ticketTo = [SELECT name from City__c WHERE id=:ticketSObject.To__c];
     		
     		Ticket__c newTicket = new Ticket__c();
 	    	newTicket.name = 'ticket2';
-	    	newTicket.From__c = cityFromId.Id;
-	    	newTicket.To__c = cityToId.Id;
-	    	newTicket.Discount__c = ticket.Discount__c;
+	    	newTicket.From__c = ticketFrom.Id;
+	    	newTicket.To__c = ticketTo.Id;
+	    	newTicket.Discount__c = discountTicket.get(i);
 	    	
 	    	Passenger__c pass = new Passenger__c();
 	    	pass.Name = firstNameTicket.get(i);
 	    	pass.Last_Name__c = lastNameTicket.get(i);
 	    	pass.Email__c = emailTicket.get(i);
 	    	pass.PIN__c = pinTicket.get(i);
-	    	
-	    	if(isInvoiceNeed) {
-		    	pass.Company_Name__c = businessName;
-		    	pass.NIP__c = nip;
-		    	pass.Postal_Code__c = postalCode;
-		    	pass.Street__c = street;
-	    	}
 	    	
 	    	if(isInvoiceNeed) {
 	    		pass.Company_Name__c = businessName;
@@ -75,6 +69,7 @@ public class TicketCtrl {
 	    	seat.Near_Window__c = windowTicket.get(i);
 	    	seat.Has_Table__c =  nearTableTicket.get(i);
 	    	
+	    	
 	    	try {
 	    		insert pass;
 	    		insert newTicket;
@@ -85,8 +80,68 @@ public class TicketCtrl {
 	    		system.debug(e.getMessage());
 	    	}
     	}
+    	prepareTicketAndInvoiceData();
+    return Page.TicketPdfPage;
+    }
+    
+    public void prepareTicketAndInvoiceData() {
+    	for(Integer i = 0; i < windowTicket.size(); i++) {
+    		Ticket__c ticketSObject  = [SELECT id, From__c, To__c FROM Ticket__c Limit 1];
+    		Carriage__c carriageId  = [SELECT id FROM Carriage__c Limit 1];
+    		City__c ticketFrom = [SELECT name from City__c WHERE id=:ticketSObject.From__c];
+    		City__c ticketTo = [SELECT name from City__c WHERE id=:ticketSObject.To__c];
+    		
+	    	TicketData ticketData = new TicketData(); 
+	    	ticketData.fromStation = ticketFrom.Name;
+	    	ticketData.toStation = ticketTo.Name;
+	    	ticketData.carrierClass = classTicket.get(i);
+	    	ticketData.discount = discountTicket.get(i);
+	    	ticketData.carriageClass = classTicket.get(i);
+	    	ticketData.departueDate = 'DATAAA';
+	    	ticketData.carriageClass = classTicket.get(i);
+	    	ticketData.carriageClass = classTicket.get(i);
+	    	ticketData.seatplace = (windowTicket.get(i) == true) ? 'Window' : 'Corridor';
+			ticketData.withTable = (nearTableTicket.get(i) == true) ? 'Yes' : 'No';
+			ticketData.pin = pinTicket.get(i);
+	    	ticketData.price = calculatePrice(classTicket.get(i), 5.0d, discountTicket.get(i));
+	    	ticketDataList.add(ticketData);
+    	}
+    }
+    
+    public pageReference invoiceShow() {
+    	prepareTicketAndInvoiceData();
     return Page.TicketPdfInvoice;
     }
+    
+    public Double getTicketsPrice() {
+    	return ticketsPrice;
+    }
+    
+    private Double calculatePrice(String carriageClass, Double stations, String discount ) {
+		double singleTicketPrice = 0.0d;
+		Double classPrice = 0.0d;
+		Double myDiscount = 1.0d;
+		
+		if(carriageClass == '1') {
+			classPrice = 50.0d;
+		} else if(carriageClass == '2') {
+			classPrice = 25.0d;
+		} else {
+			classPrice = 50.0d;
+		}
+		
+		if(discount == 'Normal') {
+			myDiscount = 1.0d;
+		} else if(discount == 'Student') {
+			myDiscount = 2.0d;
+		}
+		
+		singleTicketPrice = ( classPrice + (stations * 0.2d) ) / myDiscount;
+		ticketsPrice += singleTicketPrice;
+		
+		return singleTicketPrice;
+    }
+    
       public PageReference addElementToTicket() {
       	firstNameTicket.add(firstName);
       	lastNameTicket.add(lastName);
@@ -109,12 +164,14 @@ public class TicketCtrl {
 		+ 'Email ' + emailTicket.get(j) + ', ' + 'PIN ' + pinTicket.get(j) + ', '
 		+ 'Discount ' + discountTicket.get(j) + ', ' + 'Class ' + classTicket.get(j) + ', ' 
 		+ 'Seat Spot ' + seatPlace + ', ' + 'Near Table ' + nearTableTicket.get(j) );
-      	
       	return null;
       }
       
       public List<String> getTicketsList() {
 		return ticketsList;
+	}
+	public List<String> getInvoiceTicket() {
+		return invoiceTicket;
 	}
 	
     public PageReference moveToSearchStationPage() {
@@ -122,6 +179,23 @@ public class TicketCtrl {
     }
 	
 	public PageReference deleteTicket() {
-	return null;
+		return null;
+	}
+	
+	public List<TicketData> ticketDataList{GET; SET; }
+	
+	public class TicketData {
+		
+		public String fromStation {get; set;}
+		public String carrierClass {get; set;}
+		public String toStation {get; set;}
+		public String discount {get; set;}
+		public Double price {get; set;}
+		
+		public String carriageClass {get; set;}
+		public String departueDate {get; set;}
+		public String seatplace {get; set;}
+		public String withTable {get; set;}
+		public Integer pin { get; set; }
 	}
 }
