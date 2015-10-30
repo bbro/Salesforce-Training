@@ -3,7 +3,8 @@ public with sharing class FindRouteCtrl {
 	public Id endStationId { get; set; }
 	private String startStationName;
 	private String endStationName;
-	public String routeFound { get; set; }
+	public List<String> foundRoutesNames { get; set; }
+	public List<Platform_Of_Route__c> searchResults { get; set; }
 	public String getStartStationName() {
 		Station__c station = [SELECT Name FROM Station__c WHERE Id = :startStationId];
 		this.startStationName = station.Name;
@@ -44,6 +45,8 @@ public with sharing class FindRouteCtrl {
 	
 	public FindRouteCtrl() {
 		this.train = new Train__c();
+		departureTime = travelTime;
+		foundRoutesNames = new List<String>();
 	}
 	public List<SelectOption> getStationsOptions() {
         List<SelectOption> stationsOptions = new List<SelectOption>();
@@ -54,14 +57,13 @@ public with sharing class FindRouteCtrl {
     }
     
     public PageReference searchRoutes() {
-   		List<Platform_Of_Route__c> possibleRoutes = [SELECT Route__c, Platform__c, Station_Number__c, Arrival_Time__c, Departure_Time__c 
+   		List<Platform_Of_Route__c> possibleRoutes = [SELECT Route__c, Route__r.Name, Platform__c, Station_Number__c, Arrival_Time__c, Departure_Time__c 
         							     		     FROM Platform_Of_Route__c WHERE Platform__r.Station__r.Name in (:getStartStationName(), :getEndStationName())];
-        List<Platform_Of_Route__c> searchResults = new List<Platform_Of_Route__c> ();
+        searchResults = new List<Platform_Of_Route__c> ();
         for (Platform_Of_Route__c platformOfRoute : possibleRoutes) {
         	if (platformOfRoute.Departure_Time__c.time() >= departureTime) {
                 searchResults.add(platformOfRoute);
-                routeFound = platformOfRoute.Route__r.Name;
-                system.debug(routeFound);
+                foundRoutesNames.add(platformOfRoute.Route__r.Name);
             }
         }
         return null;
