@@ -36,6 +36,7 @@ public with sharing class CarriageCtrl {
 		for (Integer n=1;n<=numberOfSeats;n++) {
 		Seat__c newSeat = new Seat__c();
 			newSeat.Name = String.valueOf(n);
+			newSeat.IsTaken = false;
 			newSeat.Carriage__c = carriageId;
 			newSeat.Has_Table__c = false;
 			if (math.mod(n, 2)==0) {
