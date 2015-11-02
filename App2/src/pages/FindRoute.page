@@ -24,16 +24,21 @@
 			<apex:commandButton value="Search" action="{! searchRoutes }"/>
 		</apex:pageBlock>
 		<apex:pageBlock title="Search results">
-			<apex:pageBlockTable value="{! foundRoutesNames }" var="routeFound">
-				<apex:column headerValue="Route Name" value="{! routeFound }"/>
+			<apex:pageBlockTable value="{! foundTrainsOnRoute }" var="trainFound">
+				<apex:column headerValue="Route Name">
+					<apex:commandLink value="{! trainFound.Route__r.Name }">
+						<!-- <apex:param name="trainFound" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/> -->
+					</apex:commandLink>
+				</apex:column>
+				<apex:column headerValue="Train Name" value="{! trainFound.Train__c }"/>
 				<apex:column headerValue="Ticket">
-					<apex:commandLink value="Buy">
-						<!-- <apex:param name="ticketToBuy" value="{!  }" assignTo="{!  }"/> -->
+					<apex:commandLink value="Buy" action="{! goToTicketPage }">
+						<apex:param name="ticketToBuy" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
 					</apex:commandLink>
 				</apex:column>
 				<apex:column headerValue="Packages">
-					<apex:commandLink value="Send">
-						<!-- <apex:param name="packageToSend" value="{!  }" assignTo="{!  }"/> --> 
+					<apex:commandLink value="Send" action="{! goToPackagePage }">
+						<apex:param name="packageToSend" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
 					</apex:commandLink>
 				</apex:column>
 			</apex:pageBlockTable>
