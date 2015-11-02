@@ -8,6 +8,7 @@ public with sharing class FindRouteCtrl {
 	private String endStationName;
 	public List<String> foundRoutesNames { get; set; }
 	public List<Train_on_Route__c> foundTrainsOnRoute { get; set; }
+	public List<Platform_Of_Route__c> detailsOfRoute { get; set; }
 	public String routeFound { get; set; }
 	public String getStartStationName() {
 		Station__c station = [SELECT Name FROM Station__c WHERE Id = :startStationId];
@@ -49,7 +50,6 @@ public with sharing class FindRouteCtrl {
 	
 	public FindRouteCtrl() {
 		this.train = new Train__c();
-		//foundRoutesNames = new List<String>();
 	}
 	public List<SelectOption> getStationsOptions() {
         List<SelectOption> stationsOptions = new List<SelectOption>();
@@ -129,5 +129,12 @@ public with sharing class FindRouteCtrl {
     	packagePage.getParameters().put('routeToSendPackageOnId', routeToSendPackageOnId);
 	  	packagePage.setRedirect(true);
     	return packagePage;
+    }
+    
+    public PageReference goToRouteDetails() {
+    	getRouteId();
+    	detailsOfRoute = [SELECT Arrival_Time__c, Departure_Time__c, Platform__c, Station_Number__c, Platform__r.Station__r.Name, Route__c FROM Platform_Of_Route__c WHERE Route__r.Id = :routeToBuyTicketForId];
+    	PageReference routeDetailsPage = Page.RouteDetails;
+    	return routeDetailsPage;
     }
 }

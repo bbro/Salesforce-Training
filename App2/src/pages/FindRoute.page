@@ -26,8 +26,8 @@
 		<apex:pageBlock title="Search results">
 			<apex:pageBlockTable value="{! foundTrainsOnRoute }" var="trainFound">
 				<apex:column headerValue="Route Name">
-					<apex:commandLink value="{! trainFound.Route__r.Name }">
-						<!-- <apex:param name="trainFound" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/> -->
+					<apex:commandLink value="{! trainFound.Route__r.Name }" action="{! goToRouteDetails }" target="blank">
+						<apex:param name="trainFound" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
 					</apex:commandLink>
 				</apex:column>
 				<apex:column headerValue="Train Name" value="{! trainFound.Train__c }"/>
