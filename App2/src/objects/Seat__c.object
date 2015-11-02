@@ -53,6 +53,7 @@
     <enableReports>false</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
         <fullName>Carriage__c</fullName>
         <externalId>false</externalId>
@@ -71,6 +72,14 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Has Table</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>IsTaken__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>IsTaken</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
