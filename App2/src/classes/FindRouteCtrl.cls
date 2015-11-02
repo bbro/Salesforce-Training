@@ -1,13 +1,9 @@
 public with sharing class FindRouteCtrl {
 	public Id startStationId { get; set; }
 	public Id endStationId { get; set; }
-	public Id trainFoundId { get; set; }
-	public Id routeToBuyTicketForId;
-	public Id routeToSendPackageOnId;
 	private String startStationName;
 	private String endStationName;
 	public List<String> foundRoutesNames { get; set; }
-	public List<Train_on_Route__c> foundTrainsOnRoute { get; set; }
 	public String routeFound { get; set; }
 	public String getStartStationName() {
 		Station__c station = [SELECT Name FROM Station__c WHERE Id = :startStationId];
@@ -49,7 +45,7 @@ public with sharing class FindRouteCtrl {
 	
 	public FindRouteCtrl() {
 		this.train = new Train__c();
-		//foundRoutesNames = new List<String>();
+		foundRoutesNames = new List<String>();
 	}
 	public List<SelectOption> getStationsOptions() {
         List<SelectOption> stationsOptions = new List<SelectOption>();
@@ -62,7 +58,6 @@ public with sharing class FindRouteCtrl {
     public PageReference searchRoutes() {
 
     	foundRoutesNames = new List<String>();
-    	foundTrainsOnRoute = new List<Train_on_Route__c>();
     	Platform_Of_Route__c startPlatformOfRoute = new Platform_Of_Route__c();
     	Platform_Of_Route__c endPlatformOfRoute = new Platform_Of_Route__c();
     	
@@ -76,24 +71,27 @@ public with sharing class FindRouteCtrl {
     			startPlatformOfRoute = platformOfRoute;
     		if (platformOfRoute.Platform__r.Station__r.Name == getEndStationName())
     			endPlatformOfRoute = platformOfRoute;
-                if (startPlatformOfRoute.Station_Number__c < endPlatformOfRoute.Station_Number__c) {
-                    if (!isArrivalTime && startPlatformOfRoute.Departure_Time__c >= travelDateTime) {
-                    	searchedRoutesId.add(startPlatformOfRoute.Route__c);
-                    }
-                    else if (isArrivalTime && endPlatformOfRoute.Arrival_Time__c <= travelDateTime) {
-                            searchedRoutesId.add(endPlatformOfRoute.Route__c);
-                    }
-                }
+    		if (startPlatformOfRoute.Station_Number__c<endPlatformOfRoute.Station_Number__c) {
+    			if (isArrivalTime) {
+	    			if (platformOfRoute.Arrival_Time__c <= travelDateTime) {
+		                searchedRoutesId.add(platformOfRoute.Route__c);
+	        		}
+    			} else {
+	    			if (platformOfRoute.Departure_Time__c >= travelDateTime) {
+		                searchedRoutesId.add(platformOfRoute.Route__c);
+	        		}
+    			}
+    		}
         }
         
         // search trains by route id
         List<Train_on_Route__c> trainsOnSearchedRoutes = new List<Train_on_Route__c>();
-        trainsOnSearchedRoutes = [SELECT Train__c, Route__c, Route__r.Name, Train__r.Name FROM Train_on_Route__c WHERE Route__c in :searchedRoutesId AND Train__r.Type__c = :typeOfTrain AND Train__r.Allow_Packages__c = :packagesAvailable];
+        trainsOnSearchedRoutes = [SELECT Train__c, Route__c, Route__r.Name, Train__r.Name from Train_on_Route__c where Route__c in :searchedRoutesId and Train__r.Type__c = :typeOfTrain and Train__r.Allow_Packages__c = :packagesAvailable];
         List<Carriage_on_Train__c> carriagesOnTrainsOnSearchedRoutes = new List<Carriage_on_Train__c> ();
         
         for (Train_on_Route__c train : trainsOnSearchedRoutes) {
         	Boolean trainHasProperCarriage = false;
-        	for (Carriage_on_Train__c cr : [SELECT Carriage__c, Carriage__r.Disabled_People_Support__c, Carriage__r.Bicycles_Transport__c, Name, Id, Train__c FROM Carriage_on_Train__c WHERE Train__c = :train.Train__c ]) {
+        	for (Carriage_on_Train__c cr : [SELECT Carriage__c, Carriage__r.Disabled_People_Support__c, Carriage__r.Bicycles_Transport__c, Name, Id, Train__c from Carriage_on_Train__c where Train__c = :train.Train__c ]) {
         		
         		if (cr.Carriage__r.Bicycles_Transport__c == canTransportBicycles && 
         			cr.Carriage__r.Disabled_People_Support__c == hasDisabledSupport) {
@@ -103,31 +101,8 @@ public with sharing class FindRouteCtrl {
         	}
         	if (trainHasProperCarriage) {
         		foundRoutesNames.add(train.Route__r.Name + ' ' + train.Train__r.Name);
-        		foundTrainsOnRoute.add(train); 
         	}
         }
         return null;
-    }
-    
-    public void getRouteId() {
-    	Train_On_Route__c currentTrain = [SELECT Route__c FROM Train_On_Route__c WHERE Id = :trainFoundId];
-    	this.routeToBuyTicketForId = currentTrain.Route__c;
-    	this.routeToSendPackageOnId = currentTrain.Route__c;
-    }
-    
-    public PageReference goToTicketPage() {
-    	getRouteId();
-    	PageReference ticketPage = Page.TicketCtrlPage;
-    	ticketPage.getParameters().put('routeToBuyTicketForId', routeToBuyTicketForId);
-	  	ticketPage.setRedirect(true);
-    	return ticketPage;
-    }
-    
-    public PageReference goToPackagePage() {
-    	getRouteId();
-    	PageReference packagePage = Page.Packages;
-    	packagePage.getParameters().put('routeToSendPackageOnId', routeToSendPackageOnId);
-	  	packagePage.setRedirect(true);
-    	return packagePage;
     }
 }
