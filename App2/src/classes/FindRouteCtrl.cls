@@ -119,6 +119,8 @@ public with sharing class FindRouteCtrl {
     	getRouteId();
     	PageReference ticketPage = Page.TicketCtrlPage;
     	ticketPage.getParameters().put('routeToBuyTicketForId', routeToBuyTicketForId);
+    	ticketPage.getParameters().put('stationFromName', getStartStationName());
+    	ticketPage.getParameters().put('stationToName', getEndStationName());
 	  	ticketPage.setRedirect(true);
     	return ticketPage;
     }
