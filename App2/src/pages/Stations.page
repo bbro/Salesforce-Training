@@ -1,6 +1,6 @@
 <apex:page showHeader="false" sidebar="false" controller="CityStationPlatformCtrl">
-<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
+	<apex:messages />
 		<apex:pageBlock >
 			<apex:pageBlockTable value="{! allStations }" var="st">
 				<apex:column value="{! st.Name }" />
@@ -8,11 +8,6 @@
 				<apex:column value="{! st.Is_Main_Station__c }" />
 				<apex:column >
 					<apex:commandLink action="{! gotoEditStation }" value="Edit">
-						<apex:param name="stationId" value="{! st.Id }" assignTo="{! station.Id }" />
-					</apex:commandLink>
-				</apex:column>
-				<apex:column >
-					<apex:commandLink action="{! deleteStation }" value="Delete">
 						<apex:param name="stationId" value="{! st.Id }" assignTo="{! station.Id }" />
 					</apex:commandLink>
 				</apex:column>

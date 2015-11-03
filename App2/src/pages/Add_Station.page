@@ -1,13 +1,15 @@
 <apex:page showHeader="false" sidebar="false" controller="CityStationPlatformCtrl">
-<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
+	<apex:messages />
 		<apex:pageBlock >
-			<apex:inputText value="{! stationName }" >Station name</apex:inputText>
-			<apex:inputField value="{! station.City__c }" />
-			<apex:inputText value="{! platformAmount }" >Number of platforms</apex:inputText>
-			<apex:inputCheckbox value="{! isMainStation }" >Main station</apex:inputCheckbox>
-			<apex:commandButton value="Save" action="{! saveNewStation }" />
-			<apex:commandButton value="Cancel" action="/apex/Stations" />
+			<apex:pageBlockSection columns="1">
+				<apex:inputText value="{! stationName }" label="Station name" />
+				<apex:inputField value="{! station.City__c }" label="City Name" />
+				<apex:inputText value="{! platformAmount }" label="Number of platforms" />
+				<apex:inputCheckbox value="{! isMainStation }" label="Main station" />
+				<apex:commandButton value="Save" action="{! saveNewStation }" />
+				<apex:commandButton value="Cancel" action="/apex/Stations" immediate="true"/>
+			</apex:pageBlockSection>
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>
