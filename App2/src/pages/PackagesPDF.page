@@ -16,8 +16,8 @@
 				<p>Addressee: </p><apex:outputText value="{! addressee }"/> <br/> <br/>
 		</apex:pageBlock>
 		<apex:pageBlock title="Station:">
-			<p>From: </p><apex:outputField value="{! pack.From__c }"/> <br/> <br/>
-			<p>To: </p><apex:outputField value="{! pack.To__c }"/> <br/> <br/>
+			<p>From: </p><apex:outputText value="{! ciFrom }"/> <br/> <br/>
+			<p>To: </p><apex:outputText value="{! ciTo }"/> <br/> <br/>
 		</apex:pageBlock>
 		<apex:pageBlock title="Additional Information:">
 			<p>Mass in Grams: </p><apex:outputText value="{! weight }"/> <br/> <br/>
