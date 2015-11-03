@@ -129,6 +129,8 @@ public with sharing class FindRouteCtrl {
     	getRouteId();
     	PageReference packagePage = Page.Packages;
     	packagePage.getParameters().put('routeToSendPackageOnId', routeToSendPackageOnId);
+    	packagePage.getParameters().put('stationFromName', getStartStationName());
+    	packagePage.getParameters().put('stationToName', getEndStationName());
 	  	packagePage.setRedirect(true);
     	return packagePage;
     }

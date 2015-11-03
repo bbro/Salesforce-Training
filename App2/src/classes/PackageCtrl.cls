@@ -6,13 +6,15 @@ public with sharing class PackageCtrl {
 	public Boolean wahehouse { get;public set; }
 	public String ciFrom { get;public set; }
 	public String ciTo { get;public set; }
-	public Id routeId {get;set;}
+	public Id routeId = ApexPages.currentPage().getParameters().get('routeToSendPackageOnId');
 	public List<Train_on_Route__c> foundTrainsOnRoute { get; set;}
 	
 	public PackageCtrl() {
 		pack = new Package__c();
 		routeId = ApexPages.currentPage().getParameters().get('routeToSendPackageOnId');
-		foundTrainsOnRoute = [SELECT Route__c FROM Train_On_Route__c WHERE Id = :routeId];
+		ciFrom = ApexPages.currentPage().getParameters().get('stationFromName');
+		ciTo = ApexPages.currentPage().getParameters().get('stationToName');
+		foundTrainsOnRoute = [SELECT Route__r.Name, Train__r.Name FROM Train_On_Route__c WHERE Route__r.Id = :routeId];
 	}
 	
 	public PageReference printToPDF() {
