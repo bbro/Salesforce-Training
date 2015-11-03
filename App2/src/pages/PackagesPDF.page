@@ -1,13 +1,16 @@
 <apex:page controller="PackageCtrl" showHeader="false" sidebar="false" title="Package PDF" renderAs="pdf">
-<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 <apex:form >
 	<div align="center">
-	<!--	<apex:pageBlock title="Train Detail">
-			<apex:pageBlockTable value="{! pack }" var="pc">
-				<apex:column value="{! pc.Sender__c }"/> <br/>
-				<apex:column value="{! pc.Addressee__c }"/> 
-			</apex:pageBlockTable> 
-		</apex:pageBlock>  -->
+		<apex:pageBlock title="Search results">
+			<apex:pageBlockTable value="{! foundTrainsOnRoute }" var="trainFound">
+				<apex:column headerValue="Route Name">
+					<apex:commandLink value="{! trainFound.Route__r.Name }">
+						<!-- <apex:param name="trainFound" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/> -->
+					</apex:commandLink>
+				</apex:column>
+				<apex:column headerValue="Train Name" value="{! trainFound.Train__c }"/>
+			</apex:pageBlockTable>
+		</apex:pageBlock> 
 		<apex:pageBlock title="Sender and Addressee:">
 				<p>Sender: </p><apex:outputText value="{! sender }"/> <br/> <br/>
 				<p>Addressee: </p><apex:outputText value="{! addressee }"/> <br/> <br/>
@@ -18,7 +21,7 @@
 		</apex:pageBlock>
 		<apex:pageBlock title="Additional Information:">
 			<p>Mass in Grams: </p><apex:outputText value="{! weight }"/> <br/> <br/>
-			<p>Pick up in Warehouse: </p><apex:outputText value="{! wahehouse }"/> <br/> <br/>
+			<p>Pick up in Warehouse: </p><apex:outputField value="{! pack.Warehouse__c }"/> <br/> <br/>
 		</apex:pageBlock>
 	</div>
 </apex:form>
