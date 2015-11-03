@@ -1,5 +1,4 @@
 <apex:page showHeader="false" sidebar="false" controller="ListOfTrainsCtrl">
-<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
 		<apex:pageBlock title="LIST OF TRAINS">
 			 <br/> 

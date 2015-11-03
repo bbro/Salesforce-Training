@@ -1,5 +1,4 @@
 <apex:page showHeader="false" sidebar="false" controller="OptionsForAdministrator">
-<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
 		<apex:pageBlock >
 			OPTIONS FOR ADMINISTRATOR <br/><br /><br />

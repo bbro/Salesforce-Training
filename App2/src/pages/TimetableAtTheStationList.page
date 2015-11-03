@@ -1,0 +1,29 @@
+<apex:page docType="html-5.0" showHeader="false" sidebar="false" controller="TimetableAtTheStation">
+	<apex:form >
+		<apex:pageBlock title="Timetable">
+			<br/> 
+			<apex:pageBlockTable value="{!timetable}" var="t">	
+				<apex:column >
+					<apex:facet name="header"> Station</apex:facet>
+						{!t.Platform__r.Station__r.name}	
+				</apex:column>		
+				<apex:column >
+					<apex:facet name="header"> Route</apex:facet>
+						{!t.Route__r.name}	
+				</apex:column>	
+				<apex:column >
+					<apex:facet name="header"> Arrival Time</apex:facet>
+						{!t.Arrival_Time__c}	
+				</apex:column>				<apex:column >
+					<apex:facet name="header"> Departure Time</apex:facet>
+						{!t.Departure_Time__c}	
+				</apex:column>			
+				<apex:column >
+					<apex:facet name="header"> Platform</apex:facet>
+						{!t.Platform__r.Platform_Number__c}	
+				</apex:column>
+			</apex:pageBlockTable>
+			<apex:commandButton value="Back" action="{!BackToTimetable}"/>	
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
