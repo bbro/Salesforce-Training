@@ -6,30 +6,22 @@ public with sharing class PackageCtrl {
 	public Boolean wahehouse { get;public set; }
 	public String ciFrom { get;public set; }
 	public String ciTo { get;public set; }
+	public Id routeId {get;set;}
+	public List<Train_on_Route__c> foundTrainsOnRoute { get; set;}
 	
 	public PackageCtrl() {
 		pack = new Package__c();
+		routeId = ApexPages.currentPage().getParameters().get('routeToSendPackageOnId');
+		foundTrainsOnRoute = [SELECT Route__c FROM Train_On_Route__c WHERE Id = :routeId];
 	}
 	
 	public PageReference printToPDF() {
-		ciFrom = pack.From__r.Name;
-		ciTo = pack.To__r.Name;
+		pack.Addressee__c = addressee;
+		pack.Sender__c = sender;
+		pack.Weight__c = weight;
 		return Page.PackagesPDF;
 	}
 	public PageReference backToMain() {
 		return Page.FindRoute;
 	}
 }
-
-/* 
-insert pack;
-		pack.Addressee__c = addressee;
-		pack.Sender__c = sender;
-		pack.Weight__c = weight;
-		pack.Warehouse__c = wahehouse;
-		pack.From__c = ciFrom;
-		pack.To__c = ciTo;
-		
-[SELECT Addressee__c, Sender__c, Weight__c, Warehouse__c,From__c, To__c FROM Package__c WHERE Addressee__c = :addressee AND Sender__c = :sender AND Weight__c = :weight LIMIT 1];
-		
-*/
