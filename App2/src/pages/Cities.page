@@ -1,9 +1,16 @@
 <apex:page sidebar="false" showHeader="false" controller="CityStationPlatformCtrl">
-<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
+		<apex:messages />
 		<apex:pageBlock >
 			<apex:pageBlockTable value="{! allCities }" var="city">
-				<apex:column value="{! city.Name }" />
+				<apex:column >
+					<apex:outputField value="{! city.Name }" />
+				</apex:column>
+				<apex:column >
+						<apex:commandLink action="{! updateCity }" id="updateButton" value="Edit" >
+							<apex:param name="id" value="{! city.Id }" assignto="{! cityId }"/>
+						</apex:commandLink>
+				</apex:column>
 			</apex:pageBlockTable>
 			<apex:commandButton value="Add City" action="/apex/Add_City" />
 			<apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
