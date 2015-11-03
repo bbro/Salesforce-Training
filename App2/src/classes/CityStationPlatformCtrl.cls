@@ -22,7 +22,7 @@ public class CityStationPlatformCtrl {
 	
 	public PageReference saveNewStation() {
 		Boolean stationNameProperCharacters = !stationName.isWhitespace() && stationName.isAlphaSpace();
-		Boolean platformsProperCharacters = platformAmount.isNumeric() && Integer.valueOf(platformAmount) < 10;
+		Boolean platformsProperCharacters = platformAmount.isNumeric() && Integer.valueOf(platformAmount) < 10 && Integer.valueOf(platformAmount) > 0;
 		PageReference outPage = null;
 		List<Station__c> stationWithName = [SELECT Name from Station__c where Name = :stationName];
 		
