@@ -1,5 +1,6 @@
 <apex:page controller="PackageCtrl" showHeader="false" sidebar="false" title="Package PDF" renderAs="pdf">
 <apex:form >
+<apex:messages />
 	<div align="center">
 		<apex:pageBlock title="Search results">
 			<apex:pageBlockTable value="{! foundTrainsOnRoute }" var="trainFound">
