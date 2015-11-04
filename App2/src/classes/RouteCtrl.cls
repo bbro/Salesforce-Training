@@ -127,8 +127,8 @@ public with sharing class RouteCtrl {
 		PageReference outPage;
 		outPage = null;
 		
-		if (stationsAddedToRoute.size()==0) {
-			ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Add some stations to route before saving it!'));
+		if (stationsAddedToRoute.size()<=1) {
+			ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Add at least two stations to route before saving it!'));
 		}
 		else {
 			String nameFrom = stationsAddedToRoute[0].Name;
