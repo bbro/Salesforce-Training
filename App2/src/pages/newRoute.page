@@ -3,6 +3,7 @@
 <br/>
 <br/>
 	<apex:form >
+	<apex:messages />
 		<div align="center">
 			<apex:pageBlock title="New route" id="pb">
 				<apex:pageBlockSection title="Choose station:">
@@ -17,6 +18,7 @@
 					</apex:selectList>
 				</apex:pageBlockSection>
 				<apex:pageBlockSection title="Choose arrival and departure time:">
+					Travel date: <apex:input type="date" value="{! departureDate }"/><br/>
 					Arrival time: <apex:input type="time" value="{! arrivalTime }"/><br/>
 					Departure Time: <apex:input type="time" value="{! departureTime }"/><br/>
 				</apex:pageBlockSection>
@@ -42,6 +44,8 @@
 			</apex:pageBlock>
 			<br/>
 			<apex:commandButton value="Save route" action="{! addPlatformToRoute }"/>
+			<apex:commandButton value="Remove last station" action="{! removeLastStation }"/>
+			<apex:commandButton value="Clear all" action="{! clearAll }"/>
 		</div>
 	</apex:form>
 </apex:page>

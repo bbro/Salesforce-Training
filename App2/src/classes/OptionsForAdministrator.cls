@@ -1,6 +1,4 @@
 public with sharing class OptionsForAdministrator {
-		
-	
 	public PageReference showListOfTrains() {
 		PageReference outPage = Page.ListOfTrains;
 		return outPage;
@@ -38,4 +36,15 @@ public with sharing class OptionsForAdministrator {
 		PageReference outPage = Page.Add_Station;
 		return outPage;
 	}
+	
+	public PageReference showListOfRoutes() {
+		PageReference outPage = Page.Routes;
+		return outPage;	
+	}
+	
+	public PageReference showAddNewRouteView() {
+		PageReference outPage = Page.newRoute;
+		return outPage;
+	}
+	
 }

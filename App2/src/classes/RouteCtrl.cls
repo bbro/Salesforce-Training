@@ -3,7 +3,9 @@ public with sharing class RouteCtrl {
 	public Id stationId { get; set; }
 	public Id platformId { get; set; }
 	public List<Platform_Of_Route__c> platformsAddedToRoute { get; set; }
+	public List<Route__c> allRoutes { get; set; }
 	public List<Station__c> stationsAddedToRoute { get; set; }
+	public List<Station__c> comparingList { get; set; }
 	public List<DateTime> arrivalTimes { get; set; }
 	public List<DateTime> departureTimes { get; set; }
 	public List<Platform__c> platformsOfRoute { get; set; }
@@ -17,7 +19,25 @@ public with sharing class RouteCtrl {
         set;
     }
     
-    public Time departureTime { get; set; } 
+	public Date departureDate { 
+        get {
+            if (departureDate == null) {
+                departureDate =  Date.today();
+            }
+            return departureDate;
+        }
+        set;
+    }
+    
+    public Time departureTime { 
+        get {
+            if (departureTime == null) {
+                departureTime =  DateTime.now().time().addHours(1);
+            }
+            return departureTime;
+        }
+        set;
+    } 
 
 	public RouteCtrl() {
 		this.route = new Route__c();
@@ -26,6 +46,10 @@ public with sharing class RouteCtrl {
 		platformsOfRoute = new List<Platform__c>();
 		arrivalTimes = new List<DateTime>();
 		departureTimes = new List<DateTime>();
+		allRoutes = [SELECT Name FROM Route__c];
+		Station__c firstStation = [SELECT Id, Name FROM Station__c LIMIT 1];
+		Platform__c firstPlatform = [SELECT Id, Name FROM Platform__c WHERE Station__r.Id = :firstStation.Id LIMIT 1];
+		platformId = firstPlatform.Id;
 	}
 	
 	public List<SelectOption> getStationsOptions() {
@@ -45,35 +69,67 @@ public with sharing class RouteCtrl {
     }
     
     public PageReference addDataToLists() {
-    	Date dt = date.today();
-    	DateTime dtArrivalTime = DateTime.newInstance(dt.year(), dt.month(), dt.day(), arrivalTime.hour(), arrivalTime.minute(), arrivalTime.second());
-		DateTime dtDepartureTime = DateTime.newInstance(dt.year(), dt.month(), dt.day(), departureTime.hour(), departureTime.minute(), departureTime.second());
-    	Station__c stationToAdd = [SELECT Name FROM Station__c WHERE Id = :stationId];
-    	Platform__c platformToAdd = [SELECT Name FROM Platform__c WHERE Id = :platformId];
-    	stationsAddedToRoute.add(stationToAdd);
-    	platformsOfRoute.add(platformToAdd);
-    	arrivalTimes.add(dtArrivalTime);
-    	departureTimes.add(dtDepartureTime);
+    	if (departureTime<=arrivalTime) {
+    		ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'The arrival time cannot be later or equal to departure time!'));
+    	}
+    	else {
+	    	DateTime dtArrivalTime = DateTime.newInstance(departureDate.year(), departureDate.month(), departureDate.day(), arrivalTime.hour(), arrivalTime.minute(), arrivalTime.second());
+			DateTime dtDepartureTime = DateTime.newInstance(departureDate.year(), departureDate.month(), departureDate.day(), departureTime.hour(), departureTime.minute(), departureTime.second());
+			Station__c stationToAdd = [SELECT Name FROM Station__c WHERE Id = :stationId];
+	    	Platform__c platformToAdd = [SELECT Name FROM Platform__c WHERE Id = :platformId];
+	    	stationsAddedToRoute.add(stationToAdd);
+	    	platformsOfRoute.add(platformToAdd);
+	    	arrivalTimes.add(dtArrivalTime);
+	    	departureTimes.add(dtDepartureTime);
+    	}
     	return null;
     }
    
+   public PageReference removeLastStation() {
+	   if (stationsAddedToRoute.size()>0) {
+		   stationsAddedToRoute.remove(stationsAddedToRoute.size()-1);
+		   arrivalTimes.remove(arrivalTimes.size()-1);
+		   departureTimes.remove(departureTimes.size()-1);
+		   platformsOfRoute.remove(platformsOfRoute.size()-1);
+		}
+   		return null;
+   }
+   
+   public PageReference clearAll() {
+	   if (stationsAddedToRoute.size()>0) {
+		   stationsAddedToRoute.clear();
+		   arrivalTimes.clear();
+		   departureTimes.clear();
+		   platformsOfRoute.clear();
+		}
+   		return null;
+   }
+   
     public PageReference addPlatformToRoute() {
-		String nameFrom = stationsAddedToRoute[0].Name;
-		String nameTo = stationsAddedToRoute[stationsAddedToRoute.size()-1].Name;
-		route.Name = nameFrom + ' ' + nameTo;
-		insert route;
-    	for (Integer i=0;i<stationsAddedToRoute.size();i++) {
-    		Platform_Of_Route__c platformToAdd = new Platform_Of_Route__c(Arrival_Time__c = arrivalTimes[i],
-    															      Departure_Time__c = departureTimes[i],
-    															      Platform__c = platformsOfRoute[i].Id,
-    															      Route__c = route.Id,
-    															      Station_Number__c = i+1);
-	      	platformsAddedToRoute.add(platformToAdd);
-    	}
-    	insert platformsAddedToRoute;
-			PageReference ref = Page.Assign_Train_and_Carriages;
-			ref.getParameters().put('routeId', route.Id);
-			ref.setRedirect(true);
-			return ref;
+		PageReference outPage;
+		outPage = null;
+		
+		if (stationsAddedToRoute.size()==0) {
+			ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Add some stations to route before saving it!'));
+		}
+		else {
+			String nameFrom = stationsAddedToRoute[0].Name;
+			String nameTo = stationsAddedToRoute[stationsAddedToRoute.size()-1].Name;
+			route.Name = nameFrom + ' ' + nameTo;
+			insert route;
+	    	for (Integer i=0;i<stationsAddedToRoute.size();i++) {
+	    		Platform_Of_Route__c platformToAdd = new Platform_Of_Route__c(Arrival_Time__c = arrivalTimes[i],
+	    															      Departure_Time__c = departureTimes[i],
+	    															      Platform__c = platformsOfRoute[i].Id,
+	    															      Route__c = route.Id,
+	    															      Station_Number__c = i+1);
+		      	platformsAddedToRoute.add(platformToAdd);
+	    	}
+	    	insert platformsAddedToRoute;
+		  	outPage = Page.Assign_Train_and_Carriages;
+			outPage.getParameters().put('routeId', route.Id);
+		  	outPage.setRedirect(true);
+		}
+	  	return outPage;
     }
 }

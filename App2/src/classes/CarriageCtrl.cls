@@ -17,16 +17,23 @@ public with sharing class CarriageCtrl {
 	}
 	
 	public PageReference addCarriageAndUpdateList() {
-		Carriage__c newCarriage = new Carriage__c(Bicycles_Transport__c = bicyclesTransport,
+		PageReference outPage;
+		outPage = null;
+		if (carriage.Class__c==null || carriage.Number_Of_Seats__c==null) {
+			ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Choose class and number of seats!'));
+		}
+		else {
+			Carriage__c newCarriage = new Carriage__c(Bicycles_Transport__c = bicyclesTransport,
 											   Disabled_People_Support__c = disabledSupport,
 											   Carriage_With_Tables__c = isWithTables,
 											   Class__c = carriage.Class__c,
 											   Number_Of_Seats__c = carriage.Number_Of_Seats__c);
-		insert newCarriage;
-		if (carriage.Class__c!='Buffet Car')
-			addSeatsToCarriage(newCarriage.Id);		
-		PageReference carriagesPage = Page.Carriages;
-		return carriagesPage;
+			insert newCarriage;
+			if (carriage.Class__c!='Buffet Car')
+				addSeatsToCarriage(newCarriage.Id);
+			outPage = Page.Carriages;
+		}
+		return outPage;
 	}
 	
 	public void addSeatsToCarriage(Id carriageId) {
@@ -36,7 +43,7 @@ public with sharing class CarriageCtrl {
 		for (Integer n=1;n<=numberOfSeats;n++) {
 		Seat__c newSeat = new Seat__c();
 			newSeat.Name = String.valueOf(n);
-			newSeat.IsTaken = false;
+			newSeat.IsTaken__c = false; 
 			newSeat.Carriage__c = carriageId;
 			newSeat.Has_Table__c = false;
 			if (math.mod(n, 2)==0) {

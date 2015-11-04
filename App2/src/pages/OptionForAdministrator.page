@@ -1,4 +1,5 @@
 <apex:page showHeader="false" sidebar="false" controller="OptionsForAdministrator">
+<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
 		<apex:pageBlock >
 			OPTIONS FOR ADMINISTRATOR <br/><br /><br />
@@ -11,6 +12,8 @@
 				<apex:commandLink value=" --->  Add new city    " action="{!showAddNewCityView}" /> <br/>
 				<apex:commandLink value="  List of stations    " action="{!showListOfStations}" /> <br/>
 				<apex:commandLink value=" --->  Add new stations    " action="{!showAddNewStationView}" /> <br/>
+				<apex:commandLink value="  List of routes    " action="{!showListOfRoutes}" /> <br/>
+				<apex:commandLink value=" --->  Add new route    " action="{!showAddNewRouteView}" /> <br/>
 			</apex:pageBlockSection>
 		</apex:pageBlock>
 	</apex:form>
