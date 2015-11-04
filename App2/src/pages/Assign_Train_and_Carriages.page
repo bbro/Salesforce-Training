@@ -1,16 +1,16 @@
 <apex:page showHeader="false" sidebar="false" controller="TrainCarriagesCtrl" docType="html-5.0">
-<apex:stylesheet value="{!URLFOR($Resource.styles, 'styles.css')}"/>
+	<apex:includeScript value="{! $Resource.jQuery }" />
 	<apex:form >
 		<apex:pageBlock >
 			<apex:pageBlockSection >
-				<apex:selectList multiselect="false" size="1" value="{! trainId }">
+				<apex:selectList disabled="{! disabledTrainList }" id="trainList" multiselect="false" size="1" value="{! trainId }">
 					<apex:selectOptions value="{! trainOptions }"/>
 				</apex:selectList>
 			
-				<apex:selectList multiselect="false" size="1" value="{! carriageId }">
-					<apex:selectOptions value="{! carriageOptions }"/>
+				<apex:selectList id="carriagesList" multiselect="false" size="1" value="{! carriageId }">
+					<apex:selectOptions value="{! carriagesOptionList }"/>
 				</apex:selectList>
-				<apex:commandButton value="Add carriage" action="{! addCarriageToList }" />
+				<apex:commandButton value="Add carriage" action="{! addCarriageToList }" onClick="disableTrainList()" rerender="" />
 			</apex:pageBlockSection>
 			<apex:pageBlockSection >
 				<apex:pageBlockTable value="{! addedCarriages }" var="cr">
@@ -21,7 +21,7 @@
 					<apex:column value="{! cr.Disabled_People_Support__c }"/>
 				</apex:pageBlockTable>
 			</apex:pageBlockSection>
-			<apex:pageBlockSection>
+			<apex:pageBlockSection >
 				<apex:commandButton value="Save" action="{! saveCarriagesOfTrain }"/>
 			</apex:pageBlockSection>
 		</apex:pageBlock>
