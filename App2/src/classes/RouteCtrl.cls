@@ -1,6 +1,15 @@
 public with sharing class RouteCtrl {
 	public Route__c route { get; set; }
-	public Id stationId { get; set; }
+	public Id stationId {
+		get {
+			if (stationId==null) {
+				List<Station__c> firstStation = [SELECT Id FROM Station__c LIMIT 1];
+				stationId = firstStation[0].Id;
+			}
+			return stationId;
+		} 
+		set;
+	}
 	public Id platformId { get; set; }
 	public List<Platform_Of_Route__c> platformsAddedToRoute { get; set; }
 	public List<Route__c> allRoutes { get; set; }
@@ -47,9 +56,6 @@ public with sharing class RouteCtrl {
 		arrivalTimes = new List<DateTime>();
 		departureTimes = new List<DateTime>();
 		allRoutes = [SELECT Name FROM Route__c];
-		Station__c firstStation = [SELECT Id, Name FROM Station__c LIMIT 1];
-		Platform__c firstPlatform = [SELECT Id, Name FROM Platform__c WHERE Station__r.Id = :firstStation.Id LIMIT 1];
-		platformId = firstPlatform.Id;
 	}
 	
 	public List<SelectOption> getStationsOptions() {
@@ -73,14 +79,26 @@ public with sharing class RouteCtrl {
     		ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'The arrival time cannot be later or equal to departure time!'));
     	}
     	else {
+    		Station__c stationToAdd = [SELECT Name FROM Station__c WHERE Id = :stationId];
+    		Platform__c platformToAdd = [SELECT Name FROM Platform__c WHERE Id = :platformId];
+    		for (Station__c s : stationsAddedToRoute) {
+    			if (s.Name==stationToAdd.Name) {
+    				ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Such station has already been added to route!'));
+    				return null;
+    			}
+    		}
 	    	DateTime dtArrivalTime = DateTime.newInstance(departureDate.year(), departureDate.month(), departureDate.day(), arrivalTime.hour(), arrivalTime.minute(), arrivalTime.second());
 			DateTime dtDepartureTime = DateTime.newInstance(departureDate.year(), departureDate.month(), departureDate.day(), departureTime.hour(), departureTime.minute(), departureTime.second());
-			Station__c stationToAdd = [SELECT Name FROM Station__c WHERE Id = :stationId];
-	    	Platform__c platformToAdd = [SELECT Name FROM Platform__c WHERE Id = :platformId];
-	    	stationsAddedToRoute.add(stationToAdd);
-	    	platformsOfRoute.add(platformToAdd);
+	    	for (DateTime dt : departureTimes) {
+	    		if (dtArrivalTime<=dt) {
+	    			ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Arrival time cannot be the same or earlier than departure time from the previous station!'));
+	    			return null;
+	    		}
+	    	}
 	    	arrivalTimes.add(dtArrivalTime);
 	    	departureTimes.add(dtDepartureTime);
+	    	stationsAddedToRoute.add(stationToAdd);
+	    	platformsOfRoute.add(platformToAdd);
     	}
     	return null;
     }
