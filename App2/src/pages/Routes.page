@@ -4,8 +4,14 @@
 <br/>
 	<apex:form >
 		<apex:pageBlock title="List of routes">
-			<apex:pageBlockTable value="{! allRoutes }" var="route">
-				<apex:column value="{! route.Name }"/>
+			<apex:commandButton value="Filter by date" action="{! filterRoutes }"/>
+			<apex:input type="date" value="{! insertedDateToFilterFrom }"/>
+			<apex:pageBlockTable value="{! routesToDisplay }" var="currentRoute" id="pbt">
+				<apex:column headerValue="Routes Names">
+					<apex:commandLink value="{! currentRoute.Name }" action="{! showRouteDetails }" target="blank">
+						<apex:param name="currentRoute" value="{! currentRoute.Id }" assignTo="{! routeToShowDetailsId }"/>
+					</apex:commandLink>
+				</apex:column>
 			</apex:pageBlockTable>
 		</apex:pageBlock>
 	</apex:form>
