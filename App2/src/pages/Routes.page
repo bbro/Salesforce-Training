@@ -1,0 +1,12 @@
+<apex:page controller="RouteCtrl" sidebar="false" showHeader="false" docType="html-5.0">
+<!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
+<br/>
+<br/>
+	<apex:form >
+		<apex:pageBlock title="List of routes">
+			<apex:pageBlockTable value="{! allRoutes }" var="route">
+				<apex:column value="{! route.Name }"/>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
