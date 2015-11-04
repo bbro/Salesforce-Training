@@ -1,5 +1,7 @@
 public with sharing class RouteCtrl {
 	public Route__c route { get; set; }
+	public Id routeToShowDetailsId { get; set; }
+	public List<Platform_Of_Route__c> detailsOfRoute { get; set; }
 	public Id stationId {
 		get {
 			if (stationId==null) {
@@ -13,8 +15,8 @@ public with sharing class RouteCtrl {
 	public Id platformId { get; set; }
 	public List<Platform_Of_Route__c> platformsAddedToRoute { get; set; }
 	public List<Route__c> allRoutes { get; set; }
+	public List<Route__c> routesToDisplay { get; set; }
 	public List<Station__c> stationsAddedToRoute { get; set; }
-	public List<Station__c> comparingList { get; set; }
 	public List<DateTime> arrivalTimes { get; set; }
 	public List<DateTime> departureTimes { get; set; }
 	public List<Platform__c> platformsOfRoute { get; set; }
@@ -27,7 +29,6 @@ public with sharing class RouteCtrl {
         }
         set;
     }
-    
 	public Date departureDate { 
         get {
             if (departureDate == null) {
@@ -37,7 +38,6 @@ public with sharing class RouteCtrl {
         }
         set;
     }
-    
     public Time departureTime { 
         get {
             if (departureTime == null) {
@@ -47,17 +47,29 @@ public with sharing class RouteCtrl {
         }
         set;
     } 
-
-	public RouteCtrl() {
+    public Date dateToFilterFrom {
+    	get {
+    		if (dateToFilterFrom == null) {
+    			dateToFilterFrom = Date.newInstance(2015,10,5);
+    		}
+    		return dateToFilterFrom;
+    	}
+    	set;
+    }
+    public Date insertedDateToFilterFrom { get; set; }
+    
+    public RouteCtrl() {
 		this.route = new Route__c();
 		platformsAddedToRoute = new List<Platform_Of_Route__c>();
 		stationsAddedToRoute = new List<Station__c>();
 		platformsOfRoute = new List<Platform__c>();
 		arrivalTimes = new List<DateTime>();
 		departureTimes = new List<DateTime>();
-		allRoutes = [SELECT Name FROM Route__c];
+		allRoutes = [SELECT Id, Name FROM Route__c];
+		system.debug(dateToFilterFrom);
+		routesToDisplay = [SELECT Name FROM Route__c WHERE Id IN (SELECT Route__c FROM Platform_Of_Route__c  WHERE Departure_Time__c >= :dateToFilterFrom)];
 	}
-	
+
 	public List<SelectOption> getStationsOptions() {
         List<SelectOption> stationsOptions = new List<SelectOption>();
         for(Station__c station : [SELECT Id, Name FROM Station__c]) {
@@ -149,5 +161,18 @@ public with sharing class RouteCtrl {
 		  	outPage.setRedirect(true);
 		}
 	  	return outPage;
+    }
+    
+    public PageReference showRouteDetails() {
+    	system.debug(routeToShowDetailsId);
+    	detailsOfRoute = [SELECT Id, Arrival_Time__c, Departure_Time__c, Platform__c, Station_Number__c, Platform__r.Station__r.Name, Route__c FROM Platform_Of_Route__c WHERE Route__r.Id = :routeToShowDetailsId];
+    	PageReference routeDetailsPage = Page.RouteDetailsFromList;
+    	return routeDetailsPage;
+    }
+    
+    public PageReference filterRoutes() {
+    	dateToFilterFrom = insertedDateToFilterFrom;
+    	routesToDisplay = [SELECT Name FROM Route__c WHERE Id IN (SELECT Route__c FROM Platform_Of_Route__c  WHERE Departure_Time__c >= :dateToFilterFrom)];
+    	return null;
     }
 }
