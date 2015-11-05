@@ -155,10 +155,15 @@ public with sharing class RouteCtrl {
 	    															      Station_Number__c = i+1);
 		      	platformsAddedToRoute.add(platformToAdd);
 	    	}
-	    	insert platformsAddedToRoute;
-		  	outPage = Page.Assign_Train_and_Carriages;
-			outPage.getParameters().put('routeId', route.Id);
-		  	outPage.setRedirect(true);
+	    	try {
+		    	insert platformsAddedToRoute;
+			  	outPage = Page.Assign_Train_and_Carriages;
+				outPage.getParameters().put('routeId', route.Id);
+			  	outPage.setRedirect(true);
+	    	} 
+	    	catch(DMLException e){
+				delete route;
+			}
 		}
 	  	return outPage;
     }
