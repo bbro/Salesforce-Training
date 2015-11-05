@@ -18,14 +18,14 @@
 			<th><b>Seat Place</b></th>
 			<th><b>With Table</b></th>
 			<th><b>DISCOUNT</b></th>
-			<th><b>PRICE</b></th>
+			<th><b>TOTAL PRICE</b></th>
 		</tr>
 
 		<apex:repeat value="{! ticketDataList }" var="v">
 			<tr style="line-height: 20px;">
 				<td>{! v.pin }</td>
-				<td>{! v.fromStation }</td>
-				<td>{! v.toStation }</td>
+				<td>{! v.stationFromName }</td>
+				<td>{! v.stationToName }</td>
 				<td>{! v.carriageClass }</td>
 				<td>{! v.departueDate }</td>
 				<td>{! v.seatPlace }</td>
