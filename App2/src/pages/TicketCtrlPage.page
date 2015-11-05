@@ -2,7 +2,8 @@
 	docType="html-5.0">
 	<!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
 	<apex:form >
-		<apex:pageBlock title="BUY TICKET">
+		<apex:pageMessages />
+		<apex:pageBlock title="BUY TICKET" id="theBlock">
 
 			<apex:pageBlockSection title="PERSONAL DATA">
 				<apex:pageBlockSectionItem >
@@ -22,31 +23,31 @@
 					<apex:inputText value="{! email }" />
 				</apex:pageBlockSectionItem>
 				<apex:pageBlockSectionItem >
-					<apex:inputCheckbox value="{! isInvoiceNeed }" />
+					<apex:inputCheckbox value="{! isInvoiceNeed }">
+						<apex:actionSupport event="onchange" rerender="theBlock" />
+					</apex:inputCheckbox>
 					<apex:outputText value="I WOULD LIKE TO REVCEIVE INVOICE" />
 				</apex:pageBlockSectionItem>
-				<div id="invoiceForm">
-					<apex:pageBlockSectionItem >
-						<apex:outputText value="BUSINESS NAME" />
-						<apex:inputText value="{! businessName }" />
-					</apex:pageBlockSectionItem>
-					<apex:pageBlockSectionItem >
-						<apex:outputText value="NIP" />
-						<apex:inputText value="{! nip }" />
-					</apex:pageBlockSectionItem>
-					<apex:pageBlockSectionItem >
-						<apex:outputText value="POSTAL CODE" />
-						<apex:inputText value="{! postalCode }" />
-					</apex:pageBlockSectionItem>
-					<apex:pageBlockSectionItem >
-						<apex:outputText value="CITY" />
-						<apex:inputText value="{! city }" />
-					</apex:pageBlockSectionItem>
-					<apex:pageBlockSectionItem >
-						<apex:outputText value="STREET" />
-						<apex:inputText value="{! street }" />
-					</apex:pageBlockSectionItem>
-				</div>
+				<apex:pageBlockSectionItem rendered="{!(isInvoiceNeed == true)}">
+					<apex:outputText value="BUSINESS NAME" />
+					<apex:inputText value="{! businessName }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem rendered="{!(isInvoiceNeed == true)}">
+					<apex:outputText value="NIP" />
+					<apex:inputText value="{! nip }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem rendered="{!(isInvoiceNeed == true)}">
+					<apex:outputText value="POSTAL CODE" />
+					<apex:inputText value="{! postalCode }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem rendered="{!(isInvoiceNeed == true)}">
+					<apex:outputText value="CITY" />
+					<apex:inputText value="{! city }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem rendered="{!(isInvoiceNeed == true)}">
+					<apex:outputText value="STREET" />
+					<apex:inputText value="{! street }" />
+				</apex:pageBlockSectionItem>
 			</apex:pageBlockSection>
 
 			<apex:pageBlockSection title="BILET" columns="2">
@@ -57,7 +58,7 @@
 					</apex:pageBlockSectionItem>
 					<apex:pageBlockSectionItem >
 						<apex:outputText value="CLASS " />
-						<apex:inputField value="{! carriage.Class__c }" />
+						<apex:inputField value="{! trainCarriage.Class__c }" />
 					</apex:pageBlockSectionItem>
 				</apex:pageBlockSection>
 				<apex:pageBlockSection title="SPOT">
@@ -76,12 +77,20 @@
 				<apex:column >
 					<apex:outputText value="{! t }" />
 				</apex:column>
+				<apex:column >
+					<apex:commandLink action="{! deleteTicket }" value="Delete"
+						style="float:right;">
+						<apex:param name="ticketToDelete" value="{! t }"
+							assignTo="{! ticketToDelete }" />
+					</apex:commandLink>
+				</apex:column>
 			</apex:pageBlockTable>
 			<apex:pageBlockButtons >
 				<apex:commandButton action="{! moveToSearchStationPage }"
 					value="CANCEL" />
-				<apex:commandButton action="{! buyTickets }" value="Buy" />
-				<apex:commandLink action="{! invoiceShow }" value="Invoice" target="_blank"/>
+				<apex:commandButton action="{! getFreeSeatsList }" value="Buy" />
+				<apex:commandLink action="{! invoiceShow }" value="Invoice"
+					target="_blank" />
 			</apex:pageBlockButtons>
 		</apex:pageBlock>
 	</apex:form>
