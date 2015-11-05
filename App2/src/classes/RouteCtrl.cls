@@ -127,10 +127,12 @@ public with sharing class RouteCtrl {
    
    public PageReference clearAll() {
 	   if (stationsAddedToRoute.size()>0) {
+	   		this.route = new Route__c();
 		   stationsAddedToRoute.clear();
 		   arrivalTimes.clear();
 		   departureTimes.clear();
 		   platformsOfRoute.clear();
+		   platformsAddedToRoute.clear();
 		}
    		return null;
    }
@@ -163,6 +165,7 @@ public with sharing class RouteCtrl {
 	    	} 
 	    	catch(DMLException e){
 				delete route;
+				e = null;
 			}
 		}
 	  	return outPage;
