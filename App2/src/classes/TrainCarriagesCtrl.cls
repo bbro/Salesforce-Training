@@ -14,10 +14,7 @@ public class TrainCarriagesCtrl {
 			carriagesOptionList = new List<SelectOption> ();
 			getCarriageOptions();
 		}
-		if (trainsOptionList == null) {
-			trainsOptionList = new List<SelectOption> ();
-			getTrainOptions();
-		}
+		trainsOptionList = new List<SelectOption> ();
 	}
 	
 	// get all trains
@@ -28,56 +25,67 @@ public class TrainCarriagesCtrl {
 	}
 	
 	// get all trains ids after occupied time
-	public List<Id> getAvailableTrainsIds() {
+	public Set<Train__c> getAvailableTrains() {
 		List<Platform_Of_Route__c> platformsOnRoute = [SELECT Arrival_Time__c FROM Platform_Of_Route__c WHERE Route__c = :routeId order by Arrival_Time__c];
-		List<Train_on_Route__c> trainsAvailableOnTime = [SELECT Train__c FROM Train_on_Route__c WHERE Occupied_Until__c < :platformsOnRoute[0].Arrival_Time__c];
-		List<Id> availableTrainsId = new List<Id> ();
-		for (Train_on_Route__c tr : trainsAvailableOnTime) {
-			availableTrainsId.add(tr.Train__c);
+		List<Id> trainsIds = new List<Id> ();
+		List<Train_on_Route__c> trainsAvailableOnTime = new List<Train_on_Route__c> ();
+		Set<Train__c> trains = new Set<Train__c> ();
+		for (Train_on_Route__c trOnRt : [SELECT Train__c FROM Train_on_Route__c]) {
+			trainsIds.add(trOnRt.Train__c);
+		} 
+		if (trainsIds.size() == 0) {
+			trains = new Set<Train__c> ([SELECT Id, Name, Type__c from Train__c]);
 		}
-		return availableTrainsId;
-	}
-	
-	// get all available trains
-	public List<Train__c> getAvailableTrains() {
-		List<Id> trainsIds = getAvailableTrainsIds();
-		List<Train__c> trains = new List<Train__c> ();
-		trains = [SELECT Id, Name, Type__c FROM Train__c WHERE Id IN :trainsIds];	
+		else {
+			trainsAvailableOnTime = [SELECT Train__c, Train__r.Id, Train__r.Name, Train__r.Type__c FROM Train_on_Route__c WHERE ( Occupied_Until__c < :platformsOnRoute[0].Arrival_Time__c) ];
+			
+			for (Train_on_Route__c tr : trainsAvailableOnTime) {
+				trains.add(tr.Train__r);
+			}
+			for (Train__c tr : [SELECT Id, Name, Type__c FROM Train__c WHERE Id not in :trainsIds]) {
+				trains.add(tr);
+			}
+		}
 		return trains;
 	}
-	
+
 	// create select option list of trains
 	public List<SelectOption> getTrainOptions() {
-		List<Train__c> trains = getAvailableTrains();
-		for (Train__c tr : trains) {
+		for (Train__c tr : getAvailableTrains()) {
 			trainsOptionList.add(new SelectOption(tr.Id, tr.Name));
 		}
 		return trainsOptionList;
 	}
 	
-	// get all carriages
-	public List<Carriage__c> getCarriages() {
-		List<Carriage__c> carriages = new List<Carriage__c> ();
-		carriages = [SELECT Id, Name, Number_Of_Seats__c, Bicycles_Transport__c, Class__c, 
-			Carriage_With_Tables__c, Disabled_People_Support__c FROM Carriage__c];	
-		return carriages;
-	}
-	
 	// get all available carriages
 	public List<Carriage__c> getAvailableCarriages() {
-		List<Id> availableTrainsIds = getAvailableTrainsIds();
-
-		List<Carriage_on_Train__c> carriagesAvailable = [SELECT Carriage__c FROM Carriage_on_Train__c WHERE Train__c IN :availableTrainsIds ];
-		List<Id> availableCarriagesId = new List<Id> ();
-		for (Carriage_on_Train__c cr : carriagesAvailable) {
-			availableCarriagesId.add(cr.Carriage__c);
+		List<Id> availableCarriagesIds = new List<Id> ();
+		for (Carriage_on_Train__c cr : [SELECT Carriage__c FROM Carriage_on_Train__c WHERE Train__c IN :getAvailableTrains()]) {
+			availableCarriagesIds.add(cr.Id);
+		}
+		List<Carriage__c> carriagesToAdd = new List<Carriage__c> (); 
+		
+		List<Carriage_on_Train__c> allCarriagesOnTrains = [SELECT Carriage__c FROM Carriage_on_Train__c];
+		List<Id> allCarriagesIds = new List<Id> ();
+		for (Carriage_on_Train__c c : allCarriagesOnTrains) {
+			allCarriagesIds.add(c.Carriage__c);
 		}
 		
+		if (availableCarriagesIds.size() == 0) {
+			carriagesToAdd = [SELECT Id FROM Carriage__c WHERE Id not in :allCarriagesIds ];
+		} else {
+			for (Carriage__c cr : [SELECT Id FROM Carriage__c WHERE Id in :availableCarriagesIds]) {
+				carriagesToAdd.add(cr); 
+			}
+			for (Carriage__c cr : [SELECT Id, Name FROM Carriage__c WHERE Id not in :availableCarriagesIds]) {
+				carriagesToAdd.add(cr);
+			}
+		}
 		List<Carriage__c> carriages = new List<Carriage__c> ();
 		carriages = [SELECT Id, Name, Number_Of_Seats__c, Bicycles_Transport__c, Class__c,
 							Carriage_With_Tables__c, Disabled_People_Support__c 
 					 FROM Carriage__c 
-					 WHERE Id IN :availableCarriagesId];	
+					 WHERE Id IN :carriagesToAdd];	
 		return carriages;
 	}
 	

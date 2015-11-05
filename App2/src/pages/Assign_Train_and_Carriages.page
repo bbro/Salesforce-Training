@@ -10,7 +10,7 @@
 				<apex:selectList id="carriagesList" multiselect="false" size="1" value="{! carriageId }">
 					<apex:selectOptions value="{! carriagesOptionList }"/>
 				</apex:selectList>
-				<apex:commandButton value="Add carriage" action="{! addCarriageToList }" onClick="disableTrainList()" rerender="" />
+				<apex:commandButton value="Add carriage" action="{! addCarriageToList }" rerender="" />
 			</apex:pageBlockSection>
 			<apex:pageBlockSection >
 				<apex:pageBlockTable value="{! addedCarriages }" var="cr">
