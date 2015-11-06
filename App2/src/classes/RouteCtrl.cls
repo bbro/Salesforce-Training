@@ -183,4 +183,9 @@ public with sharing class RouteCtrl {
     	routesToDisplay = [SELECT Name FROM Route__c WHERE Id IN (SELECT Route__c FROM Platform_Of_Route__c  WHERE Departure_Time__c >= :dateToFilterFrom)];
     	return null;
     }
+    
+    public PageReference backToAdministratorOptions() {
+		PageReference outPage = Page.OptionForAdministrator;
+		return outPage;
+	}
 }

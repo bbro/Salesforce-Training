@@ -3,7 +3,6 @@ public with sharing class FindRouteCtrl {
 	public Id endStationId { get; set; }
 	public Id trainFoundId { get; set; }
 	public Id routeToBuyTicketForId;
-	public Id routeToSendPackageOnId;
 	private String startStationName;
 	private String endStationName;
 	public List<String> foundRoutesNames { get; set; }
@@ -109,34 +108,34 @@ public with sharing class FindRouteCtrl {
         return null;
     }
     
-    public void getRouteId() {
-    	Train_On_Route__c currentTrain = [SELECT Route__c FROM Train_On_Route__c WHERE Id = :trainFoundId];
-    	this.routeToBuyTicketForId = currentTrain.Route__c;
-    	this.routeToSendPackageOnId = currentTrain.Route__c;
-    }
-    
     public PageReference goToTicketPage() {
-    	getRouteId();
     	PageReference ticketPage = Page.TicketCtrlPage;
-    	ticketPage.getParameters().put('routeToBuyTicketForId', routeToBuyTicketForId);
+    	ticketPage.getParameters().put('routeToBuyTicketForId', [SELECT Route__c FROM Train_On_Route__c WHERE Id = :trainFoundId].Route__c);
     	ticketPage.getParameters().put('stationFromName', getStartStationName());
     	ticketPage.getParameters().put('stationToName', getEndStationName());
+    	ticketPage.getParameters().put('trainFoundId',trainFoundId);
 	  	ticketPage.setRedirect(true);
     	return ticketPage;
     }
     
     public PageReference goToPackagePage() {
-    	getRouteId();
-    	PageReference packagePage = Page.Packages;
-    	packagePage.getParameters().put('routeToSendPackageOnId', routeToSendPackageOnId);
-    	packagePage.getParameters().put('stationFromName', getStartStationName());
-    	packagePage.getParameters().put('stationToName', getEndStationName());
-	  	packagePage.setRedirect(true);
-    	return packagePage;
+		PageReference packagePage = null;
+		if ([SELECT Id, Allow_Packages__c FROM Train__c WHERE Id IN (SELECT Train__c FROM Train_On_Route__c WHERE Id = :trainFoundId)].Allow_Packages__c) {
+	    	packagePage = Page.Packages;
+	    	packagePage.getParameters().put('routeToSendPackageOnId', [SELECT Route__c FROM Train_On_Route__c WHERE Id = :trainFoundId].Route__c);
+	    	packagePage.getParameters().put('stationFromName', getStartStationName());
+	    	packagePage.getParameters().put('stationToName', getEndStationName());
+	    	packagePage.getParameters().put('trainFoundId',trainFoundId);
+		  	packagePage.setRedirect(true);
+		}
+		else {
+			ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'This train does not allow sending packages'));
+		}
+		return packagePage;
     }
     
     public PageReference goToRouteDetails() {
-    	getRouteId();
+    	this.routeToBuyTicketForId = [SELECT Route__c FROM Train_On_Route__c WHERE Id = :trainFoundId].Route__c;
     	detailsOfRoute = [SELECT Arrival_Time__c, Departure_Time__c, Platform__c, Station_Number__c, Platform__r.Station__r.Name, Route__c FROM Platform_Of_Route__c WHERE Route__r.Id = :routeToBuyTicketForId];
     	PageReference routeDetailsPage = Page.RouteDetails;
     	return routeDetailsPage;

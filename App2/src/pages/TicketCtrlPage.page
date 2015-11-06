@@ -1,10 +1,7 @@
-<apex:page controller="TicketCtrl" sidebar="false" showHeader="false"
-	docType="html-5.0">
-	<!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
+<apex:page controller="TicketCtrl" sidebar="false" showHeader="false" docType="html-5.0">
 	<apex:form >
 		<apex:pageMessages />
 		<apex:pageBlock title="BUY TICKET" id="theBlock">
-
 			<apex:pageBlockSection title="PERSONAL DATA">
 				<apex:pageBlockSectionItem >
 					<apex:outputText value="FIRST NAME" />
@@ -49,7 +46,6 @@
 					<apex:inputText value="{! street }" />
 				</apex:pageBlockSectionItem>
 			</apex:pageBlockSection>
-
 			<apex:pageBlockSection title="BILET" columns="2">
 				<apex:pageBlockSection title="BASIC" columns="1">
 					<apex:pageBlockSectionItem >
@@ -57,8 +53,11 @@
 						<apex:inputField value="{! ticket.Discount__c }" />
 					</apex:pageBlockSectionItem>
 					<apex:pageBlockSectionItem >
-						<apex:outputText value="CLASS " />
-						<apex:inputField value="{! trainCarriage.Class__c }" />
+						<!-- <apex:outputText value="CLASS " />
+						<apex:inputField value="{! trainCarriage.Class__c }" /> -->
+						<apex:selectList value="{! trainCarriage.Class__c }" multiselect="false" size="1">
+							<apex:selectOptions value="{! classOptions }"/>
+						</apex:selectList>
 					</apex:pageBlockSectionItem>
 				</apex:pageBlockSection>
 				<apex:pageBlockSection title="SPOT">
@@ -66,7 +65,7 @@
 						<apex:inputCheckbox value="{! isWindow }" />
 						<apex:outputText value="WINDOW" />
 					</apex:pageBlockSectionItem>
-					<apex:pageBlockSectionItem >
+					<apex:pageBlockSectionItem rendered="{! rerender }">
 						<apex:inputCheckbox value="{! isTable }" />
 						<apex:outputText value="NEAR TABLE" />
 					</apex:pageBlockSectionItem>
@@ -86,7 +85,7 @@
 				</apex:column>
 			</apex:pageBlockTable>
 			<apex:pageBlockButtons >
-				<apex:commandButton action="{! moveToSearchStationPage }"
+				<apex:commandButton action="{! moveToFindRoutePage }"
 					value="CANCEL" />
 				<apex:commandButton action="{! getFreeSeatsList }" value="Buy" />
 				<apex:commandLink action="{! invoiceShow }" value="Invoice"

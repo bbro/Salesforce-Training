@@ -3,29 +3,24 @@ public class TicketCtrl {
 	public String lastName { get; public set; }
 	public Integer pin { get; public set; }
 	public String email { get; public set; }
-	
 	public Boolean isInvoiceNeed { get; public set; }
 	public String businessName { public get; public set; }
 	public Integer nip { get; public set; }
 	public String postalCode { get; public set; }
 	public String city { get; public set; }
 	public String street { get; public set; }
-	
 	public Ticket__c ticket { get; public set; }
-	
 	public Carriage__c trainCarriage { get; public set; }
-	
 	public Boolean isTable { get; public set; }
 	public Boolean isWindow { get; public set; }
 	public List<Seat_Reservation_on_Route__c> seatReservationOnRouteList;
 	public List<String> ticketsList { get; set; }
     public String ticketToDelete {get; set;}
 	public List<TicketData> ticketDataList { get; set; }
-	
 	public Id routeToBuyTicketForId { get;set; }
+	public Id trainFoundId { get; set; }
 	public String stationFromName { get; set; }
 	public String stationToName { get;set; }
-	
 	public List<String> firstNameTicket = new List<String>();
 	public List<String> lastNameTicket = new List<String>();
 	public List<Integer> pinTicket = new List<Integer>();
@@ -36,12 +31,12 @@ public class TicketCtrl {
 	public List<Boolean> nearTableTicket = new List<Boolean>();
 	public List<String> invoiceTicket = new List<String>();
     public Double ticketsPrice = 0.0d;
+    public Boolean rerender { get; set; }
     Station__c cityFromStation, cityToStation;
    	Seat__c freeSeat;
 	Boolean foundSeat = false;
 	Platform_Of_Route__c platformOfroute;
 	List<Platform_Of_Route__c> allRouteStation;
-	
     Train_on_Route__c t;
 	List<Carriage_on_Train__c> c;
 	List<Seat__c> seatList;
@@ -49,6 +44,7 @@ public class TicketCtrl {
 	
 	public TicketCtrl() {
 		saveDataFromFindRoutePage();
+		hideOrShowNearTableSection();
 		ticket = new Ticket__c();
 		trainCarriage = new Carriage__c();
 		ticketsList = new List<String>();
@@ -62,10 +58,29 @@ public class TicketCtrl {
     	seatList = [SELECT IsTaken__c, Near_Window__c, Has_Table__c, Carriage__r.Id, Name FROM Seat__c];
 	}
 	
+	public List<SelectOption> getClassOptions() {
+        List<SelectOption> ClassOptions = new List<SelectOption>();
+        //Integer i = 1;
+        for(Carriage_On_Train__c classOption : [SELECT Carriage__r.Class__c FROM Carriage_on_Train__c 
+			 								 WHERE Train__c IN (SELECT Train__c FROM Train_On_Route__c WHERE Id = :trainFoundId)]) {
+	        if (classOption.Carriage__r.Class__c == 'Buffet Car') {
+	        	classOptions.add(new SelectOption(classOption.Carriage__r.Class__c, 'Buffet Car'));
+	        }
+	        else if (classOption.Carriage__r.Class__c == 'First') {
+	        	classOptions.add(new SelectOption(classOption.Carriage__r.Class__c, 'First'));
+	        }
+	        else {
+	        	classOptions.add(new SelectOption(classOption.Carriage__r.Class__c, 'Second'));
+	        }
+        }
+        return classOptions;
+    }
+	
 	public void saveDataFromFindRoutePage() {
 		routeToBuyTicketForId = ApexPages.currentPage().getParameters().get('routeToBuyTicketForId');
 		stationFromName = ApexPages.currentPage().getParameters().get('stationFromName');
 		stationToName = ApexPages.currentPage().getParameters().get('stationToName');
+		trainFoundId = ApexPages.currentPage().getParameters().get('trainFoundId');
 	}
 	
 	public List<Carriage__c> getAdequateCarriages(Integer ticketInListIndex) {
@@ -90,16 +105,15 @@ public class TicketCtrl {
 			for (Carriage__c currentCarriage : getAdequateCarriages(ticketInListIndex)) {
 				for (Seat__c singleSeat : seatList) {
 					if (singleSeat.Carriage__r.Id == currentCarriage.Id && !singleSeat.IsTaken__c) {
-							trainCarriage = currentCarriage;
-							singleSeat.IsTaken__c = true;
-							freeSeat = singleSeat;
-							insertTickets(ticketInListIndex);
+						trainCarriage = currentCarriage;
+						singleSeat.IsTaken__c = true;
+						freeSeat = singleSeat;
+						insertTickets(ticketInListIndex);
 						break;
 					}
 				}
 			}
 		}
-		
     	return Page.TicketPdfPage;
 	}
 	
@@ -130,12 +144,10 @@ public class TicketCtrl {
     		insert newTicket;
     		insert pass;
     		update freeSeat;
-    		
     		newSeatReservaionOnRoute.Ticket__c = newTicket.Id;
 	    	newSeatReservaionOnRoute.Passenger__c = pass.Id;
 	    	newSeatReservaionOnRoute.Seat__c = freeSeat.Id;
     		newSeatReservaionOnRoute.Route__c = t.Route__r.Id;
-    	
     		insert newSeatReservaionOnRoute;
     	} catch(DmlException e) {
     		system.debug(e.getMessage());
@@ -163,7 +175,6 @@ public class TicketCtrl {
     public Decimal getNumberOfStationTraveled() {
     	Platform_Of_Route__c startStation;
     	Platform_Of_Route__c stopStation;
-    	
     	for (Platform_Of_Route__c platformOfRoute : allRouteStation) {
     		if (platformOfRoute.Platform__r.Station__r.Name == stationFromName) {
     			startStation = platformOfRoute;
@@ -181,7 +192,6 @@ public class TicketCtrl {
 		Decimal classPrice = 0.0d;
 		Decimal myDiscount = 1.0d;
 		Decimal pricePerStation = 1.8d; 
-		
 		if (carriageClass == '1') {
 			classPrice = 50.0d;
 		} else if(carriageClass == '2') {
@@ -189,18 +199,15 @@ public class TicketCtrl {
 		} else {
 			classPrice = 50.0d;
 		}
-		
 		if (discount == 'Normal') {
 			myDiscount = 1.0d;
 		} else if(discount == 'Student') {
 			myDiscount = 2.0d;
 		}
-		
 		singleTicketPrice = ( classPrice + ( stations * pricePerStation) ) / myDiscount;
 		system.debug(singleTicketPrice);
 		system.debug(stations);
 		ticketsPrice += singleTicketPrice;
-		
 		return singleTicketPrice;
     }
     
@@ -229,13 +236,11 @@ public class TicketCtrl {
 		classTicket.add(trainCarriage.Class__c);
 		windowTicket.add(isWindow);
 		nearTableTicket.add(isTable);
-  	
       	Integer j = ticketsList.size();
 		ticketsList.add( 'First Name ' + firstNameTicket.get(j) + ' ' + 'Last Name ' + lastNameTicket.get(j) + ' '
 		+ 'Email ' + emailTicket.get(j) + ' ' + 'PIN ' + pinTicket.get(j) + ' '
 		+ 'Discount ' + discountTicket.get(j) + ' ' + 'Class ' + classTicket.get(j) + ' ' 
 		+ 'Seat Spot ' + getSeatPositionName(j) + ' ' + 'Near Table ' + nearTableTicket.get(j) );
-		
       	return null;
 	}
       
@@ -246,14 +251,13 @@ public class TicketCtrl {
 		return Page.TicketPdfInvoice;
     }
 	
-    public PageReference moveToSearchStationPage() {
-    	return null;
+    public PageReference moveToFindRoutePage() {
+    	return Page.FindRoute;
     }
 	
 	public PageReference deleteTicket() {
 		Integer indexOfTicket = getIndexOfTicket();
 		ticketsList.remove( indexOfTicket );
-		
 		firstNameTicket.remove(indexOfTicket);
 		lastNameTicket.remove(indexOfTicket);
 		pinTicket.remove(indexOfTicket);
@@ -288,5 +292,17 @@ public class TicketCtrl {
 		public String seatplace {get; set;}
 		public String withTable {get; set;}
 		public Integer pin { get; set; }
+	}
+	
+	public void hideOrShowNearTableSection() {
+		if ([SELECT Carriage__r.Carriage_With_Tables__c FROM Carriage_on_Train__c 
+			 WHERE (Train__c IN 
+			(SELECT Train__c FROM Train_On_Route__c WHERE Id = :trainFoundId)
+			 AND Carriage__r.Carriage_With_Tables__c = true)].size()>0) {
+			rerender = true;
+		}
+		else {
+			rerender = false;
+		}
 	}
 }

@@ -3,6 +3,7 @@
 <br/>
 <br/>
 	<apex:form >
+	<apex:messages/>
 		<apex:pageBlock title="Search for connection">
 			From: <apex:selectList value="{! startStationId }" multiselect="false" size="1">
 				<apex:selectOptions value="{! stationsOptions }"/>
@@ -17,7 +18,6 @@
 				<apex:selectOption itemValue="Regio" itemLabel="Regio"/>
 				<apex:selectOption itemValue="InterCity" itemLabel="InterCity"/>
 			</apex:selectList>
-			<!-- Inbetween stations: <apex:inputCheckbox id="ibStations" value="{! inBetweenStations }"/> --><br/>
 			Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/><br/>
 			Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/><br/>
 			Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! packagesAvailable }"/><br/>
@@ -30,7 +30,7 @@
 						<apex:param name="trainFound" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
 					</apex:commandLink>
 				</apex:column>
-				<apex:column headerValue="Train Name" value="{! trainFound.Train__c }"/>
+				<apex:column headerValue="Train Name" value="{! trainFound.Train__r.Name }"/>
 				<apex:column headerValue="Ticket">
 					<apex:commandLink value="Buy" action="{! goToTicketPage }">
 						<apex:param name="ticketToBuy" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
