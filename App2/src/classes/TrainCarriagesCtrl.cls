@@ -137,15 +137,12 @@ public class TrainCarriagesCtrl {
 			carriagesOnTrainJunction.add(carriageOnTrain);
 		}
 		insert carriagesOnTrainJunction; 		
-		
 		Train_on_Route__c trainOnRouteJunction = new Train_on_Route__c();
 		trainOnRouteJunction.Route__c = routeId;
 		trainOnRouteJunction.Train__c = trainId;
-
 		Platform_Of_Route__c lastPlatformOfRoute = [SELECT Departure_Time__c FROM Platform_Of_Route__c WHERE Route__c = :routeId order by Departure_Time__c desc limit 1 ];
 		trainOnRouteJunction.Occupied_Until__c = lastPlatformOfRoute.Departure_Time__c;		
 		insert trainOnRouteJunction;
-		
 		disabledTrainList = false;
 		return Page.newRoute;
 	}
