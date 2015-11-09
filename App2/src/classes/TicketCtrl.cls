@@ -1,11 +1,11 @@
 public class TicketCtrl {
     public String firstName { get; public set; }
 	public String lastName { get; public set; }
-	public Integer pin { get; public set; }
+	public String pin { get; public set; }
 	public String email { get; public set; }
 	public Boolean isInvoiceNeed { get; public set; }
 	public String businessName { public get; public set; }
-	public Integer nip { get; public set; }
+	public String nip { get; public set; }
 	public String postalCode { get; public set; }
 	public String city { get; public set; }
 	public String street { get; public set; }
@@ -23,7 +23,7 @@ public class TicketCtrl {
 	public String stationToName { get;set; }
 	public List<String> firstNameTicket = new List<String>();
 	public List<String> lastNameTicket = new List<String>();
-	public List<Integer> pinTicket = new List<Integer>();
+	public List<String> pinTicket = new List<String>();
 	public List<String> emailTicket = new List<String>();
 	public List<String> discountTicket = new List<String>();
 	public List<String> classTicket = new List<String>();
@@ -32,6 +32,8 @@ public class TicketCtrl {
 	public List<String> invoiceTicket = new List<String>();
     public Double ticketsPrice = 0.0d;
     public Boolean rerender { get; set; }
+	public Boolean showInvoiceBoolean {get;set;}
+	
     Station__c cityFromStation, cityToStation;
    	Seat__c freeSeat;
 	Boolean foundSeat = false;
@@ -41,8 +43,10 @@ public class TicketCtrl {
 	List<Carriage_on_Train__c> c;
 	List<Seat__c> seatList;
 	List<Seat_Reservation_on_Route__c> seatReservationOnRoute;	
+	Boolean problemEncountered = false;
 	
 	public TicketCtrl() {
+		showInvoiceBoolean = false;
 		saveDataFromFindRoutePage();
 		hideOrShowNearTableSection();
 		ticket = new Ticket__c();
@@ -56,12 +60,14 @@ public class TicketCtrl {
     	t = [SELECT Train__c, Route__c, Route__r.Id FROM Train_on_Route__c WHERE Route__r.Id = :routeToBuyTicketForId];
     	c = [SELECT Carriage__c, Carriage__r.Class__c, Carriage__r.Number_Of_Seats__c,Carriage__r.Carriage_With_Tables__c, Train__c, Train__r.Id FROM Carriage_on_Train__c WHERE Train__r.Id = :t.Train__c];
     	seatList = [SELECT IsTaken__c, Near_Window__c, Has_Table__c, Carriage__r.Id, Name FROM Seat__c];
+    	updateNumberOfFreeSeatSpots();
 	}
 	
 	public List<SelectOption> getClassOptions() {
         List<SelectOption> ClassOptions = new List<SelectOption>();
+        //Integer i = 1;
         for(Carriage_On_Train__c classOption : [SELECT Carriage__r.Class__c FROM Carriage_on_Train__c 
-			 								    WHERE Train__c IN (SELECT Train__c FROM Train_On_Route__c WHERE Id = :trainFoundId)]) {
+			 								 WHERE Train__c IN (SELECT Train__c FROM Train_On_Route__c WHERE Id = :trainFoundId)]) {
 	        if (classOption.Carriage__r.Class__c == 'Buffet Car') {
 	        	classOptions.add(new SelectOption(classOption.Carriage__r.Class__c, 'Buffet Car'));
 	        }
@@ -100,23 +106,75 @@ public class TicketCtrl {
 	Integer ticketInListIndex = 0;
 	public PageReference getFreeSeatsList() {
 		freeSeat = null;
-		for( ticketInListIndex = 0; ticketInListIndex < ticketsList.size(); ticketInListIndex++) {
+		for ( ticketInListIndex = 0; ticketInListIndex < ticketsList.size(); ticketInListIndex++) {
 			for (Carriage__c currentCarriage : getAdequateCarriages(ticketInListIndex)) {
 				for (Seat__c singleSeat : seatList) {
 					if (singleSeat.Carriage__r.Id == currentCarriage.Id && !singleSeat.IsTaken__c) {
-						trainCarriage = currentCarriage;
-						singleSeat.IsTaken__c = true;
-						freeSeat = singleSeat;
-						insertTickets(ticketInListIndex);
-						break;
+							trainCarriage = currentCarriage;
+							//singleSeat.IsTaken__c = true;
+							freeSeat = singleSeat;
+							insertTickets(ticketInListIndex);
+							break;
 					}
 				}
 			}
 		}
-    	return Page.TicketPdfPage;
+		
+		if	(!problemEncountered) {
+			return Page.TicketPdfPage;
+		}
+		
+    	return null;
+	}
+	
+	public Integer allFreeSpots {get; set;}
+	public Integer nearWindowFreeSpots {get; set;}
+	public Integer nearTableFreeSpots {get; set;}
+	public Integer nearTableAndWindowFreeSpots {get; set;}
+	public Integer nearCorridorFreeSpots { get; set; }
+	public Integer nearCorridorAndTableFreeSpots { get; set; }
+	
+	public void updateNumberOfFreeSeatSpots() {
+		allFreeSpots = 0;
+		nearWindowFreeSpots = 0;
+		nearTableFreeSpots = 0;
+		nearTableAndWindowFreeSpots = 0;
+		nearCorridorFreeSpots = 0;
+		nearCorridorAndTableFreeSpots = 0;
+		
+		List<Integer> myfreeSpots = new List<Integer>();
+		
+		for (Carriage_on_Train__c carriage : c) {
+			List<Seat__c> freeSeatsList = [SELECT IsTaken__c,Near_Window__c, Table__c, Carriage__r.Id, Name FROM Seat__c WHERE IsTaken__c = false AND Carriage__r.Id = :carriage.Carriage__r.Id];
+			for (Seat__c seat : freeSeatsList) {
+				
+				if(seat.Near_Window__c) {
+					nearWindowFreeSpots++;
+				}
+				
+				if(seat.Table__c) {
+					nearTableFreeSpots++;
+				}
+				
+				if(seat.Near_Window__c && seat.Table__c ) {
+					nearTableAndWindowFreeSpots++;
+				}
+				
+				if(!seat.Near_Window__c) {
+					nearCorridorFreeSpots++;
+				}
+				
+				if(!seat.Near_Window__c &&  seat.Table__c) {
+					nearCorridorAndTableFreeSpots++;
+				}
+				
+				allFreeSpots++;
+			}
+		}
 	}
 	
     public void insertTickets(Integer ticketInListIndex) {
+    	
     	Seat_Reservation_on_Route__c newSeatReservaionOnRoute= new Seat_Reservation_on_Route__c();
 		Ticket__c newTicket = new Ticket__c();
     	newTicket.name = cityFromStation.Name + ' ' + cityToStation.Name;
@@ -128,11 +186,11 @@ public class TicketCtrl {
     	pass.Name = firstNameTicket.get(ticketInListIndex);
     	pass.Last_Name__c = lastNameTicket.get(ticketInListIndex);
     	pass.Email__c = emailTicket.get(ticketInListIndex);
-    	pass.PIN__c = pinTicket.get(ticketInListIndex);
+    	pass.PIN__c = Decimal.valueOf(pinTicket.get(ticketInListIndex));
     	
     	if (isInvoiceNeed) {
     		pass.Company_Name__c = businessName;
-    		pass.NIP__c = nip;
+    		pass.NIP__c = Decimal.valueOf(nip);
     		pass.Street__c = street;
     		pass.City__c = city;
     		pass.Postal_Code__c = postalCode;
@@ -150,8 +208,14 @@ public class TicketCtrl {
     		insert newSeatReservaionOnRoute;
     	} catch(DmlException e) {
     		system.debug(e.getMessage());
+    		problemEncountered = true;
     	}
-		 setTicketAndInvoiceData(ticketInListIndex);   	
+    	
+    	if(problemEncountered) {
+    		showInsertErrorMsg();
+    	} else {
+		 	setTicketAndInvoiceData(ticketInListIndex);
+    	}
     }
     
     public void setTicketAndInvoiceData(Integer ticketInListIndex) {
@@ -227,20 +291,63 @@ public class TicketCtrl {
 	}
 	
 	public PageReference addElementToTicket() {
-      	firstNameTicket.add(firstName);
-      	lastNameTicket.add(lastName);
-      	emailTicket.add(email);
-      	pinTicket.add(pin);
-      	discountTicket.add(ticket.Discount__c);
-		classTicket.add(trainCarriage.Class__c);
-		windowTicket.add(isWindow);
-		nearTableTicket.add(isTable);
-      	Integer j = ticketsList.size();
-		ticketsList.add( 'First Name ' + firstNameTicket.get(j) + ' ' + 'Last Name ' + lastNameTicket.get(j) + ' '
-		+ 'Email ' + emailTicket.get(j) + ' ' + 'PIN ' + pinTicket.get(j) + ' '
-		+ 'Discount ' + discountTicket.get(j) + ' ' + 'Class ' + classTicket.get(j) + ' ' 
-		+ 'Seat Spot ' + getSeatPositionName(j) + ' ' + 'Near Table ' + nearTableTicket.get(j) );
+		if (!isErrorInForms() && isTicketAvailable()) {
+			showInvoiceBoolean = true;
+	      	firstNameTicket.add(firstName);
+	      	lastNameTicket.add(lastName);
+	      	emailTicket.add(email);
+	      	pinTicket.add(pin);
+	      	discountTicket.add(ticket.Discount__c);
+			classTicket.add(trainCarriage.Class__c);
+			windowTicket.add(isWindow);
+			nearTableTicket.add(isTable);
+	      	Integer j = ticketsList.size();
+			ticketsList.add( 'First Name ' + firstNameTicket.get(j) + ' ' + 'Last Name ' + lastNameTicket.get(j) + ' '
+			+ 'Email ' + emailTicket.get(j) + ' ' + 'PIN ' + pinTicket.get(j) + ' '
+			+ 'Discount ' + discountTicket.get(j) + ' ' + 'Class ' + classTicket.get(j) + ' ' 
+			+ 'Seat Spot ' + getSeatPositionName(j) + ' ' + 'Near Table ' + nearTableTicket.get(j) );
+		}
       	return null;
+	}
+	
+	public Boolean isTicketAvailable() {		
+		
+		if (allFreeSpots > 0) {
+			if(isWindow && isTable  && nearTableAndWindowFreeSpots > 0) {
+				nearTableAndWindowFreeSpots--;
+				nearTableFreeSpots--;
+				nearWindowFreeSpots--;
+				allFreeSpots--;
+				return true;
+			} else if(isWindow == false && isTable == true  && nearCorridorAndTableFreeSpots > 0) {
+				nearCorridorAndTableFreeSpots--;
+				nearTableFreeSpots--;
+				nearCorridorFreeSpots--;
+				allFreeSpots--;
+				return true;
+			} else if(isWindow && nearWindowFreeSpots > 0) {
+				nearWindowFreeSpots--;
+				nearTableAndWindowFreeSpots--;
+				allFreeSpots--;
+				return true;
+			} else if(isWindow == false && nearCorridorFreeSpots > 0) {
+				nearCorridorFreeSpots--;
+				nearCorridorAndTableFreeSpots--;
+				allFreeSpots--;
+				return true;
+			} else if(isTable && nearTableFreeSpots > 0) {
+				nearTableFreeSpots--;
+				nearTableAndWindowFreeSpots--;
+				allFreeSpots--;
+				return true;
+			} else {
+				showTicketNotAvailableMsg();
+				return false;
+			} 
+		} else {
+				showTicketNotAvailableMsg();
+				return false;
+			}
 	}
       
     public pageReference invoiceShow() {
@@ -255,7 +362,10 @@ public class TicketCtrl {
     }
 	
 	public PageReference deleteTicket() {
+		showInvoiceBoolean = false;
 		Integer indexOfTicket = getIndexOfTicket();
+		addSeatPlaceAsAvailable(indexOfTicket);
+		
 		ticketsList.remove( indexOfTicket );
 		firstNameTicket.remove(indexOfTicket);
 		lastNameTicket.remove(indexOfTicket);
@@ -266,6 +376,33 @@ public class TicketCtrl {
 		windowTicket.remove(indexOfTicket);
 		nearTableTicket.remove(indexOfTicket);
 		return null;
+	}
+	
+	public void addSeatPlaceAsAvailable(Integer indexOfTicket) {
+		
+		if(windowTicket.get(indexOfTicket) == true && nearTableTicket.get(indexOfTicket) == true) {
+			nearTableAndWindowFreeSpots++;
+			nearTableFreeSpots++;
+			nearWindowFreeSpots++;
+			allFreeSpots++;
+		} else if(windowTicket.get(indexOfTicket) == false && nearTableTicket.get(indexOfTicket) == true) {
+			nearCorridorAndTableFreeSpots++;
+			nearTableFreeSpots++;
+			nearCorridorFreeSpots++;
+			allFreeSpots++;
+		} else if(windowTicket.get(indexOfTicket) == true) {
+			nearWindowFreeSpots++;
+			nearTableAndWindowFreeSpots++;
+			allFreeSpots++;
+		} else if(windowTicket.get(indexOfTicket) == false) {
+			nearCorridorFreeSpots++;
+			nearCorridorAndTableFreeSpots++;
+			allFreeSpots++;
+		} else if(nearTableTicket.get(indexOfTicket) == true) {
+			nearTableFreeSpots++;
+			nearTableAndWindowFreeSpots++;
+			allFreeSpots++;
+		}
 	}
 	
 	public Integer getIndexOfTicket() {
@@ -290,7 +427,7 @@ public class TicketCtrl {
 		public String departueDate {get; set;}
 		public String seatplace {get; set;}
 		public String withTable {get; set;}
-		public Integer pin { get; set; }
+		public String pin { get; set; }
 	}
 	
 	public void hideOrShowNearTableSection() {
@@ -303,5 +440,76 @@ public class TicketCtrl {
 		else {
 			rerender = false;
 		}
+	}
+	
+	public Boolean isErrorInForms() {
+		Boolean errorInForm = false;
+		
+		if (!firstName.isAlpha() || String.isBlank(firstName)) {
+			showWrongFieldValueMsg('FIRST NAME');
+			errorInForm = true;
+		}
+		
+		if (!lastName.isAlpha() || String.isBlank(lastName)) {
+			showWrongFieldValueMsg('LAST NAME');
+			errorInForm = true;
+		}
+		
+		if ( pin.length() != 11 || String.isBlank(pin) || !pin.isNumeric() ) {
+			showWrongFieldValueMsg('PIN');
+			errorInForm = true;
+		}
+
+		if (!hasValidEmail(email)) {
+			showWrongFieldValueMsg('EMAIL');
+			errorInForm = true;
+		}
+			
+		if (isInvoiceNeed) {
+			if(String.isBlank(businessName) || !businessName.isAlphaNumericSpace()) {
+				showWrongFieldValueMsg('BUSINESS NAME');
+				errorInForm = true;
+			}
+			
+			if(nip.length() != 11 || String.isBlank(nip) || !nip.isNumeric()) {
+				showWrongFieldValueMsg('NIP');
+				errorInForm = true;
+			}
+			
+			if (String.isBlank(postalCode) || !postalCode.remove('-').isNumeric() || postalCode.startsWith('-') || postalCode.endsWith('-')) {
+				showWrongFieldValueMsg('POSTAL CODE');
+				errorInForm = true;
+			}
+			
+			if (String.isBlank(city) || !city.isAlphaNumericSpace()) {
+				showWrongFieldValueMsg('CITY');
+				errorInForm = true;
+			}
+			
+			if (String.isBlank(street) || street.containsAny('!@#$%^&*()_+|}{:""<>?;[]`~=_\'\"')) {
+				showWrongFieldValueMsg('STREET');
+				errorInForm = true;
+			}			
+		}
+		return errorInForm;
+	}
+	
+	public Boolean hasValidEmail(String email) {
+		return (email != null && email.length() > 5 && !email.containsAny('!#$%^&*()+=`~~<,>?/:;""{[}|]\\\"\'') && !email.startsWith('@') && !email.endsWith('@') && email.contains('@') && email.contains('.') && !email.startsWith('.') && !email.endsWith('.'));
+	}
+	
+	public void showWrongFieldValueMsg(String fieldName) {
+		ApexPages.Message errorMsg = new ApexPages.Message(ApexPages.Severity.FATAL, 'Wrong ' + fieldName + ' value');
+		ApexPages.addMessage(errorMsg);
+	}
+	
+	public void showInsertErrorMsg() {
+		ApexPages.Message errorMsg = new ApexPages.Message(ApexPages.Severity.FATAL, 'Order error while saving data. Please check form.');
+		ApexPages.addMessage(errorMsg);
+	}
+	
+	public void showTicketNotAvailableMsg() {
+		ApexPages.Message errorMsg = new ApexPages.Message(ApexPages.Severity.FATAL, 'No Ticket Available for selected options.');
+		ApexPages.addMessage(errorMsg);
 	}
 }

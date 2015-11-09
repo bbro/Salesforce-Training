@@ -1,25 +1,26 @@
-<apex:page controller="TicketCtrl" sidebar="false" showHeader="false" docType="html-5.0">
-	<apex:form >
+<apex:page controller="TicketCtrl" sidebar="false" showHeader="false"
+	docType="html-5.0">
+	<apex:form>
 		<apex:pageMessages />
 		<apex:pageBlock title="BUY TICKET" id="theBlock">
 			<apex:pageBlockSection title="PERSONAL DATA">
-				<apex:pageBlockSectionItem >
+				<apex:pageBlockSectionItem>
 					<apex:outputText value="FIRST NAME" />
 					<apex:inputText value="{! firstName }" />
 				</apex:pageBlockSectionItem>
-				<apex:pageBlockSectionItem >
+				<apex:pageBlockSectionItem>
 					<apex:outputText value="LAST NAME" />
 					<apex:inputText value="{! lastName }" />
 				</apex:pageBlockSectionItem>
-				<apex:pageBlockSectionItem >
+				<apex:pageBlockSectionItem>
 					<apex:outputText value="PIN" />
-					<apex:inputText value="{! pin }" />
+					<apex:inputText maxLength="11" value="{! pin }" />
 				</apex:pageBlockSectionItem>
-				<apex:pageBlockSectionItem >
+				<apex:pageBlockSectionItem>
 					<apex:outputText value="EMAIL" />
 					<apex:inputText value="{! email }" />
 				</apex:pageBlockSectionItem>
-				<apex:pageBlockSectionItem >
+				<apex:pageBlockSectionItem>
 					<apex:inputCheckbox value="{! isInvoiceNeed }">
 						<apex:actionSupport event="onchange" rerender="theBlock" />
 					</apex:inputCheckbox>
@@ -47,21 +48,23 @@
 				</apex:pageBlockSectionItem>
 			</apex:pageBlockSection>
 			<apex:pageBlockSection title="BILET" columns="2">
-				<apex:pageBlockSection title="BASIC" columns="1">
-					<apex:pageBlockSectionItem >
+
+				<apex:pageBlockSection title="BASIC" columns="2">
+					<apex:pageBlockSectionItem>
 						<apex:outputText value="DISCOUNT " />
 						<apex:inputField value="{! ticket.Discount__c }" />
 					</apex:pageBlockSectionItem>
-					<apex:pageBlockSectionItem >
-						<!-- <apex:outputText value="CLASS " />
-						<apex:inputField value="{! trainCarriage.Class__c }" /> -->
-						<apex:selectList value="{! trainCarriage.Class__c }" multiselect="false" size="1">
-							<apex:selectOptions value="{! classOptions }"/>
+					<apex:pageBlockSectionItem>
+						<apex:selectList value="{! trainCarriage.Class__c }"
+							multiselect="false" size="1">
+							<apex:selectOptions value="{! classOptions }" />
 						</apex:selectList>
+
 					</apex:pageBlockSectionItem>
 				</apex:pageBlockSection>
+
 				<apex:pageBlockSection title="SPOT">
-					<apex:pageBlockSectionItem >
+					<apex:pageBlockSectionItem>
 						<apex:inputCheckbox value="{! isWindow }" />
 						<apex:outputText value="WINDOW" />
 					</apex:pageBlockSectionItem>
@@ -70,26 +73,50 @@
 						<apex:outputText value="NEAR TABLE" />
 					</apex:pageBlockSectionItem>
 				</apex:pageBlockSection>
-				<apex:commandLink action="{! addElementToTicket }" value="Add" />
+
+				<apex:commandLink action="{! addElementToTicket }"
+					value="Add Ticket" />
 			</apex:pageBlockSection>
 			<apex:pageBlockTable value="{! TicketsList }" var="t">
-				<apex:column >
+				<apex:column>
 					<apex:outputText value="{! t }" />
 				</apex:column>
-				<apex:column >
-					<apex:commandLink action="{! deleteTicket }" value="Delete"
+				<apex:column>
+					<apex:commandLink action="{! deleteTicket }" value="Delete Ticket"
 						style="float:right;">
 						<apex:param name="ticketToDelete" value="{! t }"
 							assignTo="{! ticketToDelete }" />
 					</apex:commandLink>
 				</apex:column>
 			</apex:pageBlockTable>
-			<apex:pageBlockButtons >
-				<apex:commandButton action="{! moveToFindRoutePage }"
-					value="CANCEL" />
-				<apex:commandButton action="{! getFreeSeatsList }" value="Buy" />
+
+			<apex:pageBlockSection title="Free Tickets Available Near:"
+				columns="2">
+				<apex:pageBlockSectionItem>
+					<apex:outputText value="Window: {! nearWindowFreeSpots }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem>
+					<apex:outputText
+						value="Table & Window: {! nearTableAndWindowFreeSpots }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem>
+					<apex:outputText value="Corridor: {! nearCorridorFreeSpots }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem>
+					<apex:outputText
+						value="Table & Corridor: {! nearCorridorAndTableFreeSpots }" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem>
+					<apex:outputText value="All: {! allFreeSpots }" />
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+			<apex:pageBlockButtons>
+				<apex:commandButton action="{! moveToFindRoutePage }" value="CANCEL" />
+				<apex:commandButton action="{! getFreeSeatsList }" value="Buy"
+					disabled="{! !(ticketsList.size > 0) }" id="buyButton" />
 				<apex:commandLink action="{! invoiceShow }" value="Invoice"
-					target="_blank" />
+					target="_blank" id="invoiceButton"
+					rendered="{! showInvoiceBoolean }" />
 			</apex:pageBlockButtons>
 		</apex:pageBlock>
 	</apex:form>
