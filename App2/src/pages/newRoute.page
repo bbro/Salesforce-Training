@@ -1,9 +1,11 @@
 <apex:page controller="RouteCtrl" showHeader="false" sidebar="false" docType="html-5.0">
 <!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
+<br/>
+<br/>
 	<apex:form >
 	<apex:messages />
 		<div align="center">
-			<apex:pageBlock title="NEW ROUTE" id="pb">
+			<apex:pageBlock title="New route" id="pb">
 				<apex:pageBlockSection title="Choose station:">
 					<apex:selectList value="{! stationId }" multiselect="false" size="1">
 						<apex:selectOptions value="{! stationsOptions }"/>
@@ -25,7 +27,7 @@
 			<br/>
 			<br/>
 			<apex:pageBlock title="Added stations" id="addedStations">
-			<apex:pageBlockSection columns="4">
+			<!-- <apex:pageBlockSection columns="4">
 				<apex:pageBlockTable value="{! stationsAddedToRoute }" var="s">
 					<apex:column headerValue="Station" value="{! s.Name }"/>
 				</apex:pageBlockTable>
@@ -38,13 +40,28 @@
 				<apex:pageBlockTable value="{! departureTimes }" var="dt">
 					<apex:column headerValue="Departure Time" value="{! dt }"/>
 				</apex:pageBlockTable>
-			</apex:pageBlockSection>
+			</apex:pageBlockSection> -->
+			 <div align="center">
+	              <apex:pageBlockTable value="{! stationsAddedToRoute }" var="routeWrapper">
+	                  <apex:column headerValue="Station" value="{! routeWrapper.station.Name }"/>
+	                  <apex:column headerValue="Platform" >
+		                  <apex:outputField value="{! routeWrapper.platform.Name }">
+		                  	<apex:inlineEditSupport showOnEdit="updateButton" event="ondblclick" />
+		                  </apex:outputField>
+	                  </apex:column>
+	                  <apex:column headerValue="Arrival Time" value="{! routeWrapper.arrivalTime }"/>
+	                  <apex:column headerValue="Departure Time" value="{! routeWrapper.departureTime }"/>
+	                  <apex:column headerValue="Edit" >
+	                  	  <apex:commandButton id="updateButton" value="Update"/>
+	                  </apex:column>
+	              </apex:pageBlockTable>
+	        </div>
 			</apex:pageBlock>
 			<br/>
-			<apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
+			<apex:commandButton value="Save route" action="{! addPlatformToRoute }"/>
 			<apex:commandButton value="Remove last station" action="{! removeLastStation }"/>
 			<apex:commandButton value="Clear all" action="{! clearAll }"/>
-			<apex:commandButton value="Save route" action="{! addPlatformToRoute }"/>
+			<apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
 		</div>
 	</apex:form>
 </apex:page>

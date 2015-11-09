@@ -1,4 +1,11 @@
 public with sharing class RouteCtrl {
+	public with sharing class NewRouteDetails {
+		public Station__c station { get; set; }
+		public Platform__c platform { get; set; }
+		public DateTime arrivalTime { get; set; }
+		public DateTime departureTime { get; set; }
+	}
+	
 	public Route__c route { get; set; }
 	public Id routeToShowDetailsId { get; set; }
 	public List<Platform_Of_Route__c> detailsOfRoute { get; set; }
@@ -14,12 +21,9 @@ public with sharing class RouteCtrl {
 	}
 	public Id platformId { get; set; }
 	public List<Platform_Of_Route__c> platformsAddedToRoute { get; set; }
-	public List<Route__c> allRoutes { get; set; }
 	public List<Route__c> routesToDisplay { get; set; }
-	public List<Station__c> stationsAddedToRoute { get; set; }
-	public List<DateTime> arrivalTimes { get; set; }
+	public List<NewRouteDetails> stationsAddedToRoute { get; set; }
 	public List<DateTime> departureTimes { get; set; }
-	public List<Platform__c> platformsOfRoute { get; set; }
 	public Time arrivalTime { 
         get {
             if (arrivalTime == null) {
@@ -60,12 +64,8 @@ public with sharing class RouteCtrl {
     
     public RouteCtrl() {
 		this.route = new Route__c();
-		platformsAddedToRoute = new List<Platform_Of_Route__c>();
-		stationsAddedToRoute = new List<Station__c>();
-		platformsOfRoute = new List<Platform__c>();
-		arrivalTimes = new List<DateTime>();
+		stationsAddedToRoute = new List<NewRouteDetails>();
 		departureTimes = new List<DateTime>();
-		allRoutes = [SELECT Id, Name FROM Route__c];
 		system.debug(dateToFilterFrom);
 		routesToDisplay = [SELECT Name FROM Route__c WHERE Id IN (SELECT Route__c FROM Platform_Of_Route__c  WHERE Departure_Time__c >= :dateToFilterFrom)];
 	}
@@ -87,14 +87,15 @@ public with sharing class RouteCtrl {
     }
     
     public PageReference addDataToLists() {
+    	NewRouteDetails detailsOfNewStation = new NewRouteDetails();
     	if (departureTime<=arrivalTime) {
     		ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'The arrival time cannot be later or equal to departure time!'));
     	}
     	else {
     		Station__c stationToAdd = [SELECT Name FROM Station__c WHERE Id = :stationId];
     		Platform__c platformToAdd = [SELECT Name FROM Platform__c WHERE Id = :platformId];
-    		for (Station__c s : stationsAddedToRoute) {
-    			if (s.Name==stationToAdd.Name) {
+    		for (NewRouteDetails s : stationsAddedToRoute) {
+    			if (s.station==stationToAdd) {
     				ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Such station has already been added to route!'));
     				return null;
     			}
@@ -107,10 +108,12 @@ public with sharing class RouteCtrl {
 	    			return null;
 	    		}
 	    	}
-	    	arrivalTimes.add(dtArrivalTime);
 	    	departureTimes.add(dtDepartureTime);
-	    	stationsAddedToRoute.add(stationToAdd);
-	    	platformsOfRoute.add(platformToAdd);
+	    	detailsOfNewStation.arrivalTime = dtArrivalTime;
+	    	detailsOfNewStation.departureTime = dtDepartureTime;
+	    	detailsOfNewStation.station = stationToAdd;
+	    	detailsOfNewStation.platform = platformToAdd;
+	    	stationsAddedToRoute.add(detailsOfNewStation);
     	}
     	return null;
     }
@@ -118,9 +121,7 @@ public with sharing class RouteCtrl {
    public PageReference removeLastStation() {
 	   if (stationsAddedToRoute.size()>0) {
 		   stationsAddedToRoute.remove(stationsAddedToRoute.size()-1);
-		   arrivalTimes.remove(arrivalTimes.size()-1);
 		   departureTimes.remove(departureTimes.size()-1);
-		   platformsOfRoute.remove(platformsOfRoute.size()-1);
 		}
    		return null;
    }
@@ -129,10 +130,7 @@ public with sharing class RouteCtrl {
 	   if (stationsAddedToRoute.size()>0) {
 	   		this.route = new Route__c();
 		   stationsAddedToRoute.clear();
-		   arrivalTimes.clear();
 		   departureTimes.clear();
-		   platformsOfRoute.clear();
-		   platformsAddedToRoute.clear();
 		}
    		return null;
    }
@@ -145,14 +143,14 @@ public with sharing class RouteCtrl {
 			ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Add at least two stations to route before saving it!'));
 		}
 		else {
-			String nameFrom = stationsAddedToRoute[0].Name;
-			String nameTo = stationsAddedToRoute[stationsAddedToRoute.size()-1].Name;
+			String nameFrom = stationsAddedToRoute[0].station.Name;
+			String nameTo = stationsAddedToRoute[stationsAddedToRoute.size()-1].station.Name;
 			route.Name = nameFrom + ' ' + nameTo;
 			insert route;
 	    	for (Integer i=0;i<stationsAddedToRoute.size();i++) {
-	    		Platform_Of_Route__c platformToAdd = new Platform_Of_Route__c(Arrival_Time__c = arrivalTimes[i],
-	    															      Departure_Time__c = departureTimes[i],
-	    															      Platform__c = platformsOfRoute[i].Id,
+	    		Platform_Of_Route__c platformToAdd = new Platform_Of_Route__c(Arrival_Time__c = stationsAddedToRoute[i].arrivalTime,
+	    															      Departure_Time__c = stationsAddedToRoute[i].departureTime,
+	    															      Platform__c = stationsAddedToRoute[i].platform.Id,
 	    															      Route__c = route.Id,
 	    															      Station_Number__c = i+1);
 		      	platformsAddedToRoute.add(platformToAdd);
