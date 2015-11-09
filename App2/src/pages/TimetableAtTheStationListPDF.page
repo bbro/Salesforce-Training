@@ -1,4 +1,5 @@
-<apex:page docType="html-5.0" showHeader="false" sidebar="false" controller="TimetableAtTheStation">
+<apex:page docType="html-5.0" showHeader="false" sidebar="false" controller="TimetableAtTheStation" renderAs="pdf" applyBodyTag="false" applyHtmlTag="false">
+
 	<apex:form >
 		<apex:pageBlock title="Timetable">
 			<br/>
@@ -22,11 +23,9 @@
 						<apex:facet name="header"> Platform</apex:facet>
 							{!t.Platform__r.Platform_Number__c}	
 					</apex:column>
+				<br/>
+				<br/>
 				</apex:pageBlockTable>
-			<div align="center">
-				<apex:commandButton value="Back" action="{!BackToTimetable}"/>
-				<apex:commandButton value="To PDF" action="{!ListPDF}"/>
-			</div>	
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>
