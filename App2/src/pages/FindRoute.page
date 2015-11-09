@@ -3,7 +3,7 @@
 <br/>
 <br/>
 	<apex:form >
-	<apex:messages/>
+	<apex:messages />
 		<apex:pageBlock title="Search for connection">
 			From: <apex:selectList value="{! startStationId }" multiselect="false" size="1">
 				<apex:selectOptions value="{! stationsOptions }"/>

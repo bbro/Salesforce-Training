@@ -1,19 +1,19 @@
 <apex:page sidebar="false" showHeader="false" controller="CityStationPlatformCtrl">
 	<apex:form >
 		<apex:messages />
-		<apex:pageBlock >
+		<apex:pageBlock title="LIST OF CITIES">
 			<apex:pageBlockTable value="{! allCities }" var="city">
 				<apex:column >
 					<apex:outputField value="{! city.Name }" />
 				</apex:column>
 				<apex:column >
-						<apex:commandLink action="{! updateCity }" id="updateButton" value="Edit" >
-							<apex:param name="id" value="{! city.Id }" assignto="{! cityId }"/>
-						</apex:commandLink>
+					<apex:commandLink action="{! updateCity }" id="updateButton" value="Edit" >
+						<apex:param name="id" value="{! city.Id }" assignto="{! cityId }"/>
+					</apex:commandLink>
 				</apex:column>
 			</apex:pageBlockTable>
-			<apex:commandButton value="Add City" action="/apex/Add_City" />
-			<apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
+			<br/><p align="center"><apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
+			<apex:commandButton value="Add City" action="/apex/Add_City" /></p>
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>

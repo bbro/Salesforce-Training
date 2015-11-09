@@ -1,15 +1,15 @@
 <apex:page showHeader="false" sidebar="false" controller="CityStationPlatformCtrl">
 	<apex:form >
 	<apex:messages />
-		<apex:pageBlock >
+		<apex:pageBlock title="ADD STATION">
 			<apex:pageBlockSection columns="1">
 				<apex:inputText value="{! stationName }" label="Station name" />
 				<apex:inputField value="{! station.City__c }" label="City Name" />
 				<apex:inputText value="{! platformAmount }" label="Number of platforms" />
 				<apex:inputCheckbox value="{! isMainStation }" label="Main station" />
-				<apex:commandButton value="Save" action="{! saveNewStation }" />
-				<apex:commandButton value="Cancel" action="/apex/Stations" immediate="true"/>
 			</apex:pageBlockSection>
+			<br/><p align="center"><apex:commandButton value="Back" action="/apex/Stations" immediate="true"/>		
+			<apex:commandButton value="Save" action="{! saveNewStation }" /></p>
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>

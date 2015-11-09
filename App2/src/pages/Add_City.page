@@ -1,10 +1,12 @@
 <apex:page sidebar="false" showHeader="false" controller="CityStationPlatformCtrl">
 	<apex:form >
 		<apex:messages />
-		<apex:pageBlock >
-			<apex:inputText value="{! CityName }" > City Name </apex:inputText>
-			<apex:commandButton value="Save" action="{! saveNewCity }"/>
-			<apex:commandButton value="Cancel" action="/apex/Cities" />
+		<apex:pageBlock title="ADD CITY">
+			<apex:pageBlockSection columns="1">
+				<apex:inputText value="{! CityName }" label="City name"/> 
+			</apex:pageBlockSection>
+			<br/><p align="center"><apex:commandButton value="Back" action="/apex/Cities" />
+			<apex:commandButton value="Save" action="{! saveNewCity }"/></p>
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>

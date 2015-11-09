@@ -1,21 +1,15 @@
 <apex:page showHeader="false" sidebar="false" controller="ListOfTrainsCtrl">
     <apex:form >
-       <apex:pageBlock >
+       <apex:pageBlock title="ADD/EDIT TRAIN">
            <apex:pageMessages />
-           ADD/EDIT TRAIN <br/>
-           <br/>  <br/> 
-           Train id: {!trainId}
-            <p>
-           		Name:                     
-            	<apex:inputText value="{!newTrainName}"  /> <br/>
-            	Type: 
-            	<apex:inputField id="typeTrain" value="{!train.Type__c}" required="true"/> <br/>
-            	Average Velocity: 
-            	<apex:inputText value="{!newTrainAverageVelocity}" required="true" /><br/> 
-            	Allow Packages: 
-            	<apex:inputCheckbox value="{!pack}"  /><br/>
-            </p>
-            <br/><p align="right"><apex:commandButton value="Back" action="{!showListOfTrains}"  immediate="true"/>            
+           <apex:pageBlockSection columns="1">
+           		Train id: {!trainId} <br/>                    
+            	<apex:inputText value="{!newTrainName}" label="Name:" />
+            	<apex:inputField id="typeTrain" value="{!train.Type__c}" required="true" label="Type:"/> 
+            	<apex:inputText value="{!newTrainAverageVelocity}" required="true" label="Average Velocity:"/>
+            	<apex:inputCheckbox value="{!pack}" label="Allow Packages: " />
+            </apex:pageBlockSection>
+            <br/><p align="center"><apex:commandButton value="Back" action="{!showListOfTrains}"  immediate="true"/>            
             <apex:commandButton value="Save" action="{!addTrain}" /></p>
        </apex:pageBlock>
     </apex:form>

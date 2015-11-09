@@ -29,7 +29,7 @@
 					</apex:commandLink>
 				</apex:column>
 			</apex:pageBlockTable>
-			<br/><p align="right"><apex:commandButton value="Back" action="/apex/OptionForAdministrator"/>
+			<br/><p align="center"><apex:commandButton value="Back" action="/apex/OptionForAdministrator"/>
 			<apex:commandButton value="Add train" action="{!showAddTrainPage}"/></p>
 		</apex:pageBlock>
 	</apex:form>
