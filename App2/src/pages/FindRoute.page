@@ -3,7 +3,7 @@
 <br/>
 <br/>
 	<apex:form >
-	<apex:messages/>
+	<apex:messages />
 		<apex:pageBlock title="Search for connection">
 			From: <apex:selectList value="{! startStationId }" multiselect="false" size="1">
 				<apex:selectOptions value="{! stationsOptions }"/>
@@ -18,13 +18,14 @@
 				<apex:selectOption itemValue="Regio" itemLabel="Regio"/>
 				<apex:selectOption itemValue="InterCity" itemLabel="InterCity"/>
 			</apex:selectList>
+			<br/>
 			Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/><br/>
 			Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/><br/>
 			Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! packagesAvailable }"/><br/>
 			<apex:commandButton value="Search" action="{! searchRoutes }"/>
 		</apex:pageBlock>
 		<apex:pageBlock title="Search results">
-			<apex:pageBlockTable value="{! foundTrainsOnRoute }" var="trainFound">
+			<apex:pageBlockTable value="{! foundTrainsOnRouteResults }" var="trainFound">
 				<apex:column headerValue="Route Name">
 					<apex:commandLink value="{! trainFound.Route__r.Name }" action="{! goToRouteDetails }" target="blank">
 						<apex:param name="trainFound" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>

@@ -60,9 +60,8 @@ public class TicketCtrl {
 	
 	public List<SelectOption> getClassOptions() {
         List<SelectOption> ClassOptions = new List<SelectOption>();
-        //Integer i = 1;
         for(Carriage_On_Train__c classOption : [SELECT Carriage__r.Class__c FROM Carriage_on_Train__c 
-			 								 WHERE Train__c IN (SELECT Train__c FROM Train_On_Route__c WHERE Id = :trainFoundId)]) {
+			 								    WHERE Train__c IN (SELECT Train__c FROM Train_On_Route__c WHERE Id = :trainFoundId)]) {
 	        if (classOption.Carriage__r.Class__c == 'Buffet Car') {
 	        	classOptions.add(new SelectOption(classOption.Carriage__r.Class__c, 'Buffet Car'));
 	        }
