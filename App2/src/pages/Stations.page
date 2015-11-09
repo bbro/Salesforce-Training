@@ -1,7 +1,7 @@
 <apex:page showHeader="false" sidebar="false" controller="CityStationPlatformCtrl">
 	<apex:form >
 	<apex:messages />
-		<apex:pageBlock >
+		<apex:pageBlock title="LIST OF STATIONS">
 			<apex:pageBlockTable value="{! allStations }" var="st">
 				<apex:column value="{! st.Name }" />
 				<apex:column value="{! st.City__c }" />
@@ -12,8 +12,8 @@
 					</apex:commandLink>
 				</apex:column>
 			</apex:pageBlockTable>
-			<apex:commandButton value="Add Station" action="/apex/Add_Station" />
-			<apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
+			<br/><p align="center"><apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
+			<apex:commandButton value="Add Station" action="/apex/Add_Station" /></p>
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>

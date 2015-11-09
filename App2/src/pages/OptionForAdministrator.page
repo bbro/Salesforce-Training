@@ -1,8 +1,7 @@
 <apex:page showHeader="false" sidebar="false" controller="OptionsForAdministrator">
-<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
 	<apex:form >
-		<apex:pageBlock >
-			OPTIONS FOR ADMINISTRATOR <br/><br /><br />
+		<apex:pageBlock title="OPTIONS FOR ADMINISTRATOR" >
+			<br/>
 			<apex:pageBlockSection title="Available options">
 				<apex:commandLink value="  List of trains    " action="{!showListOfTrains}" /> <br/>
 				<apex:commandLink value=" --->  Add new trains    " action="{!showAddNewTrains}" /> <br/>

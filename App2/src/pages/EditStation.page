@@ -1,23 +1,13 @@
 <apex:page showHeader="false" sidebar="false" controller="CityStationPlatformCtrl">
 	<apex:form >
-		<apex:pageBlock >
-			<apex:pageBlockTable value="{! station }" var="st" >
-				<apex:column >
-					<apex:inputText value="{! st.Name }" >Station name</apex:inputText>
-				</apex:column>
-				<apex:column >
-					<apex:inputField value="{! st.City__c }" />
-				</apex:column>
-				<apex:column >
-					<apex:inputCheckbox value="{! st.Is_Main_Station__c }" >Main station</apex:inputCheckbox>
-				</apex:column>
-				<apex:column >
-					<apex:commandButton value="Save" action="{! updateStation }" />
-				</apex:column>
-				<apex:column >
-					<apex:commandButton value="Cancel" action="/apex/Stations" />
-				</apex:column>
-			</apex:pageBlockTable>
+		<apex:pageBlock title="EDIT STATION">
+		<apex:pageBlockSection columns="1" >
+			<apex:inputText value="{! station.Name }" label="Station name"></apex:inputText>
+			<apex:inputField value="{! station.City__c }" label="City"/>
+			<apex:inputCheckbox value="{! station.Is_Main_Station__c }" label="Main station" ></apex:inputCheckbox>
+		</apex:pageBlockSection>
+		<br/><p align="center"><apex:commandButton value="Back" action="/apex/Stations" immediate="true"/>
+		<apex:commandButton value="Save" action="{! updateStation }" /> </p>
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>

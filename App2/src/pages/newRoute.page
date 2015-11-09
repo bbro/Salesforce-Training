@@ -1,11 +1,9 @@
 <apex:page controller="RouteCtrl" showHeader="false" sidebar="false" docType="html-5.0">
 <!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
-<br/>
-<br/>
 	<apex:form >
 	<apex:messages />
 		<div align="center">
-			<apex:pageBlock title="New route" id="pb">
+			<apex:pageBlock title="NEW ROUTE" id="pb">
 				<apex:pageBlockSection title="Choose station:">
 					<apex:selectList value="{! stationId }" multiselect="false" size="1">
 						<apex:selectOptions value="{! stationsOptions }"/>
@@ -43,10 +41,10 @@
 			</apex:pageBlockSection>
 			</apex:pageBlock>
 			<br/>
-			<apex:commandButton value="Save route" action="{! addPlatformToRoute }"/>
+			<apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
 			<apex:commandButton value="Remove last station" action="{! removeLastStation }"/>
 			<apex:commandButton value="Clear all" action="{! clearAll }"/>
-			<apex:commandButton value="Back" action="{! backToAdministratorOptions }"/>
+			<apex:commandButton value="Save route" action="{! addPlatformToRoute }"/>
 		</div>
 	</apex:form>
 </apex:page>

@@ -1,11 +1,8 @@
 <apex:page controller="CarriageCtrl" sidebar="false" showHeader="false">
-<apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/>
-<br/>
-<br/>
 	<apex:form >
 		<div align="center">
 			<apex:actionFunction name="hideAdditionalInfo" action="{! hideAdditionalSection }" rerender="pb"/>
-			<apex:pageBlock title="New carriage" id="pb">
+			<apex:pageBlock title="NEW CARRIAGE" id="pb">
 				<apex:pageBlockSection title="Choose carriage's class:">
 					<apex:inputField value="{! carriage.Class__c }" onchange="hideAdditionalInfo('{! carriage.Class__c }')"/>
 				</apex:pageBlockSection>
@@ -16,8 +13,8 @@
 					Carriage has seats with tables: <apex:inputCheckbox value="{! isWithTables }"/>
 				</apex:pageBlockSection>	
 			</apex:pageBlock>
-			<apex:commandButton value="Save new carriage" action="{! addCarriageAndUpdateList }"/>
-			<apex:commandButton value="Back to the carriage list" action="{! carriagesPage }"/>
+			<br/><p align="center"><apex:commandButton value="Back" action="{! carriagesPage }"/>
+			<apex:commandButton value="Save" action="{! addCarriageAndUpdateList }"/> </p>
 		</div>
 	</apex:form>
 </apex:page>

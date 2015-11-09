@@ -1,9 +1,7 @@
 <apex:page controller="RouteCtrl" sidebar="false" showHeader="false" docType="html-5.0">
 <!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
-<br/>
-<br/>
 	<apex:form >
-		<apex:pageBlock title="List of routes">
+		<apex:pageBlock title="LIST OF ROUTES">
 			<apex:commandButton value="Filter by date" action="{! filterRoutes }"/>
 			<apex:input type="date" value="{! insertedDateToFilterFrom }"/>
 			<apex:pageBlockTable value="{! routesToDisplay }" var="currentRoute" id="pbt">
@@ -13,6 +11,8 @@
 					</apex:commandLink>
 				</apex:column>
 			</apex:pageBlockTable>
+			<br/><p align="center"><apex:commandButton value="Back" action="/apex/OptionForAdministrator"/>
+			<apex:commandButton value="Add route" action="/apex/newRoute"/></p>
 		</apex:pageBlock>
 	</apex:form>
 </apex:page>

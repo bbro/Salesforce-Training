@@ -1,16 +1,15 @@
 <apex:page controller="FindRouteCtrl" sidebar="false" showHeader="false" docType="html-5.0">
 <!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
-<br/>
-<br/>
 	<apex:form >
-		<apex:pageBlock title="Route details">
+		<apex:pageBlock title="ROUTE DETAILS">
 			<apex:pageBlockTable value="{! detailsOfRoute }" var="currentStation">
 				<apex:column headerValue="Number" value="{! currentStation.Station_Number__c }"/>
 				<apex:column headerValue="Station Name" value="{! currentStation.Platform__r.Station__r.Name }"/>
 				<apex:column headerValue="Platform" value="{! currentStation.Platform__c }"/>
 				<apex:column headerValue="Arrival Time" value="{! currentStation.Arrival_Time__c }"/>
 				<apex:column headerValue="Departure Time" value="{! currentStation.Departure_Time__c }"/>
-			</apex:pageBlockTable>
-		</apex:pageBlock>
+			</apex:pageBlockTable>	
+			<br/><p align="center"><apex:commandButton value="Back" action="/apex/OptionForAdministrator"/></p>	
+		</apex:pageBlock>		
 	</apex:form>
 </apex:page>
