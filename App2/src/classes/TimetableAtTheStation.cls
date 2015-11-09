@@ -60,4 +60,9 @@ public class TimetableAtTheStation {
 		PageReference outPage = Page.TimetableAtTheStation;
 		return outPage;
 	}
+	
+	public PageReference ListPDF() {
+		PageReference outPage = Page.TimetableAtTheStationListPDF;
+		return outPage;
+	}
 }

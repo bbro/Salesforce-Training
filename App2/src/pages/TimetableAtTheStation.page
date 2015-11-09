@@ -1,13 +1,13 @@
 <apex:page docType="html-5.0" showHeader="false" sidebar="false" controller="TimetableAtTheStation">
 	<apex:form >
-	<apex:messages/>
+	<apex:messages />
 		<apex:pageBlock title="Timetable At the Station">
 			<apex:pageBlockSection title="Choose station:">
 				<apex:selectList value="{! stationId }" multiselect="false" size="1">
 					<apex:selectOptions value="{! stationsOptions }"/>						
 				</apex:selectList>	
 			</apex:pageBlockSection>
-			<apex:pageBlockSection>
+			<apex:pageBlockSection >
 				Select Day: <apex:input type="date" value="{!searchDate}"/> <br/>
 				Enter the time: <apex:input type="time" value="{!searchTime}"/> <br/>
 			</apex:pageBlockSection>
