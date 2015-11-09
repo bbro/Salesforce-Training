@@ -51,7 +51,11 @@ public class TrainCarriagesCtrl {
 
 	// create select option list of trains
 	public List<SelectOption> getTrainOptions() {
+		List<Platform_of_Route__c> platforms = [SELECT Id, Platform__r.Station__r.Is_Main_Station__c FROM Platform_of_Route__c WHERE Platform__r.Station__r.Is_Main_Station__c = false AND Route__c = :routeId];
 		for (Train__c tr : getAvailableTrains()) {
+			if (platforms.size() > 0 && tr.Type__c == 'InterCity') {
+				continue;
+			}
 			trainsOptionList.add(new SelectOption(tr.Id, tr.Name));
 		}
 		return trainsOptionList;
