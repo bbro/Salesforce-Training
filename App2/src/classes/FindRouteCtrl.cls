@@ -7,6 +7,8 @@ public with sharing class FindRouteCtrl {
 	private String endStationName;
 	public List<String> foundRoutesNames { get; set; }
 	public List<Train_on_Route__c> foundTrainsOnRoute { get; set; }
+	public List<Train_on_Route__c> foundTrainsOnRouteResults { get; set; }
+	public Set<Train_on_Route__c> foundTrainsOnRouteSet { get; set; }
 	public List<Platform_Of_Route__c> detailsOfRoute { get; set; }
 	public String routeFound { get; set; }
 	public String getStartStationName() {
@@ -46,7 +48,7 @@ public with sharing class FindRouteCtrl {
 	public Boolean canTransportBicycles { get; set; }
 	public Boolean packagesAvailable { get; set; }
 	public Train__c train { get; set; }
-	
+
 	public FindRouteCtrl() {
 		this.train = new Train__c();
 	}
@@ -86,25 +88,51 @@ public with sharing class FindRouteCtrl {
         }
         
         // search trains by route id
+        String trainsQuery = 'SELECT Train__c, Route__c, Route__r.Name, Train__r.Name FROM Train_on_Route__c WHERE Route__c in :searchedRoutesId AND Train__r.Type__c = :typeOfTrain';
         List<Train_on_Route__c> trainsOnSearchedRoutes = new List<Train_on_Route__c>();
-        trainsOnSearchedRoutes = [SELECT Train__c, Route__c, Route__r.Name, Train__r.Name FROM Train_on_Route__c WHERE Route__c in :searchedRoutesId AND Train__r.Type__c = :typeOfTrain AND Train__r.Allow_Packages__c = :packagesAvailable];
-        List<Carriage_on_Train__c> carriagesOnTrainsOnSearchedRoutes = new List<Carriage_on_Train__c> ();
-        
-        for (Train_on_Route__c train : trainsOnSearchedRoutes) {
-        	Boolean trainHasProperCarriage = false;
-        	for (Carriage_on_Train__c cr : [SELECT Carriage__c, Carriage__r.Disabled_People_Support__c, Carriage__r.Bicycles_Transport__c, Name, Id, Train__c FROM Carriage_on_Train__c WHERE Train__c = :train.Train__c ]) {
-        		
-        		if (cr.Carriage__r.Bicycles_Transport__c == canTransportBicycles && 
-        			cr.Carriage__r.Disabled_People_Support__c == hasDisabledSupport) {
-        				trainHasProperCarriage = true;
-        				break;
-        		}
-        	}
-        	if (trainHasProperCarriage) {
-        		foundRoutesNames.add(train.Route__r.Name + ' ' + train.Train__r.Name);
-        		foundTrainsOnRoute.add(train); 
-        	}
+        if (packagesAvailable) {
+        	trainsOnSearchedRoutes = Database.query(trainsQuery + ' AND Train__r.Allow_Packages__c = true');
         }
+        else {
+        	trainsOnSearchedRoutes = Database.query(trainsQuery);
+        }
+        //List<Carriage_on_Train__c> carriagesOnTrainsOnSearchedRoutes = new List<Carriage_on_Train__c> ();
+        Map<Id, Train_on_Route__c> trainIdToTrainRoutes = new Map<Id, Train_on_Route__c>();
+        for (Train_on_Route__c train : trainsOnSearchedRoutes) {
+        	trainIdToTrainRoutes.put(train.Train__c, train);
+        }
+        String carriagesQuery = 'SELECT Train__c FROM Carriage_on_Train__c WHERE Train__c in :trainIds';
+        List<String> whereStmts = new List<String>();
+        List<Id> trainIds = new List<Id>(trainIdToTrainRoutes.keySet());
+    	/*if (trainIds.size() > 0) {
+    		whereStmts.add('Train__c in :trainIds');
+    		//carriagesQuery += ' WHERE Train__c in :trainIds';
+    	}*/
+    	if (canTransportBicycles) {
+    		//whereStmts.add('Carriage__r.Bicycles_Transport__c = true');
+    		carriagesQuery += ' AND Carriage__r.Bicycles_Transport__c = true';
+    	}
+    	if (hasDisabledSupport) {
+    		//whereStmts.add('Carriage__r.Disabled_People_Support__c = true');
+    		carriagesQuery += ' AND Carriage__r.Disabled_People_Support__c = true';
+    	}
+    	
+    	/*if (whereStmts.size() > 0) {
+    		carriagesQuery += String.join(whereStmts, ' AND ');
+    	}*/
+    	//system.debug(carriagesQuery);
+    	for (Carriage_on_Train__c carriageOfTrain : Database.query(carriagesQuery)) {
+    		foundTrainsOnRoute.add(trainIdToTrainRoutes.get(carriageOfTrain.Train__c));
+    	}
+    	foundTrainsOnRouteSet = new Set<Train_On_Route__c>();
+    	foundTrainsOnRouteSet.addAll(foundTrainsOnRoute);
+    	foundTrainsOnRouteResults = new List<Train_On_Route__c>();
+    	foundTrainsOnRouteResults.addAll(foundTrainsOnRouteSet);
+    	/*for (Train_On_Route__c t : foundTrainsOnRoute) {
+    		if (foundTrainsOnRouteSet.add(t)) {
+    			foundTrainsOnRouteResults.add(t);
+    		}
+    	}*/
         return null;
     }
     
