@@ -1,4 +1,4 @@
-<apex:page docType="html-5.0" showHeader="false" sidebar="false" controller="TimetableAtTheStation">
+<apex:page docType="html-5.0" showHeader="false" sidebar="false" controller="FindRouteCtrl">
 	<apex:form >
 		<apex:pageBlock title="Timetable">
 			<br/>
@@ -24,7 +24,7 @@
 					</apex:column>
 				</apex:pageBlockTable>
 			<div align="center">
-				<apex:commandButton value="Back" action="{!BackToTimetable}"/>
+				<apex:commandButton value="Back" action="/apex/FindRoute"/>
 				<apex:commandButton value="To PDF" action="{!ListPDF}"/>
 			</div>	
 		</apex:pageBlock>

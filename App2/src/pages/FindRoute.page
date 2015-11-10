@@ -1,48 +1,54 @@
 <apex:page controller="FindRouteCtrl" sidebar="false" showHeader="false" docType="html-5.0">
 <!-- <apex:stylesheet value="{!URLFOR($Resource.Styles, 'styles.css')}"/> -->
-<br/>
-<br/>
 	<apex:form >
 	<apex:messages />
 		<apex:pageBlock title="Search for connection">
-			From: <apex:selectList value="{! startStationId }" multiselect="false" size="1">
-				<apex:selectOptions value="{! stationsOptions }"/>
-			</apex:selectList>
-			To: <apex:selectList value="{! endStationId }" multiselect="false" size="1">
-				<apex:selectOptions value="{! stationsOptions }"/>
-			</apex:selectList>
-			Time: <apex:input type="time" value="{! travelTime }"/>
-			Arrival Time<apex:inputCheckbox id="arrival" value="{! isArrivalTime }"/>
-			Date: <apex:input type="date" value="{! departureDate }"/>
-			Type of train: <apex:selectList value="{! typeOfTrain }" multiselect="false" size="1">
-				<apex:selectOption itemValue="Regio" itemLabel="Regio"/>
-				<apex:selectOption itemValue="InterCity" itemLabel="InterCity"/>
-			</apex:selectList>
+			<apex:pageBlockSection title="From:">
+				<apex:selectList value="{! startStationId }" multiselect="false" size="1">
+					<apex:selectOptions value="{! stationsOptions }"/>
+				</apex:selectList>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection title="To:">	
+				<apex:selectList value="{! endStationId }" multiselect="false" size="1">
+					<apex:selectOptions value="{! stationsOptions }"/>
+				</apex:selectList>
+			</apex:pageBlockSection>
 			<br/>
-			Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/><br/>
-			Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/><br/>
-			Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! packagesAvailable }"/><br/>
-			<apex:commandButton value="Search" action="{! searchRoutes }"/>
-		</apex:pageBlock>
-		<apex:pageBlock title="Search results">
-			<apex:pageBlockTable value="{! foundTrainsOnRouteResults }" var="trainFound">
-				<apex:column headerValue="Route Name">
-					<apex:commandLink value="{! trainFound.Route__r.Name }" action="{! goToRouteDetails }" target="blank">
-						<apex:param name="trainFound" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
-					</apex:commandLink>
-				</apex:column>
-				<apex:column headerValue="Train Name" value="{! trainFound.Train__r.Name }"/>
-				<apex:column headerValue="Ticket">
-					<apex:commandLink value="Buy" action="{! goToTicketPage }">
-						<apex:param name="ticketToBuy" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
-					</apex:commandLink>
-				</apex:column>
-				<apex:column headerValue="Packages">
-					<apex:commandLink value="Send" action="{! goToPackagePage }">
-						<apex:param name="packageToSend" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
-					</apex:commandLink>
-				</apex:column>
-			</apex:pageBlockTable>
-		</apex:pageBlock>
+			<apex:pageBlockSection >
+				Time: <apex:input type="time" value="{! travelTime }"/>
+				Arrival Time<apex:inputCheckbox id="arrival" value="{! isArrivalTime }"/>
+				Date: <apex:input type="date" value="{! departureDate }"/>
+				Type of train: <apex:selectList value="{! typeOfTrain }" multiselect="false" size="1">
+					<apex:selectOption itemValue="Regio" itemLabel="Regio"/>
+					<apex:selectOption itemValue="InterCity" itemLabel="InterCity"/>
+				</apex:selectList>
+				<br/>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection >
+				Facilities for disabled people: <apex:inputCheckbox id="dpSupport" value="{! hasDisabledSupport }"/><br/>
+				Bicycles transport: <apex:inputCheckbox id="bcTransport" value="{! canTransportBicycles }"/><br/>
+				Sending packages available: <apex:inputCheckbox id="pckAvailable" value="{! packagesAvailable }"/><br/>	
+			</apex:pageBlockSection>
+			<div align="center">
+				<apex:commandButton value="Search connections" action="{! searchRoutes }"/>
+			</div>
+		</apex:pageBlock>	
+	</apex:form>
+	<br/><br/>
+	<apex:form >
+		<apex:pageBlock title="Timetable at the Station">
+			<apex:pageBlockSection title="Choose station:">
+				<apex:selectList value="{! stationId }" multiselect="false" size="1">
+					<apex:selectOptions value="{! stationsOptions }"/>						
+				</apex:selectList>	
+			</apex:pageBlockSection>
+			<apex:pageBlockSection >
+				Select Day: <apex:input type="date" value="{!searchDate}"/> <br/>
+				Enter the time: <apex:input type="time" value="{!searchTime}"/> <br/>
+			</apex:pageBlockSection>
+			<div align="center">
+				<apex:commandButton value="Show timetable" action="{!showTimetable}" />
+			</div>
+		</apex:pageBlock>	
 	</apex:form>
 </apex:page>

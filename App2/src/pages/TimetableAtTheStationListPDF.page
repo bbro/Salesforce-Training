@@ -1,4 +1,4 @@
-<apex:page docType="html-5.0" showHeader="false" sidebar="false" controller="TimetableAtTheStation" renderAs="pdf" applyBodyTag="false" applyHtmlTag="false">
+<apex:page docType="html-5.0" showHeader="false" sidebar="false" controller="FindRouteCtrl" renderAs="pdf" applyBodyTag="false" applyHtmlTag="false">
 
 	<apex:form >
 		<apex:pageBlock title="Timetable">
