@@ -1,0 +1,28 @@
+<apex:page controller="FindRouteCtrl" sidebar="false" showHeader="false" docType="html-5.0">
+	<apex:form >
+		<apex:pageBlock title="Search results">
+			<apex:pageBlockTable value="{! foundTrainsOnRouteResults }" var="trainFound">
+				<apex:column headerValue="Route Name">
+					<apex:commandLink value="{! trainFound.Route__r.Name }" action="{! goToRouteDetails }" target="blank">
+						<apex:param name="trainFound" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
+					</apex:commandLink>
+				</apex:column>
+				<apex:column headerValue="Train Name" value="{! trainFound.Train__r.Name }"/>
+				<apex:column headerValue="Ticket">
+					<apex:commandLink value="Buy" action="{! goToTicketPage }">
+						<apex:param name="ticketToBuy" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
+					</apex:commandLink>
+				</apex:column>
+				<apex:column headerValue="Packages">
+					<apex:commandLink value="Send" action="{! goToPackagePage }">
+						<apex:param name="packageToSend" value="{! trainFound.Id }" assignTo="{! trainFoundId }"/>
+					</apex:commandLink>
+				</apex:column>
+			</apex:pageBlockTable>
+			<div align="center">
+				<apex:commandButton value="Back" action="{!BackToFindRoute}"/>
+				<apex:commandButton value="To PDF" action="{!ListPDF}"/>
+			</div>	
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
