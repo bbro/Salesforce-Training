@@ -111,7 +111,6 @@ public class TicketCtrl {
 				for (Seat__c singleSeat : seatList) {
 					if (singleSeat.Carriage__r.Id == currentCarriage.Id && !singleSeat.IsTaken__c) {
 							trainCarriage = currentCarriage;
-							//singleSeat.IsTaken__c = true;
 							freeSeat = singleSeat;
 							insertTickets(ticketInListIndex);
 							break;
@@ -145,27 +144,23 @@ public class TicketCtrl {
 		List<Integer> myfreeSpots = new List<Integer>();
 		
 		for (Carriage_on_Train__c carriage : c) {
-			List<Seat__c> freeSeatsList = [SELECT IsTaken__c,Near_Window__c, Table__c, Carriage__r.Id, Name FROM Seat__c WHERE IsTaken__c = false AND Carriage__r.Id = :carriage.Carriage__r.Id];
+			List<Seat__c> freeSeatsList = [SELECT IsTaken__c,Near_Window__c, Has_Table__c, Carriage__r.Id, Name FROM Seat__c WHERE IsTaken__c = false AND Carriage__r.Id = :carriage.Carriage__r.Id];
 			for (Seat__c seat : freeSeatsList) {
 				
 				if(seat.Near_Window__c) {
-					nearWindowFreeSpots++;
-				}
-				
-				if(seat.Table__c) {
-					nearTableFreeSpots++;
-				}
-				
-				if(seat.Near_Window__c && seat.Table__c ) {
-					nearTableAndWindowFreeSpots++;
+					if(seat.Has_Table__c) {
+						nearTableAndWindowFreeSpots++;
+					} else {
+						nearWindowFreeSpots++;
+					}
 				}
 				
 				if(!seat.Near_Window__c) {
-					nearCorridorFreeSpots++;
-				}
-				
-				if(!seat.Near_Window__c &&  seat.Table__c) {
-					nearCorridorAndTableFreeSpots++;
+					if(seat.Has_Table__c) {
+						nearCorridorAndTableFreeSpots++;
+					} else {
+						nearCorridorFreeSpots++;
+					}
 				}
 				
 				allFreeSpots++;
@@ -268,8 +263,7 @@ public class TicketCtrl {
 			myDiscount = 2.0d;
 		}
 		singleTicketPrice = ( classPrice + ( stations * pricePerStation) ) / myDiscount;
-		system.debug(singleTicketPrice);
-		system.debug(stations);
+		
 		ticketsPrice += singleTicketPrice;
 		return singleTicketPrice;
     }
@@ -291,7 +285,7 @@ public class TicketCtrl {
 	}
 	
 	public PageReference addElementToTicket() {
-		if (!isErrorInForms() && isTicketAvailable()) {
+		if (isErrorInForms() == false && isTicketAvailable() == true) {
 			showInvoiceBoolean = true;
 	      	firstNameTicket.add(firstName);
 	      	lastNameTicket.add(lastName);
@@ -310,42 +304,38 @@ public class TicketCtrl {
       	return null;
 	}
 	
-	public Boolean isTicketAvailable() {		
-		
+	public Boolean isTicketAvailable() {			
 		if (allFreeSpots > 0) {
-			if(isWindow && isTable  && nearTableAndWindowFreeSpots > 0) {
-				nearTableAndWindowFreeSpots--;
-				nearTableFreeSpots--;
-				nearWindowFreeSpots--;
-				allFreeSpots--;
+			if (isWindow && nearWindowFreeSpots > 0) {
+				if (isTable && nearTableAndWindowFreeSpots > 0) {
+					nearTableAndWindowFreeSpots--;
+					allFreeSpots--;
+				} else if (!isTable) {
+					nearWindowFreeSpots--;
+					allFreeSpots--;
+				} else {
+					showTicketNotAvailableMsg();
+					return false;
+				}
 				return true;
-			} else if(isWindow == false && isTable == true  && nearCorridorAndTableFreeSpots > 0) {
-				nearCorridorAndTableFreeSpots--;
-				nearTableFreeSpots--;
-				nearCorridorFreeSpots--;
-				allFreeSpots--;
-				return true;
-			} else if(isWindow && nearWindowFreeSpots > 0) {
-				nearWindowFreeSpots--;
-				nearTableAndWindowFreeSpots--;
-				allFreeSpots--;
-				return true;
-			} else if(isWindow == false && nearCorridorFreeSpots > 0) {
-				nearCorridorFreeSpots--;
-				nearCorridorAndTableFreeSpots--;
-				allFreeSpots--;
-				return true;
-			} else if(isTable && nearTableFreeSpots > 0) {
-				nearTableFreeSpots--;
-				nearTableAndWindowFreeSpots--;
-				allFreeSpots--;
+			} else if (!isWindow && nearCorridorFreeSpots > 0) {
+				if (isTable && nearCorridorAndTableFreeSpots > 0) {
+					nearCorridorAndTableFreeSpots--;
+					allFreeSpots--;
+				} else if (!isTable) {
+					nearCorridorFreeSpots--;
+					allFreeSpots--;
+				} else {
+					showTicketNotAvailableMsg();
+					return false;
+				}
 				return true;
 			} else {
 				showTicketNotAvailableMsg();
 				return false;
-			} 
+			}
 		} else {
-				showTicketNotAvailableMsg();
+				showNoMoreTicketsMsg();
 				return false;
 			}
 	}
@@ -379,30 +369,23 @@ public class TicketCtrl {
 	}
 	
 	public void addSeatPlaceAsAvailable(Integer indexOfTicket) {
-		
-		if(windowTicket.get(indexOfTicket) == true && nearTableTicket.get(indexOfTicket) == true) {
-			nearTableAndWindowFreeSpots++;
-			nearTableFreeSpots++;
-			nearWindowFreeSpots++;
-			allFreeSpots++;
-		} else if(windowTicket.get(indexOfTicket) == false && nearTableTicket.get(indexOfTicket) == true) {
-			nearCorridorAndTableFreeSpots++;
-			nearTableFreeSpots++;
-			nearCorridorFreeSpots++;
-			allFreeSpots++;
-		} else if(windowTicket.get(indexOfTicket) == true) {
-			nearWindowFreeSpots++;
-			nearTableAndWindowFreeSpots++;
-			allFreeSpots++;
-		} else if(windowTicket.get(indexOfTicket) == false) {
-			nearCorridorFreeSpots++;
-			nearCorridorAndTableFreeSpots++;
-			allFreeSpots++;
-		} else if(nearTableTicket.get(indexOfTicket) == true) {
-			nearTableFreeSpots++;
-			nearTableAndWindowFreeSpots++;
-			allFreeSpots++;
+		if(windowTicket.get(indexOfTicket)) {
+			if (nearTableTicket.get(indexOfTicket)) {
+				nearTableAndWindowFreeSpots++;
+			} else {
+				nearWindowFreeSpots++;
+			}
 		}
+		
+		if(!windowTicket.get(indexOfTicket)) {
+			if (nearTableTicket.get(indexOfTicket)) {
+				nearCorridorAndTableFreeSpots++;
+			} else {
+				nearCorridorFreeSpots++;
+			}
+		}
+		
+		allFreeSpots++;
 	}
 	
 	public Integer getIndexOfTicket() {
@@ -510,6 +493,11 @@ public class TicketCtrl {
 	
 	public void showTicketNotAvailableMsg() {
 		ApexPages.Message errorMsg = new ApexPages.Message(ApexPages.Severity.FATAL, 'No Ticket Available for selected options.');
+		ApexPages.addMessage(errorMsg);
+	}
+	
+	public void showNoMoreTicketsMsg() {
+		ApexPages.Message errorMsg = new ApexPages.Message(ApexPages.Severity.FATAL, 'No more tickets available.');
 		ApexPages.addMessage(errorMsg);
 	}
 }
